@@ -32,6 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -266,7 +268,13 @@ $(document).ready(function () {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/j3gu/m6A_in_disease_genetics">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -284,7 +292,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -295,8 +303,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -309,9 +317,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>m6A_in_disease_genetics/</code>
@@ -334,31 +342,36 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong0e3b2a9">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstree936a79c0222a16aef2fd1f7409d21d6ebf802b7etargetblank936a79ca">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> 0e3b2a9
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/936a79c0222a16aef2fd1f7409d21d6ebf802b7e" target="_blank">936a79c</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong0e3b2a9"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstree936a79c0222a16aef2fd1f7409d21d6ebf802b7etargetblank936a79ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -367,7 +380,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 0e3b2a9.
+The results in this page were generated with repository version
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/936a79c0222a16aef2fd1f7409d21d6ebf802b7e" target="_blank">936a79c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -386,11 +400,13 @@ Ignored files:
 
 Untracked files:
     Untracked:  code/.ipynb_checkpoints/
-    Untracked:  code/check_double_strand.html
     Untracked:  code/check_double_strand.ipynb
     Untracked:  code/untitled.r
     Untracked:  data/m6a_TWAS_genes.txt
     Untracked:  data/reported_AS_targets.txt
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -437,10 +453,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/86b31eccc2f921052d9a59cec69c4cbe144a9d89/docs/index.html" target="_blank">86b31ec</a>
+</td>
+<td>
+Jing Gu
+</td>
+<td>
+2023-04-12
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-0e3b2a9
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/0e3b2a91af749526b4e49447f4f84550a6963d42/analysis/index.Rmd" target="_blank">0e3b2a9</a>
 </td>
 <td>
 Jing Gu
@@ -457,7 +490,7 @@ publish the initial files
 Rmd
 </td>
 <td>
-c558a6b
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c558a6b5b6f89928df0aa359b19c34ace7baed11/analysis/index.Rmd" target="_blank">c558a6b</a>
 </td>
 <td>
 Jing Gu
@@ -479,19 +512,19 @@ Start workflowr project.
 <div id="backgrounds" class="section level3">
 <h3>Backgrounds</h3>
 <ul>
-<li><a href="m6A_characteristics.html">m6A is one of the most abundant
-forms of RNA modifications</a></li>
+<li><a href="m6A_characteristics.html">what is m6A
+modification?</a></li>
 <li>[m6A-switch mechanisms]</li>
 <li>[m6A variation contributes to heritability of immune diseases]</li>
 </ul>
 </div>
-<div id="genetic-variants-may-act-on-m6a-switch-to-cause-disease"
+<div id="genetic-variants-may-act-through-m6a-switch-to-cause-disease"
 class="section level3">
-<h3>Genetic variants may act on m6A-switch to cause disease</h3>
-<p><a href="m6A_switch_to_disease_h2g.html">Test the enrichment for
-dsRNAs formed by m6A-switch with GWAS variants</a> - identify genes from
-which transcripts can form dsRNAs among TWAS prioritized ones - Test
-enrichment for GWAS risk variants</p>
+<h3>Genetic variants may act through m6A-switch to cause disease</h3>
+<p>Test the enrichment for dsRNAs formed by m6A-switch with GWAS
+variants - <a href="check_double_strand.html">identify genes from which
+transcripts can form dsRNAs</a> - Test enrichment for GWAS risk
+variants</p>
 </div>
 <div id="m6a-informed-fine-mapping" class="section level3">
 <h3>m6A informed fine-mapping</h3>
