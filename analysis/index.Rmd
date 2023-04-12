@@ -8,4 +8,16 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+### Backgrounds 
+* [m6A is one of the most abundant forms of RNA modifications](m6A_characteristics.html)
+* [m6A-switch mechanisms]
+* [m6A variation contributes to heritability of immune diseases]
+
+### Genetic variants may act on m6A-switch to cause disease
+[Test the enrichment for dsRNAs formed by m6A-switch with GWAS variants ](m6A_switch_to_disease_h2g.html)
+  - identify genes from which transcripts can form dsRNAs among TWAS prioritized ones
+  - Test enrichment for GWAS risk variants
+  
+### m6A informed fine-mapping
+[Are predicted m6A QTLs enriched for GWAS signals?](predicted_m6A_QTLs_enrichment_GWAS.html)
+[Are predicted m6A QTLs enriched for ClinVar variants?](predicted_m6A_QTLs_enrichment_ClinVars.html)
