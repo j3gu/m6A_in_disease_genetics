@@ -1,7 +1,7 @@
-name: "m6A_in_disease_genetics"
+name: m6A_in_disease_genetics
 output_dir: ../docs
 navbar:
-  title: "m6A_in_disease_genetics"
+  title: m6A_in_disease_genetics
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/j3gu/m6A_in_disease_genetics
 output:
   workflowr::wflow_html:
     toc: yes
