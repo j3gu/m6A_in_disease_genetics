@@ -14644,41 +14644,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1">## load gencode annotations in gtf file format</span>
-
-<span class="n">gtfDIR</span><span class="o">&lt;-</span><span class="s">&quot;~/resources/gencode/gencode.v43lift37.annotation.gtf.gz&quot;</span>
-
-<span class="n">gtf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rtracklayer</span><span class="o">::</span><span class="nf">import</span><span class="p">(</span><span class="n">con</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gtfDIR</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;gtf&#39;</span><span class="p">)</span>
-<span class="n">gtf.antisense</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">rtracklayer</span><span class="o">::</span><span class="nf">import</span><span class="p">(</span><span class="n">con</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;~/resources/gencode/gencode.v19.annotation.gtf.gz&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                                    </span><span class="n">format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;gtf&#39;</span><span class="p">)</span>
-
-<span class="n">transcript</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="s">&quot;transcript&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-
-<span class="n">gene</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;gene&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-
-<span class="n">cds</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;CDS&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-
-<span class="c1"># After filtering by transcript support levels in at least TSL3, 27K out of 60k genes remain. </span>
-<span class="n">ref</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;exon&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">gtf</span><span class="o">$</span><span class="n">type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;UTR&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-<span class="n">ref</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ref</span><span class="p">[</span><span class="n">ref</span><span class="o">$</span><span class="n">transcript_support_level</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">as.character</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)),</span><span class="w"> </span><span class="p">]</span>
-<span class="c1"># 39191 antisense transcripts assigned to 5393 genes</span>
-<span class="n">antisense</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf.antisense</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="n">gtf.antisense</span><span class="o">$</span><span class="n">transcript_type</span><span class="o">==</span><span class="s">&quot;antisense&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">]</span><span class="w"> </span>
-<span class="n">antisense</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">antisense</span><span class="p">[</span><span class="n">antisense</span><span class="o">$</span><span class="n">transcript_status</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;KNOWN&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">]</span><span class="c1">#antisense transcripts that are well-supported</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14800,26 +14765,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[144]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">matchedAS</span><span class="o">&lt;-</span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">))</span>
-<span class="n">knownAS</span><span class="o">&lt;-</span><span class="nf">length</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">queryGenes</span><span class="p">,</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">transcript</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)))</span>
-<span class="n">prop</span><span class="o">&lt;-</span><span class="nf">round</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">))</span><span class="o">/</span>
-<span class="nf">length</span><span class="p">(</span><span class="nf">intersect</span><span class="p">(</span><span class="n">queryGenes</span><span class="p">,</span><span class="w"> </span><span class="nf">unique</span><span class="p">(</span><span class="n">transcript</span><span class="o">$</span><span class="n">gene_name</span><span class="p">))),</span><span class="m">2</span><span class="p">)</span>
-<span class="n">tbl</span><span class="o">&lt;-</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">matchedAS</span><span class="p">,</span><span class="n">knownAS</span><span class="p">,</span><span class="w"> </span><span class="n">prop</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -14885,38 +14830,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell celltag_remove_input celltag_remove_output">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[292]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">queryGenes</span><span class="o">&lt;-</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;CTSA&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TNFRSF14&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;HBP1&quot;</span><span class="p">)</span>
-<span class="n">query</span><span class="o">&lt;-</span><span class="n">gtf</span><span class="p">[</span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">queryGenes</span><span class="p">,</span><span class="w"> </span><span class="p">]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove_input">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[148]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">pairs</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
 
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
@@ -15568,50 +15482,7 @@ class="
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[149]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">data.table</span><span class="p">)</span>
-<span class="n">input</span><span class="o">&lt;-</span><span class="nf">read.table</span><span class="p">(</span><span class="s">&quot;/home/jinggu/projects/m6A_in_disease_genetics/data/reported_AS_targets_S1.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">)</span>
-
-<span class="n">dsRNA</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="n">input</span><span class="o">$</span><span class="n">V1</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span><span class="nf">strsplit</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;and&quot;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]]})</span>
-
-<span class="n">queryGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">unlist</span><span class="p">(</span><span class="nf">lapply</span><span class="p">(</span><span class="n">dsRNA</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span><span class="nf">return</span><span class="p">(</span><span class="nf">trimws</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="m">1</span><span class="p">]))}))</span>
-<span class="n">targetGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">unlist</span><span class="p">(</span><span class="nf">lapply</span><span class="p">(</span><span class="n">dsRNA</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span><span class="nf">return</span><span class="p">(</span><span class="nf">trimws</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="m">2</span><span class="p">]))}))</span>
-<span class="n">query</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">gtf</span><span class="p">[</span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span>
-<span class="w">            </span><span class="nf">intersect</span><span class="p">(</span><span class="nf">toupper</span><span class="p">(</span><span class="n">queryGenes</span><span class="p">),</span><span class="w"> </span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove_input">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[151]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">trueGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lapply</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                    </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span><span class="n">targetGenes</span><span class="p">[</span><span class="nf">which</span><span class="p">(</span><span class="nf">toupper</span><span class="p">(</span><span class="n">queryGenes</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">i</span><span class="p">)]}</span>
-<span class="w">                   </span><span class="p">)</span>
-
-<span class="n">pairs</span><span class="p">[,</span><span class="s">&quot;targets.gene_name&quot;</span><span class="p">]</span><span class="o">&lt;-</span><span class="nf">unlist</span><span class="p">(</span><span class="n">trueGenes</span><span class="p">)</span>
-<span class="nf">head</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span><span class="w"> </span><span class="m">10</span><span class="p">)</span><span class="w"> </span><span class="c1"># outputs for paired dsRNA transcripts and true target genes</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
 
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
@@ -15667,23 +15538,6 @@ class="
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove_input">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[152]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;%s out of %s genes in GENCODE database were found to form dsRNAs.&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">)),</span>
-<span class="w">        </span><span class="m">32</span>
-<span class="w">       </span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
 
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
@@ -15882,27 +15736,6 @@ class="
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[221]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">twas</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">read.csv</span><span class="p">(</span><span class="s">&quot;../data/m6A_TWAS_results.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">T</span><span class="p">)</span>
-<span class="n">twasGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">toupper</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">intersect</span><span class="p">(</span><span class="nf">toupper</span><span class="p">(</span><span class="n">twas</span><span class="o">$</span><span class="n">GENE</span><span class="p">),</span><span class="w"> </span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="w"> </span><span class="p">),]</span>
-<span class="n">allGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">toupper</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">toupper</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">cds</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)),</span><span class="w"> </span><span class="p">]</span>
-
-<span class="n">twasAS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">check_dsRNA</span><span class="p">(</span><span class="n">twasGenes</span><span class="p">)</span>
-<span class="n">allgenesAS</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">check_dsRNA</span><span class="p">(</span><span class="n">allGenes</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -15977,47 +15810,7 @@ class="
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[227]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">tbl</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span><span class="nf">t</span><span class="p">(</span><span class="nf">sapply</span><span class="p">(</span><span class="nf">split</span><span class="p">(</span><span class="n">twas</span><span class="p">,</span><span class="w"> </span><span class="n">twas</span><span class="o">$</span><span class="n">Trait</span><span class="p">),</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span>
-<span class="w">        </span><span class="n">perTraitGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gtf</span><span class="p">[</span><span class="nf">toupper</span><span class="p">(</span><span class="n">gtf</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">toupper</span><span class="p">(</span><span class="n">i</span><span class="o">$</span><span class="n">GENE</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-<span class="w">        </span><span class="n">perTraitPairs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">check_dsRNA</span><span class="p">(</span><span class="n">perTraitGenes</span><span class="p">)</span><span class="o">$</span><span class="n">pairs</span>
-<span class="w">        </span><span class="n">numPairs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">perTraitPairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">))</span>
-<span class="w">        </span><span class="n">numGenes</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">i</span><span class="o">$</span><span class="n">GENE</span><span class="p">))</span>
-<span class="w">        </span><span class="n">enrichment</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">numPairs</span><span class="o">/</span><span class="n">numGenes</span><span class="o">/</span><span class="m">0.32</span>
-<span class="w">        </span><span class="nf">return</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">numPairs</span><span class="p">,</span><span class="w"> </span><span class="n">numGenes</span><span class="p">,</span><span class="w"> </span><span class="n">enrichment</span><span class="p">))</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">)))</span>
-<span class="nf">colnames</span><span class="p">(</span><span class="n">tbl</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;num_dsRNA&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;num_TWAS_genes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;enrichment&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove_input">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[229]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">colnames</span><span class="p">(</span><span class="n">tbl</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;num_dsRNA&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;num_TWAS_genes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;enrichment&quot;</span><span class="p">)</span>
-<span class="nf">head</span><span class="p">(</span><span class="n">tbl</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
 
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
@@ -16068,33 +15861,6 @@ class="
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove_input">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[278]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">ggplot</span><span class="p">(</span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;%s (%s)&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                            </span><span class="nf">rownames</span><span class="p">(</span><span class="n">tbl</span><span class="p">),</span>
-<span class="w">                            </span><span class="n">num_TWAS_genes</span><span class="p">),</span>
-<span class="w">                </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">enrichment</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">num_dsRNA</span><span class="p">)</span>
-<span class="w">      </span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
-<span class="nf">geom_col</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
-<span class="nf">geom_label</span><span class="p">()</span><span class="w"> </span><span class="o">+</span>
-<span class="nf">xlab</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="nf">theme</span><span class="p">(</span>
-<span class="w">      </span><span class="n">panel.grid.major</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
-<span class="w">      </span><span class="n">axis.text.x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span><span class="p">,</span><span class="w"> </span><span class="n">angle</span><span class="o">=</span><span class="m">90</span><span class="p">,</span><span class="w"> </span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">),</span>
-<span class="w">      </span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">13</span><span class="p">),</span><span class="w"> </span>
-<span class="w">      </span><span class="n">axis.title.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">15</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
 
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
@@ -19002,186 +18768,6 @@ class="
 
 </div>
 
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="n">pairedL</span><span class="o">&lt;-</span><span class="nf">list</span><span class="p">()</span>
-<span class="nf">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">22</span><span class="p">){</span>
-<span class="w">    </span><span class="n">pairedL</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">&lt;-</span><span class="nf">overlapsRanges</span><span class="p">(</span>
-<span class="w">                </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ranges</span><span class="p">(</span>
-<span class="w">                    </span><span class="n">queryTranscript</span><span class="p">[</span><span class="nf">seqnames</span><span class="p">(</span><span class="n">queryTranscript</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-<span class="w">                </span><span class="p">),</span>
-<span class="w">                </span><span class="n">subject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ranges</span><span class="p">(</span>
-<span class="w">                    </span><span class="n">ref</span><span class="p">[</span><span class="nf">seqnames</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-<span class="w">                </span><span class="p">)</span>
-<span class="w">            </span><span class="p">)</span>
-<span class="w">    </span><span class="nf">if</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">pairedL</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">){</span>
-<span class="w">        </span><span class="nf">hist</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">pairedL</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="o">$</span><span class="n">width</span><span class="p">,</span><span class="w"> </span>
-<span class="w">             </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span>
-<span class="w">             </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex.lab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="p">}</span>
-<span class="n">overlapsWidth</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">unlist</span><span class="p">(</span><span class="nf">lapply</span><span class="p">(</span><span class="n">pairedL</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">$</span><span class="n">width</span><span class="p">}))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1">## plot the distribution of length of base pairing between two transcripts</span>
-<span class="nf">options</span><span class="p">(</span><span class="n">repr.plot.width</span><span class="o">=</span><span class="m">12</span><span class="p">,</span><span class="w"> </span><span class="n">repr.plot.height</span><span class="o">=</span><span class="m">8</span><span class="p">)</span>
-<span class="nf">par</span><span class="p">(</span><span class="n">mfrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span><span class="m">4</span><span class="p">))</span>
-<span class="n">pairedL</span><span class="o">&lt;-</span><span class="nf">list</span><span class="p">()</span>
-<span class="nf">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="m">22</span><span class="p">){</span>
-<span class="w">    </span><span class="n">pairedL</span><span class="p">[[</span><span class="n">i</span><span class="p">]]</span><span class="o">&lt;-</span><span class="nf">overlapsRanges</span><span class="p">(</span>
-<span class="w">                </span><span class="n">query</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ranges</span><span class="p">(</span>
-<span class="w">                    </span><span class="n">queryTranscript</span><span class="p">[</span><span class="nf">seqnames</span><span class="p">(</span><span class="n">queryTranscript</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-<span class="w">                </span><span class="p">),</span>
-<span class="w">                </span><span class="n">subject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">ranges</span><span class="p">(</span>
-<span class="w">                    </span><span class="n">ref</span><span class="p">[</span><span class="nf">grepl</span><span class="p">(</span><span class="s">&quot;[.]&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="o">$</span><span class="n">gene_name</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nf">seqnames</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
-<span class="w">                </span><span class="p">)</span>
-<span class="w">            </span><span class="p">)</span>
-<span class="w">    </span><span class="nf">if</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">pairedL</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">){</span>
-<span class="w">        </span><span class="nf">hist</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">pairedL</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="o">$</span><span class="n">width</span><span class="p">,</span><span class="w"> </span>
-<span class="w">             </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;chr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">),</span><span class="w"> </span>
-<span class="w">             </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex.lab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="p">}</span>
-<span class="n">overlapsWidth</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">unlist</span><span class="p">(</span><span class="nf">lapply</span><span class="p">(</span><span class="n">pairedL</span><span class="p">,</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">i</span><span class="p">){</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">$</span><span class="n">width</span><span class="p">}))</span>
-
-<span class="nf">hist</span><span class="p">(</span><span class="n">overlapsWidth</span><span class="p">,</span><span class="w"> </span><span class="n">cex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex.lab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">cex.axis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span>
-<span class="w">     </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Length of base pairing&quot;</span><span class="p">)</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="nf">sprintf</span><span class="p">(</span><span class="s">&quot;%s out of %s(%s%%) TWAS prioritized genes are predicted to form dsRNAs based on sequence overlapping.&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">              </span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">)),</span>
-<span class="w">              </span><span class="nf">length</span><span class="p">(</span><span class="n">twas</span><span class="o">$</span><span class="n">V1</span><span class="p">),</span>
-<span class="w">              </span><span class="m">100</span><span class="o">*</span><span class="nf">round</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="nf">unique</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">))</span><span class="o">/</span><span class="nf">length</span><span class="p">(</span><span class="n">twas</span><span class="o">$</span><span class="n">V1</span><span class="p">),</span><span class="m">1</span><span class="p">)</span>
-<span class="w">              </span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[703]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1">## load m6A peaks in hg19 genome build</span>
-<span class="n">peaks</span><span class="o">&lt;-</span><span class="nf">fread</span><span class="p">(</span><span class="s">&quot;../data/m6a_joint_calling_peaks.csv&quot;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[715]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="c1">## subset m6A peaks that are located in transcirpts that can form dsRNAs</span>
-<span class="n">peaksIn</span><span class="o">&lt;-</span><span class="n">peaks</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">union</span><span class="p">(</span><span class="n">pairs</span><span class="o">$</span><span class="n">queryTranscript.gene_name</span><span class="p">,</span><span class="w"> </span><span class="n">pairs</span><span class="o">$</span><span class="n">ref.gene_name</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell    celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[717]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">head</span><span class="p">(</span><span class="n">peaksIn</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<table class="dataframe">
-<caption>A data.table: 6 × 12</caption>
-<thead>
-	<tr><th scope=col>chr</th><th scope=col>start</th><th scope=col>end</th><th scope=col>name</th><th scope=col>score</th><th scope=col>strand</th><th scope=col>thickStart</th><th scope=col>thickEnd</th><th scope=col>itemRgb</th><th scope=col>blockCount</th><th scope=col>blockSizes</th><th scope=col>blockStarts</th></tr>
-	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><td>chr17</td><td> 7123245</td><td> 7124260</td><td>ACADVL</td><td>0</td><td>+</td><td> 7123245</td><td> 7124260</td><td>0</td><td>5</td><td>272,66,73,65,18</td><td>0,538,678,840,998</td></tr>
-	<tr><td>chr16</td><td>89165161</td><td>89167357</td><td>ACSF3 </td><td>0</td><td>+</td><td>89165161</td><td>89167357</td><td>0</td><td>2</td><td>11,288         </td><td>0,1909           </td></tr>
-	<tr><td>chr16</td><td>89167408</td><td>89169113</td><td>ACSF3 </td><td>0</td><td>+</td><td>89167408</td><td>89169113</td><td>0</td><td>2</td><td>348,102        </td><td>0,1604           </td></tr>
-	<tr><td>chr16</td><td>89220607</td><td>89220805</td><td>ACSF3 </td><td>0</td><td>+</td><td>89220607</td><td>89220805</td><td>0</td><td>1</td><td>198            </td><td>0                </td></tr>
-	<tr><td>chr16</td><td>89220856</td><td>89220905</td><td>ACSF3 </td><td>0</td><td>+</td><td>89220856</td><td>89220905</td><td>0</td><td>1</td><td>49             </td><td>0                </td></tr>
-	<tr><td>chr16</td><td>50300451</td><td>50324427</td><td>ADCY7 </td><td>0</td><td>+</td><td>50300451</td><td>50324427</td><td>0</td><td>3</td><td>48,439,60      </td><td>0,21372,23917    </td></tr>
-</tbody>
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs   celltag_remove_cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[720]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-r"><pre><span></span><span class="nf">write.table</span><span class="p">(</span><span class="n">peaksIn</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">chr</span><span class="p">,</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">end</span><span class="p">)),</span><span class="w"> </span><span class="s">&quot;~/cluster/data/features/processed/m6A/m6A_peaks_in_dsRNA_LCL.bed&quot;</span><span class="p">,</span>
-<span class="w">           </span><span class="n">quote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">F</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;\t&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">col.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">,</span><span class="w"> </span><span class="n">row.names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
 </div>
 
 </div>
