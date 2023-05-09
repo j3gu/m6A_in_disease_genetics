@@ -16149,7 +16149,7 @@ class="
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Directional-effects-of-m6A-QTL-on-targeted-genes-that-have-dsRNAs-nearby">Directional effects of m6A QTL on targeted genes that have dsRNAs nearby<a class="anchor-link" href="#Directional-effects-of-m6A-QTL-on-targeted-genes-that-have-dsRNAs-nearby">&#182;</a></h3><p>We see m6A QTLs show biased effect sizes for their targeted TWAS genes in immune traits. The genetics variants that increase m6A levels of double strand RNAs tend to have increasing risks on immune traits.</p>
+<h3 id="Directional-effects-of-m6A-QTL-on-targeted-genes-that-have-dsRNAs-nearby">Directional effects of m6A QTL on targeted genes that have dsRNAs nearby<a class="anchor-link" href="#Directional-effects-of-m6A-QTL-on-targeted-genes-that-have-dsRNAs-nearby">&#182;</a></h3><p>We see m6A QTLs show biased effect sizes for their targeted TWAS genes in immune traits. The genetics variants that increase m6A levels of double strand RNAs tend to have increasing risks on immune traits as RNA stability is decreased.</p>
 
 </div>
 </div>
@@ -18663,6 +18663,70 @@ height=480
 class="
 "
 >
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[470]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-r"><pre><span></span><span class="n">hits</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">twas_dsRNA</span><span class="p">[</span><span class="n">twas_dsRNA</span><span class="o">$</span><span class="n">trait_type</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;immune&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">]</span>
+<span class="n">hits</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output " data-mime-type="text/plain">
+<pre>DataFrame with 10 rows and 8 columns
+                           gr        gene   m6aQTL_ID  m6aQTL_Z
+                    &lt;GRanges&gt; &lt;character&gt; &lt;character&gt; &lt;numeric&gt;
+1   chr21:45642428-45647025:-      ICOSLG   rs2070554     -3.48
+2   chr21:45642428-45647025:-      ICOSLG   rs2070554     -3.48
+3  chr1:155289708-155290657:+        FDPS  rs11264361      6.12
+4  chr1:209952229-209953226:+    TRAF3IP3    rs651141     -5.57
+5   chr16:50348961-50351350:+       ADCY7   rs7184802      2.91
+6   chr16:11772486-11773730:-     TXNDC11    rs933574     -3.41
+7  chr1:155289708-155290657:+        FDPS  rs11264361      6.12
+8   chr16:50348961-50351350:+       ADCY7   rs7184802      2.91
+9   chr14:35578626-35591556:-     PPP2R3C   rs1056879      5.22
+10  chr15:91183878-91186697:+       CRTC3   rs1125280      3.29
+                    trait     gwas_ID    gwas_Z  trait_type
+              &lt;character&gt; &lt;character&gt; &lt;numeric&gt; &lt;character&gt;
+1  Inflammatory Bowel D..   rs2838520   -10.110      immune
+2    Rheumatoid Arthritis   rs4819388    -5.050      immune
+3  Inflammatory Bowel D..   rs2049805     5.990      immune
+4  Inflammatory Bowel D..   rs2073486    -5.700      immune
+5  Inflammatory Bowel D..   rs9930316     6.406      immune
+6    Rheumatoid Arthritis   rs1592572    -4.873      immune
+7         Crohn&#39;s Disease   rs1052177     5.510      immune
+8         Crohn&#39;s Disease   rs4467073     6.530      immune
+9          Allergy Eczema  rs11156875     5.710      immune
+10         Allergy Eczema  rs11853611    -6.540      immune</pre>
 </div>
 
 </div>
