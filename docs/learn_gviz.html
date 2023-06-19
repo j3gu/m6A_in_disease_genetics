@@ -3087,8 +3087,8 @@ with GViz</h1>
 </div>
 
 
-<div id="setting" class="section level2">
-<h2>Setting</h2>
+<div id="setting-and-functions" class="section level2">
+<h2>Setting and functions</h2>
 <pre class="r"><code>library(Gviz)
 library(GenomicRanges)
 library(GenomicFeatures)
@@ -3096,9 +3096,6 @@ library(rtracklayer)
 library(dplyr)
 source(&quot;~/projects/funcFinemapping/code/run_susie.R&quot;)
 annoDIR &lt;- &quot;~/cluster/data/features/raw/&quot;</code></pre>
-</div>
-<div id="functions" class="section level2">
-<h2>Functions</h2>
 <pre class="r"><code>build_grtrack &lt;- function(curr.locus.gr, 
                           genome=&quot;hg19&quot;,
                           start.pos = start,
@@ -3238,6 +3235,22 @@ make_track_plots &lt;- function(dsRNA.locus,
 </div>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
+<p>RNA editing sites:<br />
+<a href="https://genome.cshlp.org/content/29/11/1766">Mai et al.</a>
+integrated genome and transcriptome squencing data from Geuvadis LCLs of
+447 individuals (derived from 1000 Genomes Project) to detect A-to-I
+editing sites. For each A/G SNP site, individuals with the homozygous
+genotype AA were considered to determine RNA editing. An A/G SNP site
+was further defined as a SNP editing site if it was found to be edited
+at a level &gt;5% in at least two LCL samples from individuals with
+homozygous genotype AA. This leads to the detection of more than 80K
+edited sites.</p>
+<p>RADAR database:<br />
+<a href="https://academic.oup.com/nar/article/42/D1/D109/1070770">Ramaswami
+et al.</a> built a rigorous database for RNA A-to-I editing sites
+detected in humans. This database not only includes extensive manually
+curated annotations for each editing site, but also tissue-specific
+editing levels for each editing site.</p>
 <pre class="r"><code>## GTEx dataset
 # ed_sites &lt;- read.csv(paste0(annoDIR, &quot;RNA_editing/Tan2017/GTEx_avg_RNA_editing_levels_by_tissue.csv&quot;))
 # 
@@ -3270,8 +3283,8 @@ targets&lt;-unique(
     #select(-c(best_GWAS_ID, best_GWAS_Z, trait, COLOC.PP4))
 
 DT::datatable(targets, options = list(scrollX = TRUE, keys = TRUE), rownames = F)</code></pre>
-<div id="htmlwidget-74611c7d4609e4a5cf62" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-74611c7d4609e4a5cf62">{"x":{"filter":"none","vertical":false,"data":[["chr1","chr16","chr1"],[155290208,50349461,155290208],[155290407,50351100,155290407],[199,1639,199],["+","+","+"],["FDPS","ADCY7","FDPS"],["rs11264361","rs7184802","rs11264361"],[6.12,2.91,6.12],["Inflammatory Bowel Disease","Inflammatory Bowel Disease","Crohn's Disease"],["rs2049805","rs9930316","rs1052177"],[5.99,6.406,5.51],["chr1","chr16","chr1"],[155289594,50349858,155289594],[155289744,50349934,155289744],[151,77,151],["*","*","*"],["FDPS","ADCY7","FDPS"],["RUSC1-AS1","BRD7","RUSC1-AS1"],[0.871,0.37,0.973],[155289545,50355996,155289545]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>chr<\/th>\n      <th>start<\/th>\n      <th>end<\/th>\n      <th>width<\/th>\n      <th>strand<\/th>\n      <th>gene<\/th>\n      <th>m6aQTL_ID<\/th>\n      <th>m6aQTL_Z<\/th>\n      <th>trait<\/th>\n      <th>best_GWAS_ID<\/th>\n      <th>best_GWAS_Z<\/th>\n      <th>DS_chr<\/th>\n      <th>DS_start<\/th>\n      <th>DS_end<\/th>\n      <th>DS_width<\/th>\n      <th>DS_strand<\/th>\n      <th>DS_query_gene<\/th>\n      <th>DS_ref_gene<\/th>\n      <th>COLOC.PP4<\/th>\n      <th>physical.pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"keys":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,7,10,12,13,14,18,19]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-558b0ee085fec0cc8fe0" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-558b0ee085fec0cc8fe0">{"x":{"filter":"none","vertical":false,"data":[["chr1","chr16","chr1"],[155290208,50349461,155290208],[155290407,50351100,155290407],[199,1639,199],["+","+","+"],["FDPS","ADCY7","FDPS"],["rs11264361","rs7184802","rs11264361"],[6.12,2.91,6.12],["Inflammatory Bowel Disease","Inflammatory Bowel Disease","Crohn's Disease"],["rs2049805","rs9930316","rs1052177"],[5.99,6.406,5.51],["chr1","chr16","chr1"],[155289594,50349858,155289594],[155289744,50349934,155289744],[151,77,151],["*","*","*"],["FDPS","ADCY7","FDPS"],["RUSC1-AS1","BRD7","RUSC1-AS1"],[0.871,0.37,0.973],[155289545,50355996,155289545]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>chr<\/th>\n      <th>start<\/th>\n      <th>end<\/th>\n      <th>width<\/th>\n      <th>strand<\/th>\n      <th>gene<\/th>\n      <th>m6aQTL_ID<\/th>\n      <th>m6aQTL_Z<\/th>\n      <th>trait<\/th>\n      <th>best_GWAS_ID<\/th>\n      <th>best_GWAS_Z<\/th>\n      <th>DS_chr<\/th>\n      <th>DS_start<\/th>\n      <th>DS_end<\/th>\n      <th>DS_width<\/th>\n      <th>DS_strand<\/th>\n      <th>DS_query_gene<\/th>\n      <th>DS_ref_gene<\/th>\n      <th>COLOC.PP4<\/th>\n      <th>physical.pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"keys":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,7,10,12,13,14,18,19]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="specific-examples-for-immune-related-traits" class="section level3">
 <h3>Specific examples for immune-related traits</h3>
@@ -3293,8 +3306,8 @@ Inflammatory Response (<a href="GO:1900015" class="uri">GO:1900015</a>).</p>
 </div>
 <div id="twas-genes-with-pp4-0.5-for-blood-traits" class="section level3">
 <h3>TWAS genes with PP4 &gt; 0.5 for blood traits</h3>
-<div id="htmlwidget-9f02d00dee15affb7e3f" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9f02d00dee15affb7e3f">{"x":{"filter":"none","vertical":false,"data":[["chr12","chr17","chr16","chr16","chr17","chr19","chr20","chr11","chr12","chr7","chr11","chr14","chr14"],[124104056,5284729,67961742,67961742,27077435,13051690,30157022,204599,112277871,100026463,63990872,35579126,35579126],[124105037,5286967,67961990,67961990,27077878,13055255,30157270,205583,112278218,100026561,63991314,35591306,35591306],[981,2238,248,248,443,3565,248,984,347,98,442,12180,12180],["+","+","+","+","+","+","+","-","-","+","+","-","-"],["DDX55","RABEP1","PSKH1","PSKH1","TRAF4","CALR","HM13","BET1L","MAPKAPK5-AS1","MEPCE","FERMT3","PPP2R3C","PPP2R3C"],["rs3204541","rs1806261","rs1109166","rs1109166","rs3181215","rs1049481","rs6120719","rs2280544","rs3177647","rs4472444","rs594942","rs1056879","rs1056879"],[5.28,4.9,-3.35,-3.35,4.9,-5.3,4.25,4.41,3.58,4.45,4.49,5.22,5.22],["chr12","chr17","chr16","chr16","chr17","chr19","chr20","chr11","chr12","chr7","chr11","chr14","chr14"],[124104953,5286415,67963395,67963517,27076831,13055138,30155510,203623,112280032,100026191,63991271,35579776,35591052],[124105490,5286861,67963577,67963579,27077097,13055301,30155751,204070,112280573,100026302,63991368,35579848,35591258],[538,447,183,63,267,164,242,448,542,112,98,73,207],["*","*","*","*","*","*","*","*","*","*","*","*","*"],["DDX55","RABEP1","PSKH1","PSKH1","TRAF4","CALR","HM13","BET1L","MAPKAPK5-AS1","MEPCE","FERMT3","PPP2R3C","PPP2R3C"],["EIF2B1","NUP88","CTRL","ENSG00000261884","ENSG00000265840","ENSG00000267458","HM13-AS1","ENSG00000254559","MAPKAPK5","ZCWPW1","TRPT1","FAM177A1","PRORP"],[124104686,5317008,67977382,67977382,27077331,13054781,30156378,204062,112277576,100070758,64006292,35591174,35591174]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>chr<\/th>\n      <th>start<\/th>\n      <th>end<\/th>\n      <th>width<\/th>\n      <th>strand<\/th>\n      <th>gene<\/th>\n      <th>m6aQTL_ID<\/th>\n      <th>m6aQTL_Z<\/th>\n      <th>DS_chr<\/th>\n      <th>DS_start<\/th>\n      <th>DS_end<\/th>\n      <th>DS_width<\/th>\n      <th>DS_strand<\/th>\n      <th>DS_query_gene<\/th>\n      <th>DS_ref_gene<\/th>\n      <th>physical.pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"keys":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,7,9,10,11,15]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bb7c143d50d9dc71b5a7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bb7c143d50d9dc71b5a7">{"x":{"filter":"none","vertical":false,"data":[["chr12","chr17","chr16","chr16","chr17","chr19","chr20","chr11","chr12","chr7","chr11","chr14","chr14"],[124104056,5284729,67961742,67961742,27077435,13051690,30157022,204599,112277871,100026463,63990872,35579126,35579126],[124105037,5286967,67961990,67961990,27077878,13055255,30157270,205583,112278218,100026561,63991314,35591306,35591306],[981,2238,248,248,443,3565,248,984,347,98,442,12180,12180],["+","+","+","+","+","+","+","-","-","+","+","-","-"],["DDX55","RABEP1","PSKH1","PSKH1","TRAF4","CALR","HM13","BET1L","MAPKAPK5-AS1","MEPCE","FERMT3","PPP2R3C","PPP2R3C"],["rs3204541","rs1806261","rs1109166","rs1109166","rs3181215","rs1049481","rs6120719","rs2280544","rs3177647","rs4472444","rs594942","rs1056879","rs1056879"],[5.28,4.9,-3.35,-3.35,4.9,-5.3,4.25,4.41,3.58,4.45,4.49,5.22,5.22],["chr12","chr17","chr16","chr16","chr17","chr19","chr20","chr11","chr12","chr7","chr11","chr14","chr14"],[124104953,5286415,67963395,67963517,27076831,13055138,30155510,203623,112280032,100026191,63991271,35579776,35591052],[124105490,5286861,67963577,67963579,27077097,13055301,30155751,204070,112280573,100026302,63991368,35579848,35591258],[538,447,183,63,267,164,242,448,542,112,98,73,207],["*","*","*","*","*","*","*","*","*","*","*","*","*"],["DDX55","RABEP1","PSKH1","PSKH1","TRAF4","CALR","HM13","BET1L","MAPKAPK5-AS1","MEPCE","FERMT3","PPP2R3C","PPP2R3C"],["EIF2B1","NUP88","CTRL","ENSG00000261884","ENSG00000265840","ENSG00000267458","HM13-AS1","ENSG00000254559","MAPKAPK5","ZCWPW1","TRPT1","FAM177A1","PRORP"],[124104686,5317008,67977382,67977382,27077331,13054781,30156378,204062,112277576,100070758,64006292,35591174,35591174]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>chr<\/th>\n      <th>start<\/th>\n      <th>end<\/th>\n      <th>width<\/th>\n      <th>strand<\/th>\n      <th>gene<\/th>\n      <th>m6aQTL_ID<\/th>\n      <th>m6aQTL_Z<\/th>\n      <th>DS_chr<\/th>\n      <th>DS_start<\/th>\n      <th>DS_end<\/th>\n      <th>DS_width<\/th>\n      <th>DS_strand<\/th>\n      <th>DS_query_gene<\/th>\n      <th>DS_ref_gene<\/th>\n      <th>physical.pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"keys":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,7,9,10,11,15]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="specific-examples-for-blood-traits" class="section level3">
 <h3>Specific examples for blood traits</h3>
