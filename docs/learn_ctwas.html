@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Jing Gu" />
 
+<meta name="date" content="2023-08-10" />
 
-<title>Home</title>
+<title>Identify causal genes with cTWAS</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,9 +31,20 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.22/datatables.js"></script>
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -234,6 +247,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -241,6 +317,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -284,7 +370,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Identify causal genes with cTWAS</h1>
+<h4 class="author">Jing Gu</h4>
+<h4 class="date">2023-08-10</h4>
 
 </div>
 
@@ -317,7 +405,7 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span> 1
 </p>
@@ -351,12 +439,96 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20230331code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20230331)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20230331code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20230331)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -517,202 +689,134 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
-(<code>docs/index.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/499f0709c13048257b61fedfa2604d7775099f6b/docs/index.html" target="_blank">499f070</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-06-19
-</td>
-<td>
-visualize target sites
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/b7a7aa39e4da22a523a8a4762c6ffbad38e95025/analysis/index.Rmd" target="_blank">b7a7aa3</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-05-09
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/bc330a2a4d892000e5e3b4af5cadf92698d795ae/docs/index.html" target="_blank">bc330a2</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-update index page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/98540ac5d0ea7fb469d5490c397d82a316ab9738/docs/index.html" target="_blank">98540ac</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-update index page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/86b31eccc2f921052d9a59cec69c4cbe144a9d89/docs/index.html" target="_blank">86b31ec</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/0e3b2a91af749526b4e49447f4f84550a6963d42/analysis/index.Rmd" target="_blank">0e3b2a9</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-publish the initial files
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c558a6b5b6f89928df0aa359b19c34ace7baed11/analysis/index.Rmd" target="_blank">c558a6b</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-03-31
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="backgrounds" class="section level3">
-<h3>Backgrounds</h3>
-<ul>
-<li><a href="m6A_characteristics.html">what is m6A
-modification?</a></li>
-<li>[m6A-switch mechanisms]</li>
-<li>[m6A variation contributes to heritability of immune diseases]</li>
-</ul>
+<div id="method-overall" class="section level2">
+<h2>Method overall</h2>
+<p>Causal TWAS is a method that adjusts for confounders that drive
+variants-trait associations to identify causal genes. The confounders
+could be genetic variants in LD with the true causal one regulating
+genes that do not affect traits, or variants have direct effects on
+traits not through altering gene expression. The general way to model
+this problem is as follows: <span class="math display">\[
+Y = \sum_k\sum_{j\in M_k}\beta_jX_j + \epsilon, \text{ } \epsilon \sim
+N(0, \sigma^2)
+\]</span> where variants are grouped into K categories and the effect
+size for each category can be modeled by a spike and slab normal
+distribution. The estimation of parameters were done using
+Expectation-maximum algorithm, and finally the posterior causal
+probability for individual variant can be calculated.</p>
+<p>In EM algorithm, the updated rules for <span
+class="math inline">\(\pi_k^{(t+1)}\)</span> is average PIPs for each K
+group and <span class="math inline">\(\sigma^{2,(t+1)}_{t}\)</span> is
+sum of PIPs weighted by second moment of posterior effect size.</p>
+<p>The calculation of PIPs and second moment is by analyzing each block
+one at a time under the single effect approximation using SuSiE.</p>
+<p>Assuming each single block explains a minimal variance of y, so <span
+class="math inline">\(\sigma = 1\)</span>.</p>
 </div>
-<div id="genetic-variants-may-act-through-m6a-switch-to-cause-disease"
+<div id="setting-and-functions" class="section level2">
+<h2>Setting and functions</h2>
+</div>
+<div id="load-twas-weights" class="section level2">
+<h2>load TWAS weights</h2>
+<p>Todo: re-run TWAS for a subset of GEUVADIS LCL samples that match
+with 60 LCLs in our m6A-QTL study</p>
+</div>
+<div id="generate-prediction-db-weights" class="section level2">
+<h2>generate prediction DB weights</h2>
+<div id="add-rsids-varids" class="section level3">
+<h3>Add rsIDs, varIDs</h3>
+</div>
+</div>
+<div id="test-ctwas-on-example-data" class="section level2">
+<h2>test cTWAS on example data</h2>
+</div>
+<div id="procedure-qcs" class="section level2">
+<h2>Procedure QCs</h2>
+<div
+id="the-extent-of-selected-qtls-using-yri-samples-missing-in-ukbb-variants"
 class="section level3">
-<h3>Genetic variants may act through m6A-switch to cause disease</h3>
-<p>Test the enrichment for dsRNAs formed by m6A-switch with GWAS
-variants</p>
-<ul>
-<li><a href="check_double_strand.html">identify transcripts that can
-form dsRNAs</a></li>
-<li><a href="learn_gviz.html">visualize m6A sites and nearby
-double-strand RNAs</a></li>
-</ul>
+<h3>The extent of selected QTLs using YRI samples missing in UKBB
+variants</h3>
+<p>Due to LD mismatch between African and European ancestry, we would
+like to estimate the fraction of top QTLs identified from individuals of
+African ancestry that are missing from UKBB variants. The table below
+shows less than 4% of selected SNPs with YRI samples are not found in
+those with UKBB samples across three models for expression, splicing or
+m6A QTL data.</p>
+<pre><code>[1] &quot;eQTL&quot; &quot;962&quot;  &quot;920&quot; 
+[1] &quot;eQTL&quot; &quot;5835&quot; &quot;5671&quot;
+[1] &quot;eQTL&quot;  &quot;16601&quot; &quot;16153&quot;
+[1] &quot;sQTL&quot; &quot;1310&quot; &quot;1271&quot;
+[1] &quot;sQTL&quot; &quot;6380&quot; &quot;6207&quot;
+[1] &quot;sQTL&quot;  &quot;17023&quot; &quot;16597&quot;
+[1] &quot;m6aQTL&quot; &quot;478&quot;    &quot;467&quot;   
+[1] &quot;m6aQTL&quot; &quot;2514&quot;   &quot;2440&quot;  
+[1] &quot;m6aQTL&quot; &quot;6357&quot;   &quot;6176&quot;  </code></pre>
+<pre><code>  feature top1 lasso enet
+1    eQTL 0.04  0.03 0.03
+2    sQTL 0.03  0.03 0.03
+3  m6aQTL 0.02  0.03 0.03</code></pre>
+<div id="htmlwidget-e89685ee235ec01b7f0d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e89685ee235ec01b7f0d">{"x":{"filter":"none","vertical":false,"data":[["eQTL","sQTL","m6aQTL"],["0.04","0.03","0.02"],["0.03","0.03","0.03"],["0.03","0.03","0.03"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>feature<\/th>\n      <th>top1<\/th>\n      <th>lasso<\/th>\n      <th>enet<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"keys":true,"pageLength":10,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.3.13-el7-x86_64/lib/libopenblas_haswellp-r0.3.13.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8 LC_NUMERIC=C         LC_TIME=C           
+ [4] LC_COLLATE=C         LC_MONETARY=C        LC_MESSAGES=C       
+ [7] LC_PAPER=C           LC_NAME=C            LC_ADDRESS=C        
+[10] LC_TELEPHONE=C       LC_MEASUREMENT=C     LC_IDENTIFICATION=C 
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] forcats_0.5.1     stringr_1.5.0     purrr_1.0.1       readr_2.1.4      
+ [5] tidyr_1.3.0       tibble_3.2.1      ggplot2_3.4.2     tidyverse_1.3.1  
+ [9] RSQLite_2.3.1     data.table_1.14.8 dplyr_1.1.2       ctwas_0.1.38     
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.6        sass_0.4.1        bit64_4.0.5       jsonlite_1.8.7   
+ [5] foreach_1.5.2     pgenlibr_0.3.6    logging_0.10-108  modelr_0.1.8     
+ [9] bslib_0.3.1       blob_1.2.4        cellranger_1.1.0  yaml_2.3.5       
+[13] pillar_1.9.0      backports_1.4.1   lattice_0.20-45   glue_1.6.2       
+[17] digest_0.6.33     promises_1.2.0.1  rvest_1.0.2       colorspace_2.1-0 
+[21] htmltools_0.5.2   httpuv_1.6.5      Matrix_1.6-0      pkgconfig_2.0.3  
+[25] broom_0.8.0       haven_2.5.0       scales_1.2.1      later_1.3.0      
+[29] tzdb_0.4.0        git2r_0.30.1      generics_0.1.3    DT_0.22          
+[33] cachem_1.0.8      withr_2.5.0       cli_3.6.1         magrittr_2.0.3   
+[37] crayon_1.5.2      readxl_1.4.3      memoise_2.0.1     evaluate_0.15    
+[41] fs_1.6.3          fansi_1.0.4       xml2_1.3.3        tools_4.2.0      
+[45] hms_1.1.3         lifecycle_1.0.3   munsell_0.5.0     reprex_2.0.1     
+[49] compiler_4.2.0    jquerylib_0.1.4   rlang_1.1.1       grid_4.2.0       
+[53] iterators_1.0.14  rstudioapi_0.15.0 htmlwidgets_1.5.4 crosstalk_1.2.0  
+[57] rmarkdown_2.14    gtable_0.3.3      codetools_0.2-18  DBI_1.1.3        
+[61] R6_2.5.1          lubridate_1.8.0   knitr_1.39        fastmap_1.1.1    
+[65] bit_4.0.5         utf8_1.2.3        workflowr_1.7.0   rprojroot_2.0.3  
+[69] stringi_1.7.12    Rcpp_1.0.11       vctrs_0.6.3       dbplyr_2.3.3     
+[73] tidyselect_1.2.0  xfun_0.30        </code></pre>
 </div>
-<div id="genetic-variants-contribute-to-trait-through-ptr-mechanisms"
-class="section level3">
-<h3>Genetic variants contribute to trait through PTR mechanisms</h3>
-<ul>
-<li><a href="learn_ctwas.html">running cTWAS with multiple QTLs from
-Geuvadis LCLs</a></li>
-<li>cTWAS results By Traits
-<ul>
-<li><a href="wbc_m6A_output.html">white blood counts cTWAS
-results</a></li>
-</ul></li>
-</ul>
 </div>
-<div id="m6a-informed-fine-mapping" class="section level3">
-<h3>m6A informed fine-mapping</h3>
-<p><a href="predicted_m6A_QTLs_enrichment_GWAS.html">Are predicted m6A
-QTLs enriched for GWAS signals?</a></p>
-<p><a href="predicted_m6A_QTLs_enrichment_ClinVars.html">Are predicted
-m6A QTLs enriched for ClinVar variants?</a></p>
 </div>
 
 
@@ -731,6 +835,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -763,6 +869,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
