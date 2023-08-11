@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-08-11" />
 
-<title>Identify causal genes with cTWAS</title>
+<title>cTWAS_analysis_for_white_blood_counts</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -37,14 +37,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.22/datatables.js"></script>
-<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
-<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -370,7 +362,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Identify causal genes with cTWAS</h1>
+<h1 class="title toc-ignore">cTWAS_analysis_for_white_blood_counts</h1>
 <h4 class="author">Jing Gu</h4>
 <h4 class="date">2023-08-11</h4>
 
@@ -380,7 +372,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -391,8 +383,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -405,9 +397,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>m6A_in_disease_genetics/</code>
@@ -517,15 +509,49 @@ run.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+~/projects/m6A_in_disease_genetics/code/ctwas/ctwas_config_b37.R
+</td>
+<td style="text-align:left;">
+code/ctwas/ctwas_config_b37.R
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+~/projects/m6A_in_disease_genetics/code/ctwas/qiansheng/locus_plot.R
+</td>
+<td style="text-align:left;">
+code/ctwas/qiansheng/locus_plot.R
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -566,6 +592,7 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .ipynb_checkpoints/
+    Ignored:    analysis/figure/
     Ignored:    analysis/m6A_switch_to_disease_h2g.nb.html
     Ignored:    data/plots/
 
@@ -688,11 +715,11 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/learn_ctwas.Rmd</code>) and HTML
-(<code>docs/learn_ctwas.html</code>) files. If you’ve configured a
-remote Git repository (see <code>?wflow_git_remote</code>), click on the
-hyperlinks in the table below to view the files as they were in that
-past version.
+made to the R Markdown (<code>analysis/wbc_m6A_output_hg19.Rmd</code>)
+and HTML (<code>docs/wbc_m6A_output_hg19.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -721,7 +748,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c94ee10dd04ad7af2c26821e45fa70fd1d133517/analysis/learn_ctwas.Rmd" target="_blank">c94ee10</a>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/d1d6b2a685645cd43947bf5b65765d32d0cd9a2a/analysis/wbc_m6A_output_hg19.Rmd" target="_blank">d1d6b2a</a>
 </td>
 <td>
 Jing Gu
@@ -736,19 +763,20 @@ wflow_publish(c("analysis/wbc_m6A_output_hg19.Rmd",
 </tr>
 <tr>
 <td>
-html
+Rmd
 </td>
 <td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/170a3106ef5ffa14fc1bb7d602feaa5da8b63e30/docs/learn_ctwas.html" target="_blank">170a310</a>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c94ee10dd04ad7af2c26821e45fa70fd1d133517/analysis/wbc_m6A_output_hg19.Rmd" target="_blank">c94ee10</a>
 </td>
 <td>
 Jing Gu
 </td>
 <td>
-2023-08-10
+2023-08-11
 </td>
 <td>
-gene-association with ctwas
+wflow_publish(c("analysis/wbc_m6A_output_hg19.Rmd",
+"analysis/index.Rmd",
 </td>
 </tr>
 </tbody>
@@ -758,75 +786,305 @@ gene-association with ctwas
 </div>
 </div>
 </div>
-<div id="method-overall" class="section level2">
-<h2>Method overall</h2>
-<p>Causal TWAS is a method that adjusts for confounders that drive
-variants-trait associations to identify causal genes. The confounders
-could be genetic variants in LD with the true causal one regulating
-genes that do not affect traits, or variants have direct effects on
-traits not through altering gene expression. The general way to model
-this problem is as follows: <span class="math display">\[
-Y = \sum_k\sum_{j\in M_k}\beta_jX_j + \epsilon, \text{ } \epsilon \sim
-N(0, \sigma^2)
-\]</span> where variants are grouped into K categories and the effect
-size for each category can be modeled by a spike and slab normal
-distribution. The estimation of parameters were done using
-Expectation-maximum algorithm, and finally the posterior causal
-probability for individual variant can be calculated.</p>
-<p>In EM algorithm, the updated rules for <span
-class="math inline">\(\pi_k^{(t+1)}\)</span> is average PIPs for each K
-group and <span class="math inline">\(\sigma^{2,(t+1)}_{t}\)</span> is
-sum of PIPs weighted by second moment of posterior effect size.</p>
-<p>The calculation of PIPs and second moment is by analyzing each block
-one at a time under the single effect approximation using SuSiE.</p>
-<p>Assuming each single block explains a minimal variance of y, so <span
-class="math inline">\(\sigma = 1\)</span>.</p>
+<div id="load-ctwas-results" class="section level2">
+<h2>Load ctwas results</h2>
+<pre class="r"><code># top 1 method
+res &lt;- impute_expr_z(z_snp, weight = weight, ld_R_dir = ld_R_dir,
+                         method = NULL, outputdir = outputdir, outname = outname.e,
+                         harmonize_z = T, harmonize_wgt = T, scale_by_ld_variance=F,
+                         strand_ambig_action_z = &quot;recover&quot;, 
+                         recover_strand_ambig_wgt = T
+# lasso/elastic-net method
+res &lt;- impute_expr_z(z_snp, weight = weight, ld_R_dir = ld_R_dir,
+                         method = NULL, outputdir = outputdir, outname = outname.e,
+                         harmonize_z = T, harmonize_wgt = T, scale_by_ld_variance=F,
+                         strand_ambig_action_z = &quot;none&quot;, 
+                         recover_strand_ambig_wgt = F</code></pre>
+<p>GWAS: UK Biobank GWAS summary statistics - European individuals</p>
+<p>Weights: FUSION weights using top1, lasso, or elastic-net models were
+converted into PredictDB format and were not needed to do scaling when
+running ctwas.</p>
 </div>
-<div id="setting-and-functions" class="section level2">
-<h2>Setting and functions</h2>
+<div id="check-convergence-of-parameters" class="section level2">
+<h2>Check convergence of parameters</h2>
+<p><strong>cTWAS analysis on m6A alone</strong></p>
+<pre><code>[1] &quot;Check convergence for the top1 model:&quot;
+[1] &quot;Table of group size:&quot;
+    SNP    gene 
+8713250     888 
+                                SNP      gene
+estimated_group_prior     2.481e-04 1.227e-02
+estimated_group_prior_var 1.920e+01 2.631e+01
+estimated_group_pve       1.184e-01 8.178e-04
+attributable_group_pve    9.931e-01 6.858e-03
+[1] &quot;Check convergence for the lasso model:&quot;
+[1] &quot;Table of group size:&quot;
+    SNP    gene 
+8713250     912 
+                                SNP      gene
+estimated_group_prior     2.414e-04 1.016e-02
+estimated_group_prior_var 1.898e+01 3.699e+01
+estimated_group_pve       1.139e-01 9.778e-04
+attributable_group_pve    9.915e-01 8.513e-03</code></pre>
+<pre><code>$top1</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+$lasso</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-5-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><strong>Joint analysis of expression, splicing and m6A</strong></p>
+<pre><code>[1] &quot;Check convergence for the top1 model when jointly analyzing expression, splicing and m6A:&quot;
+[1] &quot;Table of group size before/after matching with UKBB SNPs:&quot;
+                          SNP      eQTL     sQTL   m6AQTL
+prior_group_size    9.324e+06 2005.0000 2191.000 918.0000
+group_size          8.713e+06 1928.0000 2123.000 888.0000
+percent_of_overlaps 9.345e-01    0.9616    0.969   0.9673
+                                SNP      eQTL      sQTL    m6AQTL
+estimated_group_prior     2.406e-04 8.895e-03  0.012934 1.236e-02
+estimated_group_prior_var 1.858e+01 1.683e+01 36.589120 2.554e+01
+estimated_group_pve       1.112e-01 8.236e-04  0.002867 7.999e-04
+attributable_group_pve    9.612e-01 7.120e-03  0.024783 6.916e-03</code></pre>
+<pre><code>$top1</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="load-twas-weights" class="section level2">
-<h2>load TWAS weights</h2>
-<p>Todo: re-run TWAS for a subset of GEUVADIS LCL samples that match
-with 60 LCLs in our m6A-QTL study</p>
+<div id="ctwas-results-from-individual-analysis-on-m6a"
+class="section level2">
+<h2>cTWAS results from individual analysis on m6A</h2>
+<p><strong>Lasso model</strong></p>
+<div id="top-m6a-modification-pip" class="section level3">
+<h3>Top m6A modification pip</h3>
+<pre><code>  genename region_tag susie_pip       z
+1 SLC9A3R1      17_42    0.9473  -7.630
+2  ZKSCAN5       7_61    0.7976   7.112
+3    ADCY7      16_27    0.7817   4.382
+4    TRIT1       1_25    0.7516   5.554
+5  THEMIS2       1_19    0.7034   6.243
+6   BTN3A3       6_20    0.6855 -13.445
+7  WAC-AS1      10_20    0.6102  11.178</code></pre>
+<p><strong>Summing up PIPs for m6A peaks located in the same
+gene</strong></p>
+<p>Top m6A PIPs by genes</p>
+<pre><code># A tibble: 7 × 2
+  genename total_susie_pip
+  &lt;chr&gt;              &lt;dbl&gt;
+1 SLC9A3R1           0.947
+2 ZKSCAN5            0.798
+3 ADCY7              0.782
+4 TRIT1              0.752
+5 THEMIS2            0.703
+6 BTN3A3             0.686
+7 WAC-AS1            0.615</code></pre>
 </div>
-<div id="generate-prediction-db-weights" class="section level2">
-<h2>generate prediction DB weights</h2>
-<div id="add-rsids-varids" class="section level3">
-<h3>Add rsIDs, varIDs</h3>
+</div>
+<div id="top-expressionsplicingm6a-units" class="section level2">
+<h2>Top expression/splicing/m6A units</h2>
+<p>For m6A or splicing QTLs, they are assigned to the nearest genes (m6A
+needs to be confirmed with Kevin).</p>
+<p><strong>Top SNPs or genes with PIP &gt; 0.6</strong></p>
+<pre><code>$eQTL
+     genename susie_pip group region_tag
+1913  CSNK1G1    0.9587  eQTL      15_29
+1916 RAPGEFL1    0.7362  eQTL      17_23
+132    NDUFS2    0.6213  eQTL       1_81
+
+$m6AQTL
+     genename susie_pip  group region_tag
+4938 SLC9A3R1    0.9539 m6AQTL      17_42
+4922  ZKSCAN5    0.7863 m6AQTL       7_61
+4067  THEMIS2    0.7816 m6AQTL       1_19
+4312    TRAM2    0.7091 m6AQTL       6_39
+
+$sQTL
+     genename susie_pip group region_tag
+4000   RNF181    1.0000  sQTL       2_54
+4011    MYO1G    0.9932  sQTL       7_33
+2385    GSK3B    0.7962  sQTL       3_74
+4033   PDLIM1    0.7387  sQTL      10_61
+3788   ZNF428    0.6957  sQTL      19_30</code></pre>
+<div id="top-m6a-modification-pip-1" class="section level3">
+<h3>Top m6A modification pip</h3>
+<p>ZKSCAN5: RNA Polymerase II Cis-Regulatory Region Sequence-Specific
+DNA Binding (<a href="GO:0000978" class="uri">GO:0000978</a>). THEMIS2
+is involved in the biological process T Cell Receptor Signaling Pathway
+(<a href="GO:0050852" class="uri">GO:0050852</a>). BANF: DNA binding
+factor|Regulation Of Innate Immune Response (<a href="GO:0045088"
+class="uri">GO:0045088</a>). TRIT1 has the molecular function of
+Catalytic Activity, Acting On A tRNA (<a href="GO:0140101"
+class="uri">GO:0140101</a>). TRIT1 is involved in the biological process
+RNA Modification (<a href="GO:0009451" class="uri">GO:0009451</a>).
+S1PR2 is involved in the biological process Regulation Of Cell
+Population Proliferation (<a href="GO:0042127"
+class="uri">GO:0042127</a>). WAC has the molecular function of RNA
+Polymerase II Complex Binding (<a href="GO:0000993"
+class="uri">GO:0000993</a>). CD320 is involved in the biological process
+Regulation Of B Cell Proliferation (<a href="GO:0030888"
+class="uri">GO:0030888</a>).</p>
+<pre><code>   genename region_tag susie_pip      z
+1  SLC9A3R1      17_42    0.9539 -7.630
+2   ZKSCAN5       7_61    0.7863  7.158
+3   THEMIS2       1_19    0.7816  6.277
+4     TRAM2       6_39    0.7091  5.233
+5     BANF1      11_36    0.5786  6.174
+6     TRIT1       1_25    0.5278  5.298
+7     S1PR2       19_9    0.5220  9.939
+8   WAC-AS1      10_20    0.4945 11.169
+9    SQSTM1      5_108    0.4934 -4.857
+10    CD320       19_8    0.3627 -4.062</code></pre>
+<p><strong>Summing up PIPs for m6A peaks located in the same
+gene</strong></p>
+<p>Top 10 m6A PIPs by genes</p>
+<pre><code># A tibble: 800 × 2
+   genename total_susie_pip
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 SLC9A3R1           0.954
+ 2 ZKSCAN5            0.786
+ 3 THEMIS2            0.782
+ 4 TRAM2              0.709
+ 5 BANF1              0.579
+ 6 TRIT1              0.528
+ 7 S1PR2              0.522
+ 8 WAC-AS1            0.513
+ 9 SQSTM1             0.493
+10 CD320              0.379
+# ℹ 790 more rows</code></pre>
+</div>
+<div id="top-splicing-pips" class="section level3">
+<h3>Top splicing PIPs</h3>
+<p>Some loci contain variants in the same credible set but having
+opposite z scores. For instance, the predicted splicing levels of two
+introns of CNN2 based on the same variant (position=1038445) have
+opposite associations with traits. Is this variant more likely to affect
+traits by altering the splicing levels of both transcripts, rather than
+one of them since they have equal PIP?</p>
+<pre><code>                    peak_id   genename       pos region_tag susie_pip       z
+1    chr2:85823772-85824227     RNF181  85818886       2_54    1.0000   5.009
+2    chr7:45009474-45009639      MYO1G  45009341       7_33    0.9932 -11.719
+3  chr3:119582452-119624602      GSK3B 119542297       3_74    0.7962   5.622
+4   chr10:97007123-97023621     PDLIM1  97023552      10_61    0.7387  -7.331
+5   chr19:44112259-44118381     ZNF428  44146930      19_30    0.6957  -4.929
+6  chr5:122111457-122130961       SNX2 122088686       5_74    0.5628  -6.687
+7   chr11:67120548-67124214 AP003419.1  67185596      11_37    0.5416  -4.432
+8    chr6:29693820-29694660      HLA-F  29688501       6_23    0.5000 -16.046
+9    chr6:29694781-29695734      HLA-F  29688501       6_23    0.5000 -16.046
+10  chr11:47761655-47765505      FNBP4  47863119      11_29    0.4878  10.101
+11  chr19:13885521-13886291   C19orf53  13942221      19_11    0.4797   6.500
+12  chr19:13886427-13888866   C19orf53  13942221      19_11    0.4797   6.500
+13   chr7:72986365-72987174       TBL2  72989390       7_47    0.4741   6.870
+14 chr1:224544695-224548197      CNIH4 224630695      1_116    0.4698   8.830
+15    chr19:1036561-1037624       CNN2   1038445       19_2    0.4643   6.170
+16    chr19:1036999-1037624       CNN2   1038445       19_2    0.4643  -6.170
+17  chr17:47288203-47295101       ABI3  47287067      17_28    0.4626  -4.041
+18  chr19:49458856-49459455        BAX  49459104      19_34    0.4605  -4.118
+19     chr7:5569315-5570155       ACTB   5556807        7_7    0.4288  -4.696
+20  chr16:67690548-67690704    CARMIL2  67780829      16_36    0.3912  -3.955</code></pre>
+<p><strong>Summing up PIPs for spliced introns located in the same
+gene</strong></p>
+<p>Top 10 splicing PIPs by genes</p>
+<pre><code># A tibble: 10 × 2
+   genename total_susie_pip
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 HLA-F              1.01 
+ 2 RNF181             1.00 
+ 3 MYO1G              0.993
+ 4 C19orf53           0.959
+ 5 CNN2               0.929
+ 6 CD46               0.904
+ 7 HNRNPK             0.811
+ 8 GSK3B              0.796
+ 9 ZNF428             0.748
+10 PDLIM1             0.739</code></pre>
+</div>
+<div id="top-genes-by-combined-pip" class="section level3">
+<h3>Top genes by combined PIP</h3>
+<pre><code>     genename combined_pip expression_pip splicing_pip   m6A_pip region_tag
+1456    HLA-F        1.006      6.563e-06       1.0057 1.512e-05       6_23
+2437   RNF181        1.000      0.000e+00       1.0000 0.000e+00       2_54
+1891    MYO1G        0.993      0.000e+00       0.9932 0.000e+00       7_33
+349  C19orf53        0.982      0.000e+00       0.9594 2.284e-02      19_11
+605   CSNK1G1        0.969      9.587e-01       0.0000 1.015e-02      15_29
+2656 SLC9A3R1        0.954      0.000e+00       0.0000 9.539e-01      17_42
+1468   HNRNPK        0.950      0.000e+00       0.8109 1.388e-01       9_41
+548      CNN2        0.929      0.000e+00       0.9287 0.000e+00       19_2
+454      CD46        0.904      0.000e+00       0.9044 0.000e+00      1_107
+1392    GSK3B        0.796      0.000e+00       0.7962 0.000e+00       3_74
+3218  ZKSCAN5        0.786      0.000e+00       0.0000 7.863e-01       7_61
+2868  THEMIS2        0.782      0.000e+00       0.0000 7.816e-01       1_19
+2986    TRAM2        0.755      4.565e-02       0.0000 7.091e-01       6_39
+3252   ZNF428        0.748      0.000e+00       0.7475 0.000e+00      19_30
+2114   PDLIM1        0.739      0.000e+00       0.7387 0.000e+00      10_61
+2360 RAPGEFL1        0.736      7.362e-01       0.0000 0.000e+00      17_23
+285    BCL2A1        0.706      0.000e+00       0.7064 0.000e+00      15_37
+547     CNIH4        0.690      0.000e+00       0.6904 0.000e+00      1_116
+277       BAX        0.653      0.000e+00       0.6532 0.000e+00      19_34
+1944   NDUFS2        0.621      6.213e-01       0.0000 0.000e+00       1_81</code></pre>
+<!-- ## GO enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=FALSE, message=FALSE, eval=FALSE} -->
+<!-- #GO enrichment analysis -->
+<!-- library(enrichR) -->
+<!-- dbs <- c("GO_Biological_Process_2021", "GO_Cellular_Component_2021", "GO_Molecular_Function_2021") -->
+<!-- genes <- df_gene$gene_id[df_gene$combined_pip>0.8] -->
+<!-- ``` -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   GO_enrichment <- enrichr(genes, dbs) -->
+<!--   for (db in dbs){ -->
+<!--     print(db) -->
+<!--     df <- GO_enrichment[[db]] -->
+<!--     print(plotEnrich(GO_enrichment[[db]])) -->
+<!--     df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")] -->
+<!--     print(df) -->
+<!--   } -->
+<!-- } -->
+<!-- ``` -->
+<!-- ## DisGeNET enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #library(disgenet2r) -->
+<!--   disgenet_api_key <- get_disgenet_api_key( -->
+<!--                     email = "wesleycrouse@gmail.com",  -->
+<!--                     password = "uchicago1" ) -->
+<!--   Sys.setenv(DISGENET_API_KEY= disgenet_api_key) -->
+<!--   res_enrich <-disease_enrichment(entities=genes, vocabulary = "HGNC", -->
+<!--                                database = "CURATED" ) -->
+<!--   df <- res_enrich@qresult[1:10, c("Description", "FDR", "Ratio",  "BgRatio")] -->
+<!--   print(df) -->
+<!-- } -->
+<!-- ``` -->
+<!-- ## WebGestalt enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #WebGestalt enrichment -->
+<!--   library(WebGestaltR) -->
+<!--   background <- ctwas_gene_res$genename -->
+<!--   #listGeneSet() -->
+<!--   databases <- c("pathway_KEGG", "disease_GLAD4U", "disease_OMIM") -->
+<!--   enrichResult <- WebGestaltR(enrichMethod="ORA", organism="hsapiens", -->
+<!--                               interestGene=genes, referenceGene=background, -->
+<!--                               enrichDatabase=databases, interestGeneType="genesymbol", -->
+<!--                               referenceGeneType="genesymbol", isOutput=F) -->
+<!--   print(enrichResult[,c("description", "size", "overlap", "FDR", "database", "userId")]) -->
+<!-- } -->
+<!-- ``` -->
+<pre><code>Loading required package: grid</code></pre>
+<pre><code>Warning: replacing previous import &#39;utils::download.file&#39; by
+&#39;restfulr::download.file&#39; when loading &#39;rtracklayer&#39;</code></pre>
 </div>
 </div>
-<div id="test-ctwas-on-example-data" class="section level2">
-<h2>test cTWAS on example data</h2>
-</div>
-<div id="procedure-qcs" class="section level2">
-<h2>Procedure QCs</h2>
-<div
-id="the-extent-of-selected-qtls-using-yri-samples-missing-in-ukbb-variants"
-class="section level3">
-<h3>The extent of selected QTLs using YRI samples missing in UKBB
-variants</h3>
-<p>Due to LD mismatch between African and European ancestry, we would
-like to estimate the fraction of top QTLs identified from individuals of
-African ancestry that are missing from UKBB variants. The table below
-shows less than 4% of selected SNPs with YRI samples are not found in
-those with UKBB samples across three models for expression, splicing or
-m6A QTL data.</p>
-<pre><code>[1] &quot;eQTL&quot; &quot;962&quot;  &quot;920&quot; 
-[1] &quot;eQTL&quot; &quot;5835&quot; &quot;5671&quot;
-[1] &quot;eQTL&quot;  &quot;16601&quot; &quot;16153&quot;
-[1] &quot;sQTL&quot; &quot;1310&quot; &quot;1271&quot;
-[1] &quot;sQTL&quot; &quot;6380&quot; &quot;6207&quot;
-[1] &quot;sQTL&quot;  &quot;17023&quot; &quot;16597&quot;
-[1] &quot;m6aQTL&quot; &quot;478&quot;    &quot;467&quot;   
-[1] &quot;m6aQTL&quot; &quot;2514&quot;   &quot;2440&quot;  
-[1] &quot;m6aQTL&quot; &quot;6357&quot;   &quot;6176&quot;  </code></pre>
-<pre><code>  feature top1 lasso enet
-1    eQTL 0.04  0.03 0.03
-2    sQTL 0.03  0.03 0.03
-3  m6aQTL 0.02  0.03 0.03</code></pre>
-<div id="htmlwidget-e89685ee235ec01b7f0d" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e89685ee235ec01b7f0d">{"x":{"filter":"none","vertical":false,"data":[["eQTL","sQTL","m6aQTL"],["0.04","0.03","0.02"],["0.03","0.03","0.03"],["0.03","0.03","0.03"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>feature<\/th>\n      <th>top1<\/th>\n      <th>lasso<\/th>\n      <th>enet<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"keys":true,"pageLength":10,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="locus-plots-for-specific-examples" class="section level2">
+<h2>Locus plots for specific examples</h2>
+<pre><code>     genename combined_pip expression_pip splicing_pip m6A_pip region_tag
+1944   NDUFS2        0.621         0.6213            0       0       1_81</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>    genename combined_pip expression_pip splicing_pip m6A_pip region_tag
+605  CSNK1G1        0.969         0.9587            0 0.01015      15_29</code></pre>
+<pre><code>Warning in asMethod(object): sparse-&gt;dense coercion: allocating vector of size
+1.1 GiB</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>     genename combined_pip expression_pip splicing_pip m6A_pip region_tag
+2868  THEMIS2        0.782              0            0  0.7816       1_19</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>     genename combined_pip expression_pip splicing_pip m6A_pip region_tag
+3218  ZKSCAN5        0.786              0            0  0.7863       7_61</code></pre>
+<p><img src="figure/wbc_m6A_output_hg19.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -849,36 +1107,80 @@ locale:
 [10] LC_TELEPHONE=C       LC_MEASUREMENT=C     LC_IDENTIFICATION=C 
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] grid      stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
 
 other attached packages:
- [1] forcats_0.5.1     stringr_1.5.0     purrr_1.0.1       readr_2.1.4      
- [5] tidyr_1.3.0       tibble_3.2.1      ggplot2_3.4.2     tidyverse_1.3.1  
- [9] RSQLite_2.3.1     data.table_1.14.8 dplyr_1.1.2       ctwas_0.1.38     
-[13] workflowr_1.7.0  
+ [1] Gviz_1.40.1          cowplot_1.1.1        ggplot2_3.4.2       
+ [4] GenomicRanges_1.48.0 GenomeInfoDb_1.32.2  IRanges_2.30.1      
+ [7] S4Vectors_0.34.0     BiocGenerics_0.42.0  ctwas_0.1.38        
+[10] dplyr_1.1.2          workflowr_1.7.0     
 
 loaded via a namespace (and not attached):
- [1] httr_1.4.6        sass_0.4.1        bit64_4.0.5       jsonlite_1.8.7   
- [5] foreach_1.5.2     pgenlibr_0.3.6    logging_0.10-108  modelr_0.1.8     
- [9] bslib_0.3.1       getPass_0.2-2     blob_1.2.4        cellranger_1.1.0 
-[13] yaml_2.3.5        pillar_1.9.0      backports_1.4.1   lattice_0.20-45  
-[17] glue_1.6.2        digest_0.6.33     promises_1.2.0.1  rvest_1.0.2      
-[21] colorspace_2.1-0  htmltools_0.5.2   httpuv_1.6.5      Matrix_1.6-0     
-[25] pkgconfig_2.0.3   broom_0.8.0       haven_2.5.0       scales_1.2.1     
-[29] processx_3.8.0    whisker_0.4       later_1.3.0       tzdb_0.4.0       
-[33] git2r_0.30.1      generics_0.1.3    DT_0.22           cachem_1.0.8     
-[37] withr_2.5.0       cli_3.6.1         magrittr_2.0.3    crayon_1.5.2     
-[41] readxl_1.4.3      memoise_2.0.1     evaluate_0.15     ps_1.7.0         
-[45] fs_1.6.3          fansi_1.0.4       xml2_1.3.3        tools_4.2.0      
-[49] hms_1.1.3         lifecycle_1.0.3   munsell_0.5.0     reprex_2.0.1     
-[53] callr_3.7.3       compiler_4.2.0    jquerylib_0.1.4   rlang_1.1.1      
-[57] grid_4.2.0        iterators_1.0.14  rstudioapi_0.15.0 htmlwidgets_1.5.4
-[61] crosstalk_1.2.0   rmarkdown_2.14    gtable_0.3.3      codetools_0.2-18 
-[65] DBI_1.1.3         R6_2.5.1          lubridate_1.8.0   knitr_1.39       
-[69] fastmap_1.1.1     bit_4.0.5         utf8_1.2.3        rprojroot_2.0.3  
-[73] stringi_1.7.12    Rcpp_1.0.11       vctrs_0.6.3       dbplyr_2.3.3     
-[77] tidyselect_1.2.0  xfun_0.30        </code></pre>
-</div>
+  [1] colorspace_2.1-0            deldir_1.0-6               
+  [3] rjson_0.2.21                rprojroot_2.0.3            
+  [5] biovizBase_1.44.0           htmlTable_2.4.0            
+  [7] XVector_0.36.0              base64enc_0.1-3            
+  [9] fs_1.6.3                    dichromat_2.0-0.1          
+ [11] rstudioapi_0.15.0           farver_2.1.1               
+ [13] bit64_4.0.5                 AnnotationDbi_1.58.0       
+ [15] fansi_1.0.4                 xml2_1.3.3                 
+ [17] codetools_0.2-18            logging_0.10-108           
+ [19] cachem_1.0.8                knitr_1.39                 
+ [21] Formula_1.2-4               jsonlite_1.8.7             
+ [23] Rsamtools_2.12.0            cluster_2.1.3              
+ [25] dbplyr_2.3.3                png_0.1-7                  
+ [27] compiler_4.2.0              httr_1.4.6                 
+ [29] backports_1.4.1             lazyeval_0.2.2             
+ [31] Matrix_1.6-0                fastmap_1.1.1              
+ [33] cli_3.6.1                   later_1.3.0                
+ [35] htmltools_0.5.2             prettyunits_1.1.1          
+ [37] tools_4.2.0                 gtable_0.3.3               
+ [39] glue_1.6.2                  GenomeInfoDbData_1.2.8     
+ [41] rappdirs_0.3.3              Rcpp_1.0.11                
+ [43] Biobase_2.56.0              jquerylib_0.1.4            
+ [45] vctrs_0.6.3                 Biostrings_2.64.0          
+ [47] rtracklayer_1.56.0          iterators_1.0.14           
+ [49] xfun_0.30                   stringr_1.5.0              
+ [51] ps_1.7.0                    lifecycle_1.0.3            
+ [53] ensembldb_2.20.2            restfulr_0.0.14            
+ [55] XML_3.99-0.14               getPass_0.2-2              
+ [57] zlibbioc_1.42.0             scales_1.2.1               
+ [59] BSgenome_1.64.0             VariantAnnotation_1.42.1   
+ [61] ProtGenerics_1.28.0         hms_1.1.3                  
+ [63] promises_1.2.0.1            MatrixGenerics_1.8.0       
+ [65] parallel_4.2.0              SummarizedExperiment_1.26.1
+ [67] AnnotationFilter_1.20.0     RColorBrewer_1.1-3         
+ [69] yaml_2.3.5                  curl_5.0.1                 
+ [71] memoise_2.0.1               gridExtra_2.3              
+ [73] sass_0.4.1                  biomaRt_2.52.0             
+ [75] rpart_4.1.16                latticeExtra_0.6-30        
+ [77] stringi_1.7.12              RSQLite_2.3.1              
+ [79] highr_0.9                   BiocIO_1.6.0               
+ [81] foreach_1.5.2               checkmate_2.1.0            
+ [83] GenomicFeatures_1.48.4      filelock_1.0.2             
+ [85] BiocParallel_1.30.3         rlang_1.1.1                
+ [87] pkgconfig_2.0.3             matrixStats_0.62.0         
+ [89] bitops_1.0-7                evaluate_0.15              
+ [91] lattice_0.20-45             htmlwidgets_1.5.4          
+ [93] GenomicAlignments_1.32.0    labeling_0.4.2             
+ [95] bit_4.0.5                   processx_3.8.0             
+ [97] tidyselect_1.2.0            magrittr_2.0.3             
+ [99] R6_2.5.1                    generics_0.1.3             
+[101] Hmisc_5.1-0                 DelayedArray_0.22.0        
+[103] DBI_1.1.3                   pgenlibr_0.3.6             
+[105] pillar_1.9.0                whisker_0.4                
+[107] foreign_0.8-82              withr_2.5.0                
+[109] KEGGREST_1.36.2             RCurl_1.98-1.7             
+[111] nnet_7.3-17                 tibble_3.2.1               
+[113] crayon_1.5.2                interp_1.1-4               
+[115] utf8_1.2.3                  BiocFileCache_2.4.0        
+[117] rmarkdown_2.14              jpeg_0.1-10                
+[119] progress_1.2.2              data.table_1.14.8          
+[121] blob_1.2.4                  callr_3.7.3                
+[123] git2r_0.30.1                digest_0.6.33              
+[125] httpuv_1.6.5                munsell_0.5.0              
+[127] bslib_0.3.1                </code></pre>
 </div>
 </div>
 

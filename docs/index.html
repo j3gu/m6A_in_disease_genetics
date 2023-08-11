@@ -292,7 +292,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -303,8 +303,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -313,13 +313,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-08-10
+<strong>Last updated:</strong> 2023-08-11
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>m6A_in_disease_genetics/</code>
@@ -342,36 +342,33 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstreec230e7682a6aaf0651dcdfcaa48b36c5c983327ctargetblankc230e76a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstreed1d6b2a685645cd43947bf5b65765d32d0cd9a2atargetblankd1d6b2aa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/c230e7682a6aaf0651dcdfcaa48b36c5c983327c" target="_blank">c230e76</a>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/d1d6b2a685645cd43947bf5b65765d32d0cd9a2a" target="_blank">d1d6b2a</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstreec230e7682a6aaf0651dcdfcaa48b36c5c983327ctargetblankc230e76a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstreed1d6b2a685645cd43947bf5b65765d32d0cd9a2atargetblankd1d6b2aa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -381,7 +378,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/c230e7682a6aaf0651dcdfcaa48b36c5c983327c" target="_blank">c230e76</a>.
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/d1d6b2a685645cd43947bf5b65765d32d0cd9a2a" target="_blank">d1d6b2a</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -408,13 +405,12 @@ Untracked files:
     Untracked:  analysis/LDL_m6A_output.Rmd
     Untracked:  analysis/RA_m6A_output.Rmd
     Untracked:  analysis/WhiteBlood_WholeBlood_E_M.Rmd
-    Untracked:  analysis/learn_ctwas.Rmd
     Untracked:  analysis/lymph_m6A_output.Rmd
+    Untracked:  analysis/lymph_m6A_output_hg19.Rmd
     Untracked:  analysis/pre_weights_m6AQTL.txt
     Untracked:  analysis/rbc_E_S_m6A_output.Rmd
     Untracked:  analysis/rbc_m6A_output.Rmd
     Untracked:  analysis/wbc_E_S_m6A_output.Rmd
-    Untracked:  analysis/wbc_m6A_output.Rmd
     Untracked:  code/.ipynb_checkpoints/
     Untracked:  code/all_m6a_sites_with_paired_cisNATs_summary.csv
     Untracked:  code/check_double_strand.ipynb
@@ -501,8 +497,8 @@ Untracked files:
     Untracked:  twas_genes_PP4_0.3_immune_traits_trackplots.pdf
 
 Unstaged changes:
-    Modified:   analysis/index.Rmd
     Modified:   analysis/m6A_switch_to_disease_h2g.Rmd
+    Modified:   analysis/wbc_m6A_output.Rmd
 
 </code></pre>
 <p>
@@ -547,6 +543,41 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c94ee10dd04ad7af2c26821e45fa70fd1d133517/analysis/index.Rmd" target="_blank">c94ee10</a>
+</td>
+<td>
+Jing Gu
+</td>
+<td>
+2023-08-11
+</td>
+<td>
+wflow_publish(c("analysis/wbc_m6A_output_hg19.Rmd",
+"analysis/index.Rmd",
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/170a3106ef5ffa14fc1bb7d602feaa5da8b63e30/docs/index.html" target="_blank">170a310</a>
+</td>
+<td>
+Jing Gu
+</td>
+<td>
+2023-08-10
+</td>
+<td>
+gene-association with ctwas
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -702,7 +733,7 @@ class="section level3">
 Geuvadis LCLs</a></li>
 <li>cTWAS results By Traits
 <ul>
-<li><a href="wbc_m6A_output.html">white blood counts cTWAS
+<li><a href="wbc_m6A_output_hg19.html">white blood counts cTWAS
 results</a></li>
 </ul></li>
 </ul>
