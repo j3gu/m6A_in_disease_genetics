@@ -512,73 +512,74 @@ df_gene <- df_gene[order(-df_gene$combined_pip),]
 head(df_gene, max(sum(df_gene$combined_pip>0.8), 20))
 ```
 
-## GO enrichment analysis for genes with PIP>0.5
+<!-- ## GO enrichment analysis for genes with PIP>0.5 -->
 
-```{r echo=FALSE, message=FALSE, eval=FALSE}
-#GO enrichment analysis
-library(enrichR)
+<!-- ```{r echo=FALSE, message=FALSE, eval=FALSE} -->
+<!-- #GO enrichment analysis -->
+<!-- library(enrichR) -->
 
-dbs <- c("GO_Biological_Process_2021", "GO_Cellular_Component_2021", "GO_Molecular_Function_2021")
-genes <- df_gene$gene_id[df_gene$combined_pip>0.8]
-```
+<!-- dbs <- c("GO_Biological_Process_2021", "GO_Cellular_Component_2021", "GO_Molecular_Function_2021") -->
+<!-- genes <- df_gene$gene_id[df_gene$combined_pip>0.8] -->
+<!-- ``` -->
 
-```{r echo=F, message=FALSE, eval=FALSE}
-if (length(genes)>0){
-  GO_enrichment <- enrichr(genes, dbs)
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   GO_enrichment <- enrichr(genes, dbs) -->
 
-  for (db in dbs){
-    print(db)
-    df <- GO_enrichment[[db]]
-    print(plotEnrich(GO_enrichment[[db]]))
-    df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")]
-    print(df)
-  }
-}
+<!--   for (db in dbs){ -->
+<!--     print(db) -->
+<!--     df <- GO_enrichment[[db]] -->
+<!--     print(plotEnrich(GO_enrichment[[db]])) -->
+<!--     df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")] -->
+<!--     print(df) -->
+<!--   } -->
+<!-- } -->
 
-```
+<!-- ``` -->
 
-## DisGeNET enrichment analysis for genes with PIP>0.5
-```{r echo=F, message=FALSE, eval=FALSE}
-if (length(genes)>0){
-  #library(disgenet2r)
-  
-  disgenet_api_key <- get_disgenet_api_key(
-                    email = "wesleycrouse@gmail.com", 
-                    password = "uchicago1" )
-  
-  Sys.setenv(DISGENET_API_KEY= disgenet_api_key)
-  
-  res_enrich <-disease_enrichment(entities=genes, vocabulary = "HGNC",
-                               database = "CURATED" )
-  
-  df <- res_enrich@qresult[1:10, c("Description", "FDR", "Ratio",  "BgRatio")]
-  print(df)
-}
+<!-- ## DisGeNET enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #library(disgenet2r) -->
 
-```
+<!--   disgenet_api_key <- get_disgenet_api_key( -->
+<!--                     email = "wesleycrouse@gmail.com",  -->
+<!--                     password = "uchicago1" ) -->
 
-## WebGestalt enrichment analysis for genes with PIP>0.5
-```{r echo=F, message=FALSE, eval=FALSE}
-if (length(genes)>0){
-  #WebGestalt enrichment
-  library(WebGestaltR)
-  
-  background <- ctwas_gene_res$genename
-  
-  #listGeneSet()
-  databases <- c("pathway_KEGG", "disease_GLAD4U", "disease_OMIM")
-  
-  enrichResult <- WebGestaltR(enrichMethod="ORA", organism="hsapiens",
-                              interestGene=genes, referenceGene=background,
-                              enrichDatabase=databases, interestGeneType="genesymbol",
-                              referenceGeneType="genesymbol", isOutput=F)
-  print(enrichResult[,c("description", "size", "overlap", "FDR", "database", "userId")])
-}
+<!--   Sys.setenv(DISGENET_API_KEY= disgenet_api_key) -->
 
-```
+<!--   res_enrich <-disease_enrichment(entities=genes, vocabulary = "HGNC", -->
+<!--                                database = "CURATED" ) -->
+
+<!--   df <- res_enrich@qresult[1:10, c("Description", "FDR", "Ratio",  "BgRatio")] -->
+<!--   print(df) -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ## WebGestalt enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #WebGestalt enrichment -->
+<!--   library(WebGestaltR) -->
+
+<!--   background <- ctwas_gene_res$genename -->
+
+<!--   #listGeneSet() -->
+<!--   databases <- c("pathway_KEGG", "disease_GLAD4U", "disease_OMIM") -->
+
+<!--   enrichResult <- WebGestaltR(enrichMethod="ORA", organism="hsapiens", -->
+<!--                               interestGene=genes, referenceGene=background, -->
+<!--                               enrichDatabase=databases, interestGeneType="genesymbol", -->
+<!--                               referenceGeneType="genesymbol", isOutput=F) -->
+<!--   print(enrichResult[,c("description", "size", "overlap", "FDR", "database", "userId")]) -->
+<!-- } -->
+
+<!-- ``` -->
 
 
 ```{r echo=FALSE}
+alpha=0.5
 source("~/projects/m6A_in_disease_genetics/code/ctwas/qiansheng/locus_plot.R")
 ```
 
