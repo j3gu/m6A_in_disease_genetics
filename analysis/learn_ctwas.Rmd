@@ -1,0 +1,187 @@
+---
+title: "Identify causal genes with cTWAS"
+author: "Jing Gu"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+---
+## Method overall
+Causal TWAS is a method that adjusts for confounders that drive variants-trait associations to identify causal genes. The confounders could be genetic variants in LD with the true causal one regulating genes that do not affect traits, or variants have direct effects on traits not through altering gene expression. The general way to model this problem is as follows:
+$$
+Y = \sum_k\sum_{j\in M_k}\beta_jX_j + \epsilon, \text{ } \epsilon \sim N(0, \sigma^2)
+$$
+where variants are grouped into K categories and the effect size for each category can be modeled by a spike and slab normal distribution. The estimation of parameters were done using Expectation-maximum algorithm, and finally the posterior causal probability for individual variant can be calculated. 
+
+In EM algorithm, the updated rules for $\pi_k^{(t+1)}$ is average PIPs for each K group and $\sigma^{2,(t+1)}_{t}$ is sum of PIPs weighted by second moment of posterior effect size.
+
+The calculation of PIPs and second moment is by analyzing each block one at a time under the single effect approximation using SuSiE. 
+
+Assuming each single block explains a minimal variance of y, so $\sigma = 1$. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+## Setting and functions
+```{r message=FALSE, warning=FALSE}
+library(ctwas)
+library(dplyr)
+library(data.table)
+library(RSQLite)
+library(tidyverse)
+workDIR <- "~/cluster/projects/m6a_genetics/ctwas"
+
+merge.bigsnp.gwas <- function(gwas, bigSNP){
+  
+  map <- bigSNP$map
+  snp_info <- map[,c('chromosome','physical.pos','allele1','allele2')]
+  colnames(snp_info) <- c('chr','pos','a0','a1')
+  
+  matched.gwas <- as_tibble(bigsnpr::snp_match(gwas, 
+                                               snp_info, 
+                                               strand_flip = T, 
+                                               match.min.prop = 0.1)) %>% dplyr::rename(og_index = `_NUM_ID_.ss`) %>% dplyr::rename(bigSNP_index = `_NUM_ID_`) %>% mutate(zscore = beta/se)
+  
+  matched.gwas["rsID"]= map[matched.gwas$bigSNP_index,"marker.ID"]
+  return(matched.gwas)
+}
+
+make_df <- function(file) {
+  load(file)  
+  weights <- data.frame(wgt.matrix) 
+  snps <- data.frame(snps) 
+  rownames(weights) <- c() 
+  weights$gene <- substr(file, 1, nchar(file) - 9)
+  weights$chromosome <- snps$V1 
+  weights$position <- snps$V4
+  weights$ref_allele <- snps$V6
+  weights$eff_allele <- snps$V5
+  
+  # for top1 method, only top magnitude SNP weight have non-zero weights
+  weights[, "top1"][-which.max(weights[, "top1"]^2)] <- 0
+  
+  weights<-weights %>% select(c(gene, chromosome, position,
+                                ref_allele, eff_allele,
+                                top1, lasso, enet))
+  return(weights)
+}
+```
+## load TWAS weights
+Todo: re-run TWAS for a subset of GEUVADIS LCL samples that match with 60 LCLs in our m6A-QTL study
+```{r echo=F}
+## set weights directory
+weightsDIR <- "~/cluster/projects/m6a_genetics/kevinTWAS_weights"
+m6aDIR <- paste0(weightsDIR, "/TWAS_m6AQTL_full_100kp_PCsRemoved/WEIGHTS/m6AQTL_TWAS_Weights")
+eqtlDIR <- paste0(weightsDIR, "/TWAS_eQTL_Geuvadis_100kp_PCsRemoved/WEIGHTS/eQTL_TWAS_Weights")
+sqtlDIR <- paste0(weightsDIR, "/TWAS_sQTL_Geuvadis_100kp_PCsRemoved/WEIGHTS/sQTL_TWAS_Weights")
+```
+
+## generate prediction DB weights
+
+```{bash}
+export PRE=/home/jinggu/cluster/projects/m6a_genetics/ctwas
+export CODE=$PRE/code
+export DATA=$PRE/data
+export OUTPUT=$PRE/output
+export MODEL=$PRE/models
+```
+
+```{r}
+PRE="/home/jinggu/cluster/projects/m6a_genetics/ctwas"
+DATA=glue::glue("{PRE}/data")
+OUTPUT=glue::glue("{PRE}/output")
+MODEL=glue::glue("{PRE}/models")
+
+```
+
+```{r echo=F, eval=F}
+setwd(PRE)
+curr.qtl<-"m6aQTL"
+curr.dir<-m6aDIR
+files <- paste(curr.dir, list.files(path=curr.dir, pattern = "\\.RDat"), sep='/')
+pre_weights = glue::glue("{OUTPUT}/pre_weights_{curr.qtl}.txt")
+write.table(make_df(files[1]), pre_weights, sep = "\t", quote = FALSE, row.names = FALSE)
+for(i in 2:length(files)) {
+  write.table(make_df(files[i]), pre_weights, append = TRUE, sep = "\t", quote = FALSE, col.names = FALSE, row.names = FALSE)
+}
+
+```
+### Add rsIDs, varIDs
+```{r echo=F, eval=F}
+setwd(PRE)
+weights <- fread(glue::glue("{OUTPUT}/pre_weights_{curr.qtl}.txt"))
+#weights <- fread(glue::glue("pre_weights_{curr.qtl}.txt"))
+#bigSNP <- bigsnpr::snp_attach(rdsfile = '/project2/xinhe/1kg/bigsnpr_QC/1000G_EUR_Phase3_QC.rds')
+colnames(bigSNP$map)[c(1,2,4)]<-c("chromosome", "rsid", "position")
+weights <-left_join(weights, bigSNP$map[, c(1,2,4)], by=c("chromosome", "position"))
+weights$varID <- paste(paste("chr", weights$chromosome, sep = ""), weights$position, weights$ref_allele, weights$eff_allele, "b37", sep = "_")
+for(i in c("top1", "lasso", "enet")){
+  out<-weights %>% mutate(weight = get(i))
+  model_db=sprintf("models/%s_weights_YRI_LCLs_%s.db", curr.qtl, i)
+  conn <- dbConnect(RSQLite::SQLite(), model_db)
+  dbWriteTable(conn, "weights", out, overwrite=TRUE)
+  dbDisconnect(conn)
+}
+
+```
+
+## test cTWAS on example data
+```{r echo=FALSE, eval=FALSE}
+## Load regions file: class = GRanges
+
+regionsfile <- system.file("extdata", "example_regions.bed", package = "ctwas")
+head(read.table(regionsfile, header = T))
+#>   chr start stop
+#> 1   1     0    5
+#> 2   1     5   35
+#> 3   1    35   65
+#> 4   1    65   95
+#> 5   1    95  125
+#> 6   1   125  155
+
+ld_R_dir <- system.file("extdata/example_ld_R", package = "ctwas")
+
+weight.fusion <- paste(system.file("extdata/example_fusion_weights", "Tissue", package = "ctwas"),
+                   system.file("extdata/example_fusion_weights", "Tissue", package = "ctwas"), sep=",")
+
+outputdir <- "~/cluster/projects/m6a_genetics/ctwas"
+res <- impute_expr_z(z_snp = z_snp,  weight = weight.fusion, ld_R_dir=ld_R_dir,
+                           method = "top1", outputdir = outputdir,
+                           outname = "test_ss")
+z_gene <- res$z_gene
+ld_exprfs <- res$ld_exprfs
+head(z_gene)
+
+pars <- ctwas_rss(z_gene = z_gene, z_snp = z_snp, ld_exprfs = ld_exprfs, ld_R_dir = ld_R_dir, ld_regions_custom = regionsfile, thin = 0.9, max_snp_region = 20, outputdir = outputdir, outname = "test_ss", ncore = 1)
+pars
+head(data.table::fread("~/cluster/projects/m6a_genetics/ctwas/test_ss.susieIrss.txt"))[, c("chrom", "id", "pos", "type", "susie_pip")]
+```
+
+## Procedure QCs
+
+### The extent of selected QTLs using YRI samples missing in UKBB variants
+
+Due to LD mismatch between African and European ancestry, we would like to estimate the fraction of top QTLs identified from individuals of African ancestry that are missing from UKBB variants. The table below shows less than 4% of selected SNPs with YRI samples are not found in those with UKBB samples across three models for expression, splicing or m6A QTL data. 
+```{r echo=F}
+ukbb_vars <- read.table("~/cluster/data/gwas/ukbb_vars/ukb_b37_vars.txt.gz")
+colnames(ukbb_vars)<-c("chromosome", "rsid","position", "ref_allele", "eff_allele")
+tbl<-c()
+models<- c("top1", "lasso", "enet")
+for(i in c("eQTL", "sQTL", "m6aQTL")){
+  f_snps<-fread(glue::glue("{OUTPUT}/pre_weights_{i}.txt"))
+  percent_by_feature<-c()
+  for(j in c("top1", "lasso", "enet")){
+    snps <- f_snps %>% filter(get(j) > 0) 
+    overlaps_by_pos<-inner_join(snps, ukbb_vars, by=c("chromosome", "position"))
+    print(c(i,dim(snps)[1], dim(overlaps_by_pos)[1]))
+    percent_by_feature<- c(percent_by_feature, 
+                           1-round(dim(overlaps_by_pos)[1]/dim(snps)[1], 2))
+  }
+  tbl<-rbind(tbl, c(i, percent_by_feature))
+}
+tbl<-data.frame(tbl)
+colnames(tbl) <- c("feature", models)
+tbl
+DT::datatable(tbl, options = list(scrollX = TRUE, keys = TRUE, pageLength = 10), rownames = F)
+```
+

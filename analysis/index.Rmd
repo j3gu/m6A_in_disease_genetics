@@ -17,7 +17,13 @@ editor_options:
 Test the enrichment for dsRNAs formed by m6A-switch with GWAS variants 
 
 * [identify transcripts that can form dsRNAs](check_double_strand.html)
-* Test enrichment for GWAS risk variants
+* [visualize m6A sites and nearby double-strand RNAs](learn_gviz.html)
+
+### Genetic variants contribute to trait through PTR mechanisms
+
+* [running cTWAS with multiple QTLs from Geuvadis LCLs](learn_ctwas.html)
+* cTWAS results By Traits
+  - [white blood counts cTWAS results](wbc_m6A_output_hg19.html)
   
 ### m6A informed fine-mapping
 [Are predicted m6A QTLs enriched for GWAS signals?](predicted_m6A_QTLs_enrichment_GWAS.html)
