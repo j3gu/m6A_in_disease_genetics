@@ -1,5 +1,5 @@
 ---
-title: "cTWAS_analysis_for_white_blood_counts"
+title: "cTWAS_analysis_for_IBD"
 author: "Jing Gu"
 date: "`r Sys.Date()`"
 output:
@@ -8,8 +8,8 @@ output:
 editor_options:
   chunk_output_type: console
 params:
-  analysis_id: "wbc_m6a_top1"
-  trait_id: "wbc"
+  analysis_id: "IBD_m6a_top1"
+  trait_id: "IBD"
   weight: "m6a_top1"
 ---
 ```{r setup, include=FALSE}
@@ -87,7 +87,7 @@ load_ctwas_outputs<-function(analysis_id){
               df_snps = ctwas_snp_res))
 }
 outs<-list()
-for(model in c("top1", "lasso")){
+for(model in c("top1")){
   outs[[model]]<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_m6a_", model))
 }
 
@@ -261,7 +261,7 @@ check_convergence<-function(ctwas_gene_res, analysis_id){
 
 ```{r}
 cplots<-list()
- for(model in c("top1","lasso")){
+ for(model in c("top1")){
   print(sprintf("Check convergence for the %s model:", model))
   cplots[[model]]<-check_convergence(
     ctwas_gene_res = outs[[model]][[1]],
@@ -291,10 +291,10 @@ cplots_joint
 
 ## cTWAS results for individual analysis with m6A 
 
-**Lasso model**
+**top1 model**
 ```{r}
-ctwas_gene_res<-outs$lasso$df_genes
-ctwas_snp_res<-outs$lasso$df_snps
+ctwas_gene_res<-outs$top1$df_genes
+ctwas_snp_res<-outs$top1$df_snps
 
 ctwas_gene_res[,c("peak_id", "genename")]<-
   t(sapply(ctwas_gene_res$id, function(i){
@@ -303,7 +303,7 @@ ctwas_gene_res[,c("peak_id", "genename")]<-
 
 
 #add z scores to results
-analysis_id<-paste0(trait_id, "_m6a_lasso")
+analysis_id<-paste0(trait_id, "_m6a_top1")
 load(paste0(results_dir, "/", analysis_id,"/", analysis_id, "_expr_z_gene.Rd"))
 load(paste0(results_dir, "/", analysis_id,"/", analysis_id, "_expr_z_snp.Rd"))
 
@@ -325,7 +325,7 @@ saveRDS(ctwas_res, paste0(results_dir, "/", analysis_id, "/", analysis_id, "_ctw
 ```{r echo=FALSE}
 ctwas_gene_res %>% 
   select(c(genename, region_tag, susie_pip, z)) %>% 
-  filter(susie_pip > 0.6) %>% arrange(desc(susie_pip)) %>% slice_head(n=20)
+  arrange(desc(susie_pip)) %>% slice_head(n=20)
 ```
 
 **Summing up PIPs for m6A peaks located in the same gene**
@@ -333,16 +333,16 @@ ctwas_gene_res %>%
 Top m6A PIPs by genes
 ```{r}
 # sum up PIPs for m6A peaks located in the same gene
-ctwas_gene_res %>% 
+ctwas_gene_res %>% filter(type == "gene") %>%
   group_by(genename) %>% summarise(total_susie_pip=sum(susie_pip)) %>% 
-  filter(total_susie_pip >  0.6) %>%
+  #filter(total_susie_pip >  0.6) %>%
   arrange(desc(total_susie_pip))
+
 ```
 
 
 ## cTWAS results for joint analysis using a lasso model
 
-### Top m6A modification pip
 ```{r}
 ctwas_gene_res<-joint_outs$lasso$df_genes
 ctwas_snp_res<-joint_outs$lasso$df_snps
@@ -433,7 +433,7 @@ For m6A or splicing QTLs, they are assigned to the nearest genes (m6A needs to b
                             #"_ctwas_res.RDS"))
 ctwas_gene_res<-ctwas_res %>% filter(type != "SNP")
 top_ctwas_gene_res <- lapply(split(ctwas_gene_res, ctwas_gene_res$group), function(i){
-  head(i[order(-i$susie_pip),c("genename","susie_pip","group","region_tag")], max(sum(i$susie_pip >0.6)), 20)
+  head(i[order(-i$susie_pip),c("genename","susie_pip","group","region_tag")], max(sum(i$susie_pip >0.5)), 20)
 })
 #genes with PIP>0.8 or 20 highest PIPs
 #head(ctwas_gene_res[order(-ctwas_gene_res$susie_pip),c("genename","susie_pip","type","region_tag")], max(sum(ctwas_gene_res$susie_pip>0.8), 20))
@@ -442,14 +442,6 @@ top_ctwas_gene_res
 ```
 
 ### Top m6A modification pip
-ZKSCAN5: RNA Polymerase II Cis-Regulatory Region Sequence-Specific DNA Binding (GO:0000978).
-THEMIS2 is involved in the biological process T Cell Receptor Signaling Pathway (GO:0050852).
-BANF: DNA binding factor|Regulation Of Innate Immune Response (GO:0045088).
-TRIT1 has the molecular function of Catalytic Activity, Acting On A tRNA (GO:0140101).
-TRIT1 is involved in the biological process RNA Modification (GO:0009451).
-S1PR2 is involved in the biological process Regulation Of Cell Population Proliferation (GO:0042127).
-WAC has the molecular function of RNA Polymerase II Complex Binding (GO:0000993).
-CD320 is involved in the biological process Regulation Of B Cell Proliferation (GO:0030888).
 
 ```{r echo=FALSE}
 ctwas_gene_res %>% filter(group=="m6AQTL") %>% 
@@ -468,8 +460,7 @@ ctwas_gene_res %>% filter(group=="m6AQTL") %>%
 
 ### Top splicing PIPs
 
-Some loci contain variants in the same credible set but having opposite z scores. For instance, the predicted splicing levels of two introns of CNN2 based on the same variant (position=1038445) have opposite associations with traits. Is this variant more likely to affect traits by altering the splicing levels of both transcripts, rather than one of them since they have equal PIP? 
-
+Splicing PIPs are quite low.
 ```{r echo=FALSE}
 ctwas_gene_res %>% filter(group =="sQTL") %>% 
   select(c(peak_id, genename, pos, region_tag, susie_pip, z)) %>% 
@@ -513,7 +504,7 @@ df_gene$combined_pip <- round(df_gene$combined_pip,3)
 #sort by combined PIP
 df_gene <- df_gene[order(-df_gene$combined_pip),]
 #genes with PIP>0.8 or 20 highest PIPs
-head(df_gene, max(sum(df_gene$combined_pip>0.8), 20))
+head(df_gene, max(sum(df_gene$combined_pip>0.8), 40))
 ```
 
 <!-- ## GO enrichment analysis for genes with PIP>0.5 -->
@@ -582,14 +573,37 @@ head(df_gene, max(sum(df_gene$combined_pip>0.8), 20))
 <!-- ``` -->
 
 
+
+### Compared with the putative genes identified by ABC model
+
+Only two genes annotated with ABC model are imputable with our current QTL datasets. 
+```{r}
+tbl <- read.table("~/projects/m6A_in_disease_genetics/data/nasser_2021_ABC_IBD_genes.txt", skip=15, sep='\t', header=T)
+df_gene %>% filter(genename %in% intersect(df_gene$genename, tbl$KnownGene))
+```
+
+```{r}
+m6a_twas<-read.csv("~/projects/m6A_in_disease_genetics/data/m6A_TWAS_results.csv")
+m6a_twas<-m6a_twas %>% filter(Trait == "Inflammatory Bowel Disease" )
+colnames(m6a_twas)[2]<-"genename"
+m6a_twas<-left_join(m6a_twas, df_gene[, c("genename", "m6A_pip")])
+print("The causal genes identified by both methods:")
+m6a_twas %>% arrange(desc(m6A_pip)) %>% filter(m6A_pip > 0.5) %>%
+  dplyr::select(genename, m6A.PEAK.ID, TWAS.P.Bonferroni, m6A_pip)
+print("The causal genes specifically identified by ctwas:")
+df_gene %>% filter(m6A_pip > 0.5)
+
+```
+
+### Locus plots for specific examples
+
 ```{r echo=FALSE}
 alpha=0.5
 source("~/projects/m6A_in_disease_genetics/code/ctwas/qiansheng/locus_plot.R")
 ```
 
-## Locus plots for specific examples
 ```{r}
-eg="NDUFS2"
+eg="GLRX"
 df_gene[df_gene$genename==eg, ]
 
 a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"], 
@@ -604,7 +618,7 @@ a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"],
 ```
 
 ```{r}
-eg="CSNK1G1"
+eg="DHX38"
 df_gene[df_gene$genename==eg, ]
 
 a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"], 
@@ -615,12 +629,28 @@ a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"],
                       rerun_load_only=F,
                       label_panel="both",
                       legend_side="left",
-                      legend_panel="")
+                      legend_panel=" ")
 ```
 
-```{r eval=FALSE}
-analysis_id<-paste0(trait_id, "_E_S_m6a_top1")
-eg="HNRNPK"
+
+```{r}
+eg="IP6K2"
+df_gene[df_gene$genename==eg, ]
+
+a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"], 
+                      return_table=T,
+                      focus=NULL,
+                      label_genes=NULL,
+                      rerun_ctwas=F,
+                      rerun_load_only=F,
+                      label_panel="both",
+                      legend_side="left",
+                      legend_panel=" ")
+```
+
+### Locus plot for the prioritized TWAS genes with FUSION
+```{r}
+eg="TRAF3IP3"
 df_gene[df_gene$genename==eg, ]
 
 a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"], 
@@ -635,7 +665,7 @@ a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"],
 ```
 
 ```{r}
-eg="THEMIS2"
+eg="ADCY7"
 df_gene[df_gene$genename==eg, ]
 
 a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"], 
@@ -646,11 +676,11 @@ a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"],
                       rerun_load_only=F,
                       label_panel="both",
                       legend_side="left",
-                      legend_panel="")
+                      legend_panel=" ")
 ```
 
 ```{r}
-eg="ZKSCAN5"
+eg="ICOSLG"
 df_gene[df_gene$genename==eg, ]
 
 a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"], 
@@ -661,5 +691,80 @@ a <- locus_plot(region_tag=df_gene[df_gene$genename==eg, "region_tag"],
                       rerun_load_only=F,
                       label_panel="both",
                       legend_side="left",
-                      legend_panel="")
+                      legend_panel=" ")
+```
+
+```{r}
+make_track_plots <- function(region_tag, 
+                             extend.size=0,
+                             start = NULL,
+                             end = NULL,
+                             full.mode = TRUE,
+                             reverse.strand = FALSE,
+                             to.highligh = TRUE,
+                             collapse.type = "meta"
+                             ){
+  # focal region
+  a<- ctwas_res[ctwas_res$region_tag==region_tag,]
+  gene.query<-GRanges(seqnames = paste0("chr", unique(a$chrom)),
+                      IRanges(start = min(a$pos),
+                              end = max(a$pos)
+                      ))
+  
+  # build GRanges for each track
+  m6a <- a %>% filter(a$group=="m6AQTL")
+  m6a_peaks<-GRanges(m6a$peak_id)
+
+  
+  ## annotation tracks
+  m6a_track <- AnnotationTrack(m6a_peaks, genome = "hg19", name = "m6A")
+  
+  ## genomic coordinates
+  gtrack <- GenomeAxisTrack()
+  
+
+  ## gene tracks
+  grtrack<-build_grtrack(curr.locus.gr = gene.query,
+                            start = start(gene.query),
+                            end = end(gene.query),
+                            genome = "hg19")
+  
+
+  # highlight a particular SNP
+  trackList <-list(
+                   gtrack,grtrack, 
+                   m6a_track
+                   )
+  if(to.highligh){
+    ht1 <- HighlightTrack(trackList,
+                          start = unique(dsRNA.locus$physical.pos), width = 1, 
+                          chromosome = as.character(seqnames(gene_query)), 
+                          col = 'pink')
+    dist.full <- unique(dsRNA.locus$physical.pos) - end(gene_query)
+    dist.short <- unique(dsRNA.locus$physical.pos) - end(m6a_dsRNA_gr)
+    
+    if(dist.full > extend.size|dist.short > extend.size){
+       print(
+         sprintf("Extend the window size to be longer than %d for 
+                 full mode and %d for short mode.", 
+                 dist.full, dist.short)
+         )
+       }
+  }else{
+    ht1 <- trackList
+  }
+  if(is.null(start)|is.null(end)){
+    start = start(gene_query)
+    end = end(gene_query)
+  }
+  plotTracks(trackList,
+             transcriptAnnotation = 'symbol',
+             from = start, #- extend.size,
+             to = end + extend.size,
+             collapseTranscripts = collapse.type,
+             just.group = "right",
+             groupAnnotation="type", ALU="darkgreen", REP="blue", NONREP="darkred",
+             reverseStrand = reverse.strand
+  )
+}
 ```
