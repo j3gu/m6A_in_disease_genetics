@@ -27,6 +27,7 @@ Test the enrichment for dsRNAs formed by m6A-switch with GWAS variants
   - [red blood counts](rbc_m6A_output_hg19.html)
   - [lymphocyte counts](lymph_m6A_output_hg19.html)
   - [IBD](IBD_m6A_output_hg19.html)
+  - [lupus](lupus_m6A_output_hg19.html)
   - [RA](RA_m6A_output_hg19.html)
   - [LDL](LDL_m6A_output_hg19.html)
   
