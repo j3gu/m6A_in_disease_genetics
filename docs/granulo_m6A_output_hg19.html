@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-08-22" />
 
-<title>cTWAS_analysis_for_neutrophill_counts</title>
+<title>cTWAS_analysis_for_granulo_counts</title>
 
 <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -362,7 +362,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">cTWAS_analysis_for_neutrophill_counts</h1>
+<h1 class="title toc-ignore">cTWAS_analysis_for_granulo_counts</h1>
 <h4 class="author">Jing Gu</h4>
 <h4 class="date">2023-08-22</h4>
 
@@ -740,8 +740,8 @@ have uncommitted changes.
 <p>
 These are the previous versions of the repository in which changes were
 made to the R Markdown
-(<code>analysis/neutroph_m6A_output_hg19.Rmd</code>) and HTML
-(<code>docs/neutroph_m6A_output_hg19.html</code>) files. If you’ve
+(<code>analysis/granulo_m6A_output_hg19.Rmd</code>) and HTML
+(<code>docs/granulo_m6A_output_hg19.html</code>) files. If you’ve
 configured a remote Git repository (see <code>?wflow_git_remote</code>),
 click on the hyperlinks in the table below to view the files as they
 were in that past version.
@@ -773,7 +773,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/fb910fa5c0638c7e78a44e0ff9faf9e6b066c64f/analysis/neutroph_m6A_output_hg19.Rmd" target="_blank">fb910fa</a>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/fb910fa5c0638c7e78a44e0ff9faf9e6b066c64f/analysis/granulo_m6A_output_hg19.Rmd" target="_blank">fb910fa</a>
 </td>
 <td>
 Jing Gu
@@ -783,40 +783,6 @@ Jing Gu
 </td>
 <td>
 blood traits
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/fe0128985f2ea34f6ca9cd623e3abb3ebf6f271c/docs/neutroph_m6A_output_hg19.html" target="_blank">fe01289</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/0560ec909c93762726dd4cd75a699d8436d4551a/analysis/neutroph_m6A_output_hg19.Rmd" target="_blank">0560ec9</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-analyzed neutrph
 </td>
 </tr>
 </tbody>
@@ -847,159 +813,29 @@ running ctwas.</p>
 </div>
 <div id="check-convergence-of-parameters" class="section level2">
 <h2>Check convergence of parameters</h2>
-<p><strong>cTWAS analysis on expression alone</strong></p>
-<pre><code>[1] &quot;Table of group size:&quot;
-    SNP    gene 
-8713250    1928 
-                                SNP      gene
-estimated_group_prior     2.353e-04  0.020158
-estimated_group_prior_var 1.695e+01 17.435537
-estimated_group_pve       9.934e-02  0.001937
-attributable_group_pve    9.809e-01  0.019123</code></pre>
-<p><img src="figure/neutroph_m6A_output_hg19.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/fe0128985f2ea34f6ca9cd623e3abb3ebf6f271c/docs/figure/neutroph_m6A_output_hg19.Rmd/unnamed-chunk-5-1.png" target="_blank">fe01289</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <p><strong>cTWAS analysis on m6A alone</strong></p>
-<pre><code>[1] &quot;Check convergence for the top1 model:&quot;
-[1] &quot;Table of group size:&quot;
-    SNP    gene 
-8713250     888 
-                                SNP      gene
-estimated_group_prior     2.387e-04 1.829e-02
-estimated_group_prior_var 1.683e+01 1.718e+01
-estimated_group_pve       1.000e-01 7.976e-04
-attributable_group_pve    9.921e-01 7.909e-03</code></pre>
-<pre><code>$top1</code></pre>
-<p><img src="figure/neutroph_m6A_output_hg19.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
-Past versions of unnamed-chunk-6-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-6-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/fe0128985f2ea34f6ca9cd623e3abb3ebf6f271c/docs/figure/neutroph_m6A_output_hg19.Rmd/unnamed-chunk-6-1.png" target="_blank">fe01289</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <p><strong>Joint analysis of expression, splicing and m6A</strong></p>
-<pre><code>[1] &quot;Check convergence for the top1 model when jointly analyzing expression, splicing and m6A:&quot;
+<pre><code>[1] &quot;Check convergence for the lasso model when jointly analyzing expression, splicing and m6A:&quot;
 [1] &quot;Table of group size before/after matching with UKBB SNPs:&quot;
-                          SNP      eQTL     sQTL   m6AQTL
-prior_group_size    9.324e+06 2005.0000 2191.000 918.0000
-group_size          8.713e+06 1928.0000 2123.000 888.0000
-percent_of_overlaps 9.345e-01    0.9616    0.969   0.9673
-                                SNP      eQTL      sQTL    m6AQTL
-estimated_group_prior      0.000234  0.015405  0.008797 7.876e-04
-estimated_group_prior_var 15.762762 16.480563 25.106901 1.010e+01
-estimated_group_pve        0.091849  0.001399  0.001340 2.020e-05
-attributable_group_pve     0.970832  0.014788  0.014167 2.135e-04
-[1] &quot;Check convergence for the lasso model when jointly analyzing expression, splicing and m6A:&quot;
-[1] &quot;Table of group size before/after matching with UKBB SNPs:&quot;
-                          SNP      eQTL     sQTL   m6AQTL
-prior_group_size    9.324e+06 2005.0000 2191.000 918.0000
-group_size          8.713e+06 1998.0000 2180.000 912.0000
-percent_of_overlaps 9.345e-01    0.9965    0.995   0.9935
-                                SNP     eQTL      sQTL    m6AQTL
-estimated_group_prior     2.067e-04  0.01459 1.479e-03 3.526e-04
-estimated_group_prior_var 1.838e+01 13.68762 3.091e+01 1.039e+01
-estimated_group_pve       9.463e-02  0.00114 2.848e-04 9.552e-06
-attributable_group_pve    9.851e-01  0.01187 2.965e-03 9.943e-05</code></pre>
-<pre><code>$top1</code></pre>
-<p><img src="figure/neutroph_m6A_output_hg19.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>
-$lasso</code></pre>
-<p><img src="figure/neutroph_m6A_output_hg19.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+                          SNP      eQTL      sQTL   m6AQTL
+prior_group_size    9.324e+06 2005.0000 2191.0000 918.0000
+group_size          8.604e+06 1998.0000 2173.0000 912.0000
+percent_of_overlaps 9.228e-01    0.9965    0.9918   0.9935
+                                SNP     eQTL     sQTL    m6AQTL
+estimated_group_prior     1.305e-04 0.020898 0.016981 1.505e-03
+estimated_group_prior_var 1.376e+01 8.665924 8.302996 7.340e+00
+estimated_group_pve       9.096e-02 0.002131 0.001804 5.934e-05
+attributable_group_pve    9.579e-01 0.022440 0.019001 6.250e-04</code></pre>
+<pre><code>$lasso</code></pre>
+<p><img src="figure/granulo_m6A_output_hg19.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ctwas-results-for-individual-analysis-with-m6a"
 class="section level2">
 <h2>cTWAS results for individual analysis with m6A</h2>
 <p><strong>top1 model</strong></p>
-<pre><code>  genename region_tag susie_pip      z
-1 SLC9A3R1      17_42    0.9664 -7.384
-2   LETMD1      12_31    0.8989 -5.107
-3    HMGN4       6_20    0.7958  3.861
-4    ASCC1      10_48    0.7928  3.989
-5   HNRNPK       9_41    0.7313  7.884
-6    BANF1      11_36    0.7053  4.664
-7   SQSTM1      5_108    0.6327 -5.743
-8  THEMIS2       1_19    0.6237  3.913</code></pre>
 <p><strong>Summing up PIPs for m6A peaks located in the same
 gene</strong></p>
 <p>Top m6A PIPs by genes</p>
-<pre><code># A tibble: 9 × 2
-  genename total_susie_pip
-  &lt;chr&gt;              &lt;dbl&gt;
-1 SLC9A3R1           0.966
-2 LETMD1             0.899
-3 HMGN4              0.796
-4 ASCC1              0.793
-5 HNRNPK             0.731
-6 BANF1              0.705
-7 SH2D3C             0.634
-8 SQSTM1             0.633
-9 THEMIS2            0.624</code></pre>
 </div>
 <div id="ctwas-results-for-joint-analysis-using-a-lasso-model"
 class="section level2">
@@ -1015,18 +851,16 @@ needs to be confirmed with Kevin).</p>
 <p><strong>Top SNPs or genes with PIP &gt; 0.6</strong></p>
 <pre><code>$eQTL
             genename susie_pip group region_tag
-1956         CSNK1G1    0.9995  eQTL      15_29
-1933           ZMIZ1    0.9909  eQTL      10_51
-1993          TTLL12    0.9888  eQTL      22_18
-1916          NDUFS2    0.9267  eQTL       1_81
-1971           CCDC9    0.8776  eQTL      19_34
-1923            MXD3    0.8298  eQTL      5_106
-256             KYNU    0.7896  eQTL       2_85
-1959        RAPGEFL1    0.7579  eQTL      17_23
-970           BORCS7    0.7408  eQTL      10_66
-782  ENSG00000255310    0.7163  eQTL       8_14
-68   ENSG00000229431    0.6882  eQTL       1_27
-1905          ZNF593    0.6366  eQTL       1_18
+1953         CSNK1G1    0.9704  eQTL      15_29
+1945 ENSG00000256092    0.8922  eQTL      12_75
+1968          TRIM47    0.8243  eQTL      17_42
+1980           CCDC9    0.7865  eQTL      19_34
+1914 ENSG00000224032    0.7738  eQTL       5_66
+251           TGOLN2    0.7546  eQTL       2_54
+225             XPO1    0.7397  eQTL       2_40
+272             KYNU    0.6859  eQTL       2_85
+1507          RNF135    0.6708  eQTL      17_18
+143           NDUFS2    0.6626  eQTL       1_81
 
 $m6AQTL
 [1] genename   susie_pip  group      region_tag
@@ -1034,114 +868,116 @@ $m6AQTL
 
 $sQTL
      genename susie_pip group region_tag
-4108    MYO1G    0.9619  sQTL       7_33
-3558     ETFA    0.7622  sQTL      15_36
-2456    GSK3B    0.7306  sQTL       3_74</code></pre>
+4083    MYO1G    0.8975  sQTL       7_33
+4122 C15orf40    0.7757  sQTL      15_38
+3199    FNBP4    0.7561  sQTL      11_29
+3093   PDLIM1    0.7198  sQTL      10_61
+2370    ARPC2    0.6074  sQTL      2_129</code></pre>
 <div id="top-m6a-modification-pip-1" class="section level3">
 <h3>Top m6A modification pip</h3>
 <pre><code>   genename region_tag susie_pip      z
-1     TAPBP       6_28   0.48279 -8.315
-2    TGOLN2       2_54   0.33394 -7.771
-3  SLC9A3R1      17_42   0.08616 -7.384
-4    LETMD1      12_31   0.06916 -4.766
-5     BANF1      11_36   0.04132  4.670
-6   THEMIS2       1_19   0.02911  3.876
-7    C2CD2L      11_71   0.02885  3.482
-8   PPP2R5C      14_54   0.02779 -3.812
-9     TRIT1       1_25   0.02766  3.964
-10    ASCC1      10_49   0.02600  4.016</code></pre>
+1     TAPBP       6_28   0.55284 -5.227
+2     S1PR2      19_10   0.23315  5.169
+3    AKAP13      15_39   0.17981  4.118
+4    TGOLN2       2_54   0.13742 -4.766
+5    DENND3       8_92   0.11619  4.474
+6  KIAA0556      16_23   0.10229  4.080
+7    SQSTM1      5_108   0.10079 -3.661
+8      GFI1       1_56   0.09763  4.444
+9     TAPBP       6_28   0.07979  4.769
+10  ZKSCAN5       7_61   0.07455  3.258</code></pre>
 <p><strong>Summing up PIPs for m6A peaks located in the same
 gene</strong></p>
 <p>Top 10 m6A PIPs by genes</p>
 <pre><code># A tibble: 819 × 2
    genename total_susie_pip
    &lt;chr&gt;              &lt;dbl&gt;
- 1 TAPBP             0.507 
- 2 TGOLN2            0.334 
- 3 SLC9A3R1          0.0862
- 4 LETMD1            0.0692
- 5 BANF1             0.0413
- 6 THEMIS2           0.0291
- 7 C2CD2L            0.0289
- 8 PPP2R5C           0.0278
- 9 TRIT1             0.0277
-10 ASCC1             0.0260
+ 1 TAPBP             0.633 
+ 2 S1PR2             0.233 
+ 3 AKAP13            0.185 
+ 4 TGOLN2            0.137 
+ 5 DENND3            0.116 
+ 6 KIAA0556          0.102 
+ 7 SQSTM1            0.101 
+ 8 GFI1              0.0976
+ 9 ZKSCAN5           0.0746
+10 TRAF2             0.0676
 # ℹ 809 more rows</code></pre>
 </div>
 <div id="top-splicing-pips" class="section level3">
 <h3>Top splicing PIPs</h3>
 <pre><code>                    peak_id genename       pos region_tag susie_pip      z
-1    chr7:45009474-45009639    MYO1G  44925489       7_33    0.9619 -8.315
-2   chr15:76588078-76602273     ETFA  76496232      15_36    0.7622 -5.564
-3  chr3:119582452-119624602    GSK3B 119503971       3_74    0.7306  6.695
-4    chr2:85823772-85824227   RNF181  85818886       2_54    0.3726  3.817
-5   chr10:97007123-97023621   PDLIM1  97001124      10_61    0.2946 -7.031
-6    chr9:86593367-86595418   HNRNPK  86592026       9_41    0.2547  7.912
-7    chr7:56120178-56123317    CCT6A  56033141       7_40    0.2220 -4.773
-8     chr19:1036561-1037624     CNN2   1038445       19_2    0.1991  3.367
-9     chr19:1036999-1037624     CNN2   1038445       19_2    0.1991 -3.367
-10 chr1:207940540-207943666     CD46 207923081      1_107    0.1979 -9.808</code></pre>
+1    chr7:45009474-45009639    MYO1G  44925489       7_33    0.8975 -6.709
+2   chr15:83660798-83677300 C15orf40  83585402      15_38    0.7757 -3.758
+3   chr11:47761655-47765505    FNBP4  47684908      11_29    0.7561  5.384
+4   chr10:97007123-97023621   PDLIM1  97001124      10_61    0.7198 -4.569
+5  chr2:219093573-219110143    ARPC2 219007060      2_129    0.6074  6.548
+6    chr9:86593367-86595418   HNRNPK  86592026       9_41    0.3987  4.652
+7   chr21:35276325-35284593   ATP5PO  35268649      21_15    0.3821  3.888
+8  chr3:119582452-119624602    GSK3B 119503971       3_74    0.3786  3.340
+9   chr13:76143643-76164074    UCHL3  76084334      13_37    0.3730  3.170
+10 chr7:105902153-105903838    NAMPT 105865405       7_66    0.3640  3.468</code></pre>
 <p><strong>Summing up PIPs for spliced introns located in the same
 gene</strong></p>
 <p>Top 10 splicing PIPs by genes</p>
 <pre><code># A tibble: 10 × 2
-   genename   total_susie_pip
-   &lt;chr&gt;                &lt;dbl&gt;
- 1 MYO1G                0.962
- 2 ETFA                 0.765
- 3 GSK3B                0.731
- 4 CD46                 0.463
- 5 CNN2                 0.399
- 6 RNF181               0.397
- 7 HNRNPK               0.356
- 8 PDLIM1               0.295
- 9 AC253536.7           0.236
-10 CCT6A                0.224</code></pre>
+   genename total_susie_pip
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 SYNCRIP            0.972
+ 2 CD46               0.913
+ 3 MYO1G              0.898
+ 4 MCOLN2             0.867
+ 5 C15orf40           0.776
+ 6 HNRNPK             0.762
+ 7 FNBP4              0.756
+ 8 NCAPG2             0.747
+ 9 PDLIM1             0.720
+10 WARS1              0.688</code></pre>
 </div>
 <div id="top-genes-by-combined-pip" class="section level3">
 <h3>Top genes by combined PIP</h3>
-<pre><code>            genename combined_pip expression_pip splicing_pip  m6A_pip
-624          CSNK1G1        1.001        0.99947     0.000000 0.001205
-3320           ZMIZ1        0.991        0.99091     0.000000 0.000000
-3141          TTLL12        0.989        0.98885     0.000000 0.000000
-1957           MYO1G        0.962        0.00000     0.961931 0.000000
-2012          NDUFS2        0.927        0.92667     0.000000 0.000000
-437            CCDC9        0.878        0.87764     0.000000 0.000000
-1947            MXD3        0.830        0.82980     0.000000 0.000000
-1663            KYNU        0.791        0.78963     0.001790 0.000000
-1265            ETFA        0.776        0.01132     0.764910 0.000000
-2438        RAPGEFL1        0.758        0.75791     0.000000 0.000000
-317           BORCS7        0.741        0.74077     0.000000 0.000000
-1439           GSK3B        0.731        0.00000     0.730646 0.000000
-1085 ENSG00000255310        0.716        0.71625     0.000000 0.000000
-967  ENSG00000229431        0.688        0.68816     0.000000 0.000000
-3371          ZNF593        0.637        0.63657     0.000000 0.000000
-3230           VPS16        0.576        0.57565     0.000000 0.000000
-360         C19orf54        0.538        0.53245     0.004023 0.001566
-1264           ESYT2        0.537        0.53457     0.002218 0.000000
-1626          KDELR2        0.520        0.52024     0.000000 0.000000
-1195 ENSG00000270081        0.510        0.51042     0.000000 0.000000
+<pre><code>            genename combined_pip expression_pip splicing_pip m6A_pip
+624          CSNK1G1        0.977        0.97038      0.00000 0.00645
+2887         SYNCRIP        0.972        0.00000      0.97221 0.00000
+1790          MCOLN2        0.966        0.09932      0.86690 0.00000
+471             CD46        0.913        0.00000      0.91258 0.00000
+1957           MYO1G        0.898        0.00000      0.89752 0.00000
+1095 ENSG00000256092        0.892        0.89223      0.00000 0.00000
+2955          TGOLN2        0.892        0.75461      0.00000 0.13742
+252           ATP5PO        0.845        0.19256      0.65272 0.00000
+3092          TRIM47        0.824        0.82429      0.00000 0.00000
+437            CCDC9        0.786        0.78649      0.00000 0.00000
+1518          HNRNPK        0.778        0.00000      0.76220 0.01584
+351         C15orf40        0.776        0.00000      0.77573 0.00000
+935  ENSG00000224032        0.774        0.77375      0.00000 0.00000
+1340           FNBP4        0.756        0.00000      0.75607 0.00000
+1987          NCAPG2        0.747        0.00000      0.74699 0.00000
+3239           WARS1        0.741        0.05314      0.68821 0.00000
+3268            XPO1        0.740        0.73973      0.00000 0.00000
+1663            KYNU        0.727        0.68590      0.04079 0.00000
+2182          PDLIM1        0.720        0.00000      0.71980 0.00000
+2066            NSA2        0.703        0.20269      0.50080 0.00000
      region_tag
 624       15_29
-3320      10_51
-3141      22_18
+2887       6_58
+1790       1_52
+471       1_107
 1957       7_33
-2012       1_81
+1095      12_75
+2955       2_54
+252       21_15
+3092      17_42
 437       19_34
-1947      5_106
+1518       9_41
+351       15_38
+935        5_66
+1340      11_29
+1987       7_99
+3239      14_52
+3268       2_40
 1663       2_85
-1265      15_36
-2438      17_23
-317       10_66
-1439       3_74
-1085       8_14
-967        1_27
-3371       1_18
-3230       20_3
-360       19_28
-1264       7_99
-1626        7_9
-1195       2_75</code></pre>
+2182      10_61
+2066       5_44</code></pre>
 <!-- ## GO enrichment analysis for genes with PIP>0.5 -->
 <!-- ```{r echo=FALSE, message=FALSE, eval=FALSE} -->
 <!-- #GO enrichment analysis -->
