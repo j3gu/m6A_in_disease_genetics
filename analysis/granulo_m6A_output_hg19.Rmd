@@ -1,5 +1,5 @@
 ---
-title: "cTWAS_analysis_for_neutrophill_counts"
+title: "cTWAS_analysis_for_granulo_counts"
 author: "Jing Gu"
 date: "`r Sys.Date()`"
 output:
@@ -8,8 +8,8 @@ output:
 editor_options:
   chunk_output_type: console
 params:
-  analysis_id: "neutroph_m6a_top1"
-  trait_id: "neutroph"
+  analysis_id: "granulo_E_S_m6a_lasso"
+  trait_id: "granulo"
   weight: "m6a_top1"
 ---
 ```{r setup, include=FALSE}
@@ -87,15 +87,15 @@ load_ctwas_outputs<-function(analysis_id){
               df_snps = ctwas_snp_res))
 }
 
-expr_outs<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_e_top1"))
+#expr_outs<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_e_top1"))
 
-outs<-list()
-for(model in c("top1")){
-  outs[[model]]<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_m6a_", model))
-}
+# outs<-list()
+# for(model in c("top1")){
+#   outs[[model]]<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_m6a_", model))
+# }
 
 joint_outs<-list()
-for(model in c("top1", "lasso")){
+for(model in c("lasso")){
   joint_outs[[model]]<-load_ctwas_outputs(
     analysis_id = paste0(trait_id, "_E_S_m6a_", model))
 }
@@ -260,17 +260,9 @@ check_convergence<-function(ctwas_gene_res, analysis_id){
 }
 ```
 
-**cTWAS analysis on expression alone**
-
-```{r}
-check_convergence(ctwas_gene_res = expr_outs$df_genes,
-                  analysis_id = paste0(trait_id, "_e_top1"))
-```
-
-
 **cTWAS analysis on m6A alone**
 
-```{r}
+```{r eval=FALSE}
 cplots<-list()
  for(model in c("top1")){
   print(sprintf("Check convergence for the %s model:", model))
@@ -288,7 +280,7 @@ cplots
 
 ```{r}
 cplots_joint<-list()
-for(model in c("top1", "lasso")){
+for(model in c("lasso")){
   print(sprintf("Check convergence for the %s model when jointly analyzing expression, splicing and m6A:", model))
   cplots_joint[[model]]<-check_convergence(
     ctwas_gene_res = joint_outs[[model]][[1]],
@@ -303,7 +295,7 @@ cplots_joint
 ## cTWAS results for individual analysis with m6A 
 
 **top1 model**
-```{r}
+```{r eval=FALSE}
 ctwas_gene_res<-outs$top1$df_genes
 ctwas_snp_res<-outs$top1$df_snps
 
@@ -333,7 +325,7 @@ ctwas_res <- rbind(ctwas_gene_res[, cols],
 saveRDS(ctwas_res, paste0(results_dir, "/", analysis_id, "/", analysis_id, "_ctwas_res.RDS"))
 ```
 
-```{r echo=FALSE}
+```{r eval=FALSE}
 ctwas_gene_res %>% 
   dplyr::select(c(genename, region_tag, susie_pip, z)) %>% 
   filter(susie_pip > 0.6) %>% arrange(desc(susie_pip)) %>% slice_head(n=20)
@@ -342,7 +334,7 @@ ctwas_gene_res %>%
 **Summing up PIPs for m6A peaks located in the same gene**
 
 Top m6A PIPs by genes
-```{r}
+```{r eval=FALSE}
 # sum up PIPs for m6A peaks located in the same gene
 ctwas_gene_res %>% 
   group_by(genename) %>% summarise(total_susie_pip=sum(susie_pip)) %>% 
