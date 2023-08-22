@@ -9,7 +9,7 @@ editor_options:
   chunk_output_type: console
 params:
   analysis_id: "asthma_E_S_m6a_lasso"
-  trait_id: "platelet"
+  trait_id: "asthma"
   weight: "m6a_top1"
 ---
 ```{r setup, include=FALSE}
