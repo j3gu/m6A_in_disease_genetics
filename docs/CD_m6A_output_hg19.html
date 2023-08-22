@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jing Gu" />
+
+<meta name="date" content="2023-08-22" />
+
+<title>cTWAS_analysis_for_Crohn’s_Disease</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">m6A_in_disease_genetics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/j3gu/m6A_in_disease_genetics">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">cTWAS_analysis_for_Crohn’s_Disease</h1>
+<h4 class="author">Jing Gu</h4>
+<h4 class="date">2023-08-22</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2023-08-22
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>m6A_in_disease_genetics/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20230331code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20230331)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20230331code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20230331)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+~/projects/m6A_in_disease_genetics/code/ctwas/ctwas_config_b37.R
+</td>
+<td style="text-align:left;">
+code/ctwas/ctwas_config_b37.R
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+~/projects/m6A_in_disease_genetics/code/ctwas/qiansheng/locus_plot.R
+</td>
+<td style="text-align:left;">
+code/ctwas/qiansheng/locus_plot.R
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstree688d15ca9e9bf172b2a00fa730c0b4d1812985fetargetblank688d15ca">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/688d15ca9e9bf172b2a00fa730c0b4d1812985fe" target="_blank">688d15c</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomj3gum6Aindiseasegeneticstree688d15ca9e9bf172b2a00fa730c0b4d1812985fetargetblank688d15ca"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/tree/688d15ca9e9bf172b2a00fa730c0b4d1812985fe" target="_blank">688d15c</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .ipynb_checkpoints/
+    Ignored:    analysis/m6A_switch_to_disease_h2g.nb.html
+    Ignored:    data/plots/
+
+Untracked files:
+    Untracked:  HMGCR_locus_gene_tracks.pdf
+    Untracked:  Rplots.pdf
+    Untracked:  analysis/.ipynb_checkpoints/
+    Untracked:  analysis/IBD_E_S_m6A.Rmd
+    Untracked:  analysis/IBD_E_S_m6A_output.Rmd
+    Untracked:  analysis/LDL_E_S_m6A.Rmd
+    Untracked:  analysis/LDL_m6A_output.Rmd
+    Untracked:  analysis/RA_m6A_output.Rmd
+    Untracked:  analysis/WhiteBlood_WholeBlood_E_M.Rmd
+    Untracked:  analysis/identify_m6A_mechanisms_with_finemapping.Rmd
+    Untracked:  analysis/lymph_m6A_output.Rmd
+    Untracked:  analysis/pre_weights_m6AQTL.txt
+    Untracked:  analysis/rbc_E_S_m6A_output.Rmd
+    Untracked:  analysis/rbc_m6A_output.Rmd
+    Untracked:  analysis/summarize_ctwas_m6A_results.Rmd
+    Untracked:  analysis/wbc_E_S_m6A_output.Rmd
+    Untracked:  code/.ipynb_checkpoints/
+    Untracked:  code/all_m6a_sites_with_paired_cisNATs_summary.csv
+    Untracked:  code/annotating_fine-mapped_m6A_QTLs.Rmd
+    Untracked:  code/check_double_strand.ipynb
+    Untracked:  code/check_double_strand_v2.ipynb
+    Untracked:  code/ctwas/
+    Untracked:  code/figure/
+    Untracked:  code/learn_gviz.Rmd
+    Untracked:  code/learn_gviz.html
+    Untracked:  code/learn_gviz.nb.html
+    Untracked:  code/m6AQTL_finemapping.Rmd
+    Untracked:  code/plot_genomic_tracks_gviz.ipynb
+    Untracked:  code/summary_TWAS_coloc_m6A_2023.Rmd
+    Untracked:  code/test_gviz.ipynb
+    Untracked:  code/twas_genes_PP4_0.3_immune_traits_trackplots.pdf
+    Untracked:  data/.ipynb_checkpoints/
+    Untracked:  data/ADCY7_gwas_input.tsv
+    Untracked:  data/ADCY7_qtl_input.tsv
+    Untracked:  data/Allergy_full_coloc.txt
+    Untracked:  data/Asthma_full_coloc.txt
+    Untracked:  data/CAD_full_coloc.txt
+    Untracked:  data/Eosinophil_count_full_coloc.txt
+    Untracked:  data/GSE125377_jointPeakReadCount.txt
+    Untracked:  data/G_list.Rd
+    Untracked:  data/HMGCR_ctwas_dat.Rd
+    Untracked:  data/IBD_full_coloc.txt
+    Untracked:  data/JointPeaks.bed
+    Untracked:  data/Li2022_dsRNAs.xlsx
+    Untracked:  data/Lupus_full_coloc.txt
+    Untracked:  data/RA_full_coloc.txt
+    Untracked:  data/TABLE1_hg19.txt
+    Untracked:  data/TABLE1_hg19.txt.zip
+    Untracked:  data/__MACOSX/
+    Untracked:  data/coloc_blood_traits.csv
+    Untracked:  data/crohns_disease_full_coloc.txt
+    Untracked:  data/ctwas_m6a_joint_top_PIP.txt
+    Untracked:  data/edit_sites_and_GE_neg_correlated.txt
+    Untracked:  data/edit_sites_and_GE_pos_correlated.txt
+    Untracked:  data/features
+    Untracked:  data/human_EERs.csv
+    Untracked:  data/human_EERs.txt
+    Untracked:  data/lymph_full_coloc.txt
+    Untracked:  data/m6A_TWAS_results.csv
+    Untracked:  data/m6a_TWAS_genes.txt
+    Untracked:  data/m6a_joint_calling_peaks.csv
+    Untracked:  data/nasser_2021_ABC_IBD_genes.txt
+    Untracked:  data/nat_sense_pairs.csv
+    Untracked:  data/plt_full_coloc.txt
+    Untracked:  data/rbc_full_coloc.txt
+    Untracked:  data/rdw_full_coloc.txt
+    Untracked:  data/reported_AS_targets_S1.txt
+    Untracked:  data/reported_AS_wanowska.txt
+    Untracked:  data/sig_coloc_results/
+    Untracked:  data/test_locuscomparer.pdf
+    Untracked:  data/ulcerative_colitis_full_coloc.txt
+    Untracked:  data/wbc_full_coloc.txt
+    Untracked:  data/zhao_silver_genes.csv
+    Untracked:  output/.ipynb_checkpoints/
+    Untracked:  output/HMGCR_gene_track_plot.pdf
+    Untracked:  output/HMGCR_locus_plot.pdf
+    Untracked:  output/IBD_DHX38_plot.pdf
+    Untracked:  output/IBD_DHX38_plot_genetrack.pdf
+    Untracked:  output/all_m6a_sites_with_cisNATs.csv
+    Untracked:  output/all_m6a_sites_with_paired_cisNATs_summary.csv
+    Untracked:  output/all_m6a_sites_with_paired_cisNATs_summary_PP40.3.csv
+    Untracked:  output/all_m6a_sites_with_paired_cisNATs_summary_PP40.5.csv
+    Untracked:  output/all_m6a_sites_with_paired_cis_NATs.csv
+    Untracked:  output/fine_mapped_m6AQTLs_TWAS_genes_highPP4.rds
+    Untracked:  output/gene_summary.csv
+    Untracked:  output/immune_related_m6A_targets.csv
+    Untracked:  output/lupus_MIR210HG_plot.pdf
+    Untracked:  output/lupus_MIR210HG_plot_genetrack.pdf
+    Untracked:  output/m6aQTL_dsRNAs_PPP2R3C_PRORP.pdf
+    Untracked:  output/m6a_QTL_genes.csv
+    Untracked:  output/m6a_genes_PIP_0.6_blood_immune.csv
+    Untracked:  output/m6a_genes_PIP_0.6_blood_immune.txt
+    Untracked:  output/m6a_peaks_nearby_dsRNAs.csv
+    Untracked:  output/m6a_sites_near_all_dsRNAs_twas.csv
+    Untracked:  output/m6a_sites_near_dsRNAs_coloc.csv
+    Untracked:  output/m6a_sites_near_dsRNAs_twas.csv
+    Untracked:  output/m6a_sites_near_dsRNAs_twas_summary.csv
+    Untracked:  output/m6a_sites_overlapping_NAT_twas.csv
+    Untracked:  output/m6a_sites_overlapping_dsRNAs_coloc.csv
+    Untracked:  output/m6a_sites_overlapping_dsRNAs_twas.csv
+    Untracked:  output/m6a_sites_overlapping_dsRegions.csv
+    Untracked:  output/m6a_sites_overlapping_dsRegions_coloc.csv
+    Untracked:  output/negatively_correlated_genes.txt
+    Untracked:  output/postively_correlated_genes.txt
+    Untracked:  output/rs1806261_RABEP1-NUP88_focused_locusview.pdf
+    Untracked:  output/rs1806261_RABEP1-NUP88_locusview.pdf
+    Untracked:  output/rs3177647_MAPKAPK5-AS1-MAPKAPK5_locusview.pdf
+    Untracked:  output/rs3204541_DDX55-EIF2B1_locusview.pdf
+    Untracked:  output/rs7184802_ADCY7-BRD7_locusview.pdf
+    Untracked:  output/rs7184802_ADCY7_locuscompare.pdf
+    Untracked:  output/twas_genes_PP4_0.3_immune_traits_trackplots.pdf
+    Untracked:  output/twas_genes_PP4_0.5_blood_traits_trackplots.pdf
+    Untracked:  output/twas_m6a_sites_with_all_cisNATs.RDS
+    Untracked:  output/twas_m6a_sites_with_cisNATs_range.RDS
+    Untracked:  output/twas_m6a_sites_with_the_nearest_cisNAT.RDS
+    Untracked:  twas_genes_PP4_0.3_immune_traits_trackplots.pdf
+
+Unstaged changes:
+    Deleted:    analysis/learn_ctwas.Rmd
+    Modified:   analysis/lymph_m6A_output_hg19.Rmd
+    Modified:   analysis/m6A_switch_to_disease_h2g.Rmd
+    Modified:   analysis/rbc_m6A_output_hg19.Rmd
+    Modified:   analysis/wbc_m6A_output.Rmd
+    Modified:   analysis/wbc_m6A_output_hg19.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/CD_m6A_output_hg19.Rmd</code>)
+and HTML (<code>docs/CD_m6A_output_hg19.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/688d15ca9e9bf172b2a00fa730c0b4d1812985fe/analysis/CD_m6A_output_hg19.Rmd" target="_blank">688d15c</a>
+</td>
+<td>
+Jing Gu
+</td>
+<td>
+2023-08-22
+</td>
+<td>
+immune traits
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-ctwas-results" class="section level2">
+<h2>Load ctwas results</h2>
+<pre class="r"><code># top 1 method
+res &lt;- impute_expr_z(z_snp, weight = weight, ld_R_dir = ld_R_dir,
+                         method = NULL, outputdir = outputdir, outname = outname.e,
+                         harmonize_z = T, harmonize_wgt = T, scale_by_ld_variance=F,
+                         strand_ambig_action_z = &quot;recover&quot;, 
+                         recover_strand_ambig_wgt = T
+# lasso/elastic-net method
+res &lt;- impute_expr_z(z_snp, weight = weight, ld_R_dir = ld_R_dir,
+                         method = NULL, outputdir = outputdir, outname = outname.e,
+                         harmonize_z = T, harmonize_wgt = T, scale_by_ld_variance=F,
+                         strand_ambig_action_z = &quot;none&quot;, 
+                         recover_strand_ambig_wgt = F</code></pre>
+<p>GWAS: UK Biobank GWAS summary statistics - European individuals</p>
+<p>Weights: FUSION weights using top1, lasso, or elastic-net models were
+converted into PredictDB format and were not needed to do scaling when
+running ctwas.</p>
+</div>
+<div id="check-convergence-of-parameters" class="section level2">
+<h2>Check convergence of parameters</h2>
+<p><strong>cTWAS analysis on m6A alone</strong></p>
+<p><strong>Joint analysis of expression, splicing and m6A</strong></p>
+<pre><code>[1] &quot;Check convergence for the lasso model when jointly analyzing expression, splicing and m6A:&quot;
+[1] &quot;Table of group size before/after matching with UKBB SNPs:&quot;
+                          SNP      eQTL     sQTL   m6AQTL
+prior_group_size    9.324e+06 2005.0000 2191.000 918.0000
+group_size          7.547e+06 1998.0000 2180.000 911.0000
+percent_of_overlaps 8.094e-01    0.9965    0.995   0.9924
+                                SNP      eQTL      sQTL    m6AQTL
+estimated_group_prior     0.0001417 0.0022564 2.412e-03 4.056e-03
+estimated_group_prior_var 1.6500652 1.7576406 1.483e+00 2.323e+00
+estimated_group_pve       0.0052332 0.0000235 2.312e-05 2.546e-05
+attributable_group_pve    0.9864132 0.0044293 4.359e-03 4.799e-03</code></pre>
+<pre><code>$lasso</code></pre>
+<p><img src="figure/CD_m6A_output_hg19.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ctwas-results-for-individual-analysis-with-m6a"
+class="section level2">
+<h2>cTWAS results for individual analysis with m6A</h2>
+<p><strong>top1 model</strong></p>
+<p><strong>Summing up PIPs for m6A peaks located in the same
+gene</strong></p>
+<p>Top m6A PIPs by genes</p>
+</div>
+<div id="ctwas-results-for-joint-analysis-using-a-lasso-model"
+class="section level2">
+<h2>cTWAS results for joint analysis using a lasso model</h2>
+<div id="top-m6a-modification-pip" class="section level3">
+<h3>Top m6A modification pip</h3>
+</div>
+</div>
+<div id="top-expressionsplicingm6a-units" class="section level2">
+<h2>Top expression/splicing/m6A units</h2>
+<p>For m6A or splicing QTLs, they are assigned to the nearest genes (m6A
+needs to be confirmed with Kevin).</p>
+<p><strong>Top SNPs or genes with PIP &gt; 0.6</strong></p>
+<pre><code>$eQTL
+[1] genename   susie_pip  group      region_tag
+&lt;0 rows&gt; (or 0-length row.names)
+
+$m6AQTL
+[1] genename   susie_pip  group      region_tag
+&lt;0 rows&gt; (or 0-length row.names)
+
+$sQTL
+[1] genename   susie_pip  group      region_tag
+&lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<div id="top-m6a-modification-pip-1" class="section level3">
+<h3>Top m6A modification pip</h3>
+<pre><code>     genename region_tag susie_pip      z
+1       HNF1B      17_22   0.24780  3.492
+2       HMGN4       6_20   0.10681  3.370
+3        MKKS       20_8   0.10675  2.789
+4       ADCY7      16_27   0.10496  3.483
+5       ZNF84      12_82   0.09392 -3.050
+6      ZNF140      12_82   0.09320  2.998
+7        HPS5      11_13   0.09152  2.632
+8       SURF6       9_70   0.09148  2.912
+9       SEC63       6_72   0.06652  2.303
+10 TNRC6C-AS1      17_44   0.06459 -2.623</code></pre>
+<p><strong>Summing up PIPs for m6A peaks located in the same
+gene</strong></p>
+<p>Top 10 m6A PIPs by genes</p>
+<pre><code># A tibble: 818 × 2
+   genename total_susie_pip
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 HNF1B             0.248 
+ 2 HMGN4             0.107 
+ 3 MKKS              0.107 
+ 4 ADCY7             0.105 
+ 5 ZNF84             0.0939
+ 6 ZNF140            0.0932
+ 7 HPS5              0.0915
+ 8 SURF6             0.0915
+ 9 PARP14            0.0859
+10 GSDMD             0.0709
+# ℹ 808 more rows</code></pre>
+</div>
+<div id="top-splicing-pips" class="section level3">
+<h3>Top splicing PIPs</h3>
+<pre><code>                    peak_id genename       pos region_tag susie_pip      z
+1    chr2:74174015-74185273    DGUOK  74129474       2_48   0.36358  4.557
+2  chr1:160680303-160681472     CD48 160588595       1_81   0.10088 -3.035
+3   chr12:16052947-16053881    STRAP  15973272      12_13   0.07654 -2.907
+4  chr2:231110655-231112631    SP140 231099170      2_135   0.07653  3.570
+5  chr2:231109795-231112631    SP140 231097129      2_135   0.07179 -3.535
+6  chr2:231109786-231112631    SP140 231110582      2_135   0.06964 -3.516
+7  chr5:172410967-172413699 ATP6V0E1 172369769      5_103   0.06929 -2.853
+8  chr2:219524466-219525030    BCS1L 219497048      2_129   0.05916 -3.394
+9   chr18:33747185-33751010     ELP2  33686857      18_19   0.05700  2.973
+10 chr2:176046190-176046384  ATP5MC3 175952853      2_106   0.05145  2.668</code></pre>
+<p><strong>Summing up PIPs for spliced introns located in the same
+gene</strong></p>
+<p>Top 10 splicing PIPs by genes</p>
+<pre><code># A tibble: 10 × 2
+   genename total_susie_pip
+   &lt;chr&gt;              &lt;dbl&gt;
+ 1 DGUOK             0.371 
+ 2 SP140             0.264 
+ 3 CCT7              0.151 
+ 4 HMGN4             0.146 
+ 5 WARS1             0.136 
+ 6 MCOLN2            0.133 
+ 7 ERGIC3            0.120 
+ 8 CD48              0.114 
+ 9 IMMP1L            0.103 
+10 ELP2              0.0961</code></pre>
+</div>
+<div id="top-genes-by-combined-pip" class="section level3">
+<h3>Top genes by combined PIP</h3>
+<pre><code>     genename combined_pip expression_pip splicing_pip m6A_pip region_tag
+714     DGUOK        0.371       0.000000      0.37121 0.00000       2_48
+2800    SP140        0.264       0.000000      0.26397 0.00000      2_135
+1511    HMGN4        0.253       0.000000      0.14577 0.10681       6_20
+1514    HNF1B        0.248       0.000000      0.00000 0.24780      17_22
+454      CCT7        0.151       0.000000      0.15076 0.00000       2_48
+3240    WARS1        0.145       0.008168      0.13643 0.00000      14_52
+1790   MCOLN2        0.144       0.011017      0.13281 0.00000       1_52
+1775      MAX        0.137       0.000000      0.07535 0.06163      14_30
+2152   PARP14        0.131       0.000000      0.04547 0.08591       3_76
+1505    HLA-F        0.124       0.006508      0.07517 0.04247       6_23
+1251   ERGIC3        0.120       0.000000      0.12040 0.00000      20_21
+3152   TXNL4A        0.116       0.014255      0.07018 0.03170      18_48
+473      CD48        0.114       0.000000      0.11360 0.00000       1_81
+2383    PTK2B        0.110       0.000000      0.06693 0.04323       8_27
+213    ARMC10        0.107       0.107269      0.00000 0.00000       7_63
+1854     MKKS        0.107       0.000000      0.00000 0.10675       20_8
+2071    NSUN4        0.106       0.009682      0.04999 0.04609       1_29
+86      ADCY7        0.105       0.000000      0.00000 0.10496      16_27
+1897   MRPL40        0.104       0.013926      0.08995 0.00000       22_4
+1572   IMMP1L        0.103       0.000000      0.10329 0.00000      11_21</code></pre>
+<!-- ## GO enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=FALSE, message=FALSE, eval=FALSE} -->
+<!-- #GO enrichment analysis -->
+<!-- library(enrichR) -->
+<!-- dbs <- c("GO_Biological_Process_2021", "GO_Cellular_Component_2021", "GO_Molecular_Function_2021") -->
+<!-- genes <- df_gene$gene_id[df_gene$combined_pip>0.8] -->
+<!-- ``` -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   GO_enrichment <- enrichr(genes, dbs) -->
+<!--   for (db in dbs){ -->
+<!--     print(db) -->
+<!--     df <- GO_enrichment[[db]] -->
+<!--     print(plotEnrich(GO_enrichment[[db]])) -->
+<!--     df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")] -->
+<!--     print(df) -->
+<!--   } -->
+<!-- } -->
+<!-- ``` -->
+<!-- ## DisGeNET enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #library(disgenet2r) -->
+<!--   disgenet_api_key <- get_disgenet_api_key( -->
+<!--                     email = "wesleycrouse@gmail.com",  -->
+<!--                     password = "uchicago1" ) -->
+<!--   Sys.setenv(DISGENET_API_KEY= disgenet_api_key) -->
+<!--   res_enrich <-disease_enrichment(entities=genes, vocabulary = "HGNC", -->
+<!--                                database = "CURATED" ) -->
+<!--   df <- res_enrich@qresult[1:10, c("Description", "FDR", "Ratio",  "BgRatio")] -->
+<!--   print(df) -->
+<!-- } -->
+<!-- ``` -->
+<!-- ## WebGestalt enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #WebGestalt enrichment -->
+<!--   library(WebGestaltR) -->
+<!--   background <- ctwas_gene_res$genename -->
+<!--   #listGeneSet() -->
+<!--   databases <- c("pathway_KEGG", "disease_GLAD4U", "disease_OMIM") -->
+<!--   enrichResult <- WebGestaltR(enrichMethod="ORA", organism="hsapiens", -->
+<!--                               interestGene=genes, referenceGene=background, -->
+<!--                               enrichDatabase=databases, interestGeneType="genesymbol", -->
+<!--                               referenceGeneType="genesymbol", isOutput=F) -->
+<!--   print(enrichResult[,c("description", "size", "overlap", "FDR", "database", "userId")]) -->
+<!-- } -->
+<!-- ``` -->
+<pre><code>Loading required package: grid</code></pre>
+<pre><code>Warning: replacing previous import &#39;utils::download.file&#39; by
+&#39;restfulr::download.file&#39; when loading &#39;rtracklayer&#39;</code></pre>
+</div>
+</div>
+<div id="locus-plots-for-specific-examples" class="section level2">
+<h2>Locus plots for specific examples</h2>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.3.13-el7-x86_64/lib/libopenblas_haswellp-r0.3.13.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8 LC_NUMERIC=C         LC_TIME=C           
+ [4] LC_COLLATE=C         LC_MONETARY=C        LC_MESSAGES=C       
+ [7] LC_PAPER=C           LC_NAME=C            LC_ADDRESS=C        
+[10] LC_TELEPHONE=C       LC_MEASUREMENT=C     LC_IDENTIFICATION=C 
+
+attached base packages:
+[1] grid      stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] biomaRt_2.52.0       Gviz_1.40.1          cowplot_1.1.1       
+ [4] ggplot2_3.4.3        GenomicRanges_1.48.0 GenomeInfoDb_1.32.2 
+ [7] IRanges_2.30.1       S4Vectors_0.34.0     BiocGenerics_0.42.0 
+[10] ctwas_0.1.38         dplyr_1.1.2          workflowr_1.7.0     
+
+loaded via a namespace (and not attached):
+  [1] colorspace_2.1-0            deldir_1.0-6               
+  [3] rjson_0.2.21                rprojroot_2.0.3            
+  [5] biovizBase_1.44.0           htmlTable_2.4.0            
+  [7] XVector_0.36.0              base64enc_0.1-3            
+  [9] fs_1.6.3                    dichromat_2.0-0.1          
+ [11] rstudioapi_0.15.0           farver_2.1.1               
+ [13] bit64_4.0.5                 AnnotationDbi_1.58.0       
+ [15] fansi_1.0.4                 xml2_1.3.3                 
+ [17] codetools_0.2-18            logging_0.10-108           
+ [19] cachem_1.0.8                knitr_1.39                 
+ [21] Formula_1.2-4               jsonlite_1.8.7             
+ [23] Rsamtools_2.12.0            cluster_2.1.3              
+ [25] dbplyr_2.3.3                png_0.1-7                  
+ [27] compiler_4.2.0              httr_1.4.7                 
+ [29] backports_1.4.1             lazyeval_0.2.2             
+ [31] Matrix_1.6-1                fastmap_1.1.1              
+ [33] cli_3.6.1                   later_1.3.0                
+ [35] htmltools_0.5.2             prettyunits_1.1.1          
+ [37] tools_4.2.0                 gtable_0.3.3               
+ [39] glue_1.6.2                  GenomeInfoDbData_1.2.8     
+ [41] rappdirs_0.3.3              Rcpp_1.0.11                
+ [43] Biobase_2.56.0              jquerylib_0.1.4            
+ [45] vctrs_0.6.3                 Biostrings_2.64.0          
+ [47] rtracklayer_1.56.0          iterators_1.0.14           
+ [49] xfun_0.30                   stringr_1.5.0              
+ [51] ps_1.7.0                    lifecycle_1.0.3            
+ [53] ensembldb_2.20.2            restfulr_0.0.14            
+ [55] XML_3.99-0.14               getPass_0.2-2              
+ [57] zlibbioc_1.42.0             scales_1.2.1               
+ [59] BSgenome_1.64.0             VariantAnnotation_1.42.1   
+ [61] ProtGenerics_1.28.0         hms_1.1.3                  
+ [63] promises_1.2.0.1            MatrixGenerics_1.8.0       
+ [65] parallel_4.2.0              SummarizedExperiment_1.26.1
+ [67] AnnotationFilter_1.20.0     RColorBrewer_1.1-3         
+ [69] yaml_2.3.5                  curl_5.0.2                 
+ [71] memoise_2.0.1               gridExtra_2.3              
+ [73] sass_0.4.1                  rpart_4.1.16               
+ [75] latticeExtra_0.6-30         stringi_1.7.12             
+ [77] RSQLite_2.3.1               highr_0.9                  
+ [79] BiocIO_1.6.0                foreach_1.5.2              
+ [81] checkmate_2.1.0             GenomicFeatures_1.48.4     
+ [83] filelock_1.0.2              BiocParallel_1.30.3        
+ [85] rlang_1.1.1                 pkgconfig_2.0.3            
+ [87] matrixStats_0.62.0          bitops_1.0-7               
+ [89] evaluate_0.15               lattice_0.20-45            
+ [91] htmlwidgets_1.5.4           GenomicAlignments_1.32.0   
+ [93] labeling_0.4.2              bit_4.0.5                  
+ [95] processx_3.8.0              tidyselect_1.2.0           
+ [97] magrittr_2.0.3              R6_2.5.1                   
+ [99] generics_0.1.3              Hmisc_5.1-0                
+[101] DelayedArray_0.22.0         DBI_1.1.3                  
+[103] pgenlibr_0.3.6              pillar_1.9.0               
+[105] whisker_0.4                 foreign_0.8-82             
+[107] withr_2.5.0                 KEGGREST_1.36.2            
+[109] RCurl_1.98-1.7              nnet_7.3-17                
+[111] tibble_3.2.1                crayon_1.5.2               
+[113] interp_1.1-4                utf8_1.2.3                 
+[115] BiocFileCache_2.4.0         rmarkdown_2.14             
+[117] jpeg_0.1-10                 progress_1.2.2             
+[119] data.table_1.14.8           blob_1.2.4                 
+[121] callr_3.7.3                 git2r_0.30.1               
+[123] digest_0.6.33               httpuv_1.6.5               
+[125] munsell_0.5.0               bslib_0.3.1                </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
