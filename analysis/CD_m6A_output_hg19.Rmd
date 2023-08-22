@@ -1,0 +1,584 @@
+---
+title: "cTWAS_analysis_for_Crohn's_Disease"
+author: "Jing Gu"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+params:
+  analysis_id: "crohn_E_S_m6a_lasso"
+  trait_id: "crohn"
+  weight: "m6a_top1"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ctwas)
+library(GenomicRanges)
+```
+
+```{r}
+trait_id <- params$trait_id
+weight <- params$weight
+
+results_dir <- paste0("/scratch/midway3/jinggu")
+
+
+source("~/projects/m6A_in_disease_genetics/code/ctwas/ctwas_config_b37.R")
+options(digits = 4)
+
+```
+
+## Load ctwas results
+```{r echo=T, eval=F}
+# top 1 method
+res <- impute_expr_z(z_snp, weight = weight, ld_R_dir = ld_R_dir,
+                         method = NULL, outputdir = outputdir, outname = outname.e,
+                         harmonize_z = T, harmonize_wgt = T, scale_by_ld_variance=F,
+                         strand_ambig_action_z = "recover", 
+                         recover_strand_ambig_wgt = T
+# lasso/elastic-net method
+res <- impute_expr_z(z_snp, weight = weight, ld_R_dir = ld_R_dir,
+                         method = NULL, outputdir = outputdir, outname = outname.e,
+                         harmonize_z = T, harmonize_wgt = T, scale_by_ld_variance=F,
+                         strand_ambig_action_z = "none", 
+                         recover_strand_ambig_wgt = F
+```
+
+GWAS: UK Biobank GWAS summary statistics - European individuals 
+
+Weights: FUSION weights using top1, lasso, or elastic-net models were converted into PredictDB format and were not needed to do scaling when running ctwas.
+
+```{r}
+load_ctwas_outputs<-function(analysis_id){
+  #load ctwas results
+  ctwas_res <- data.table::fread(paste0(results_dir, "/", analysis_id, "/", analysis_id, "_ctwas.susieIrss.txt"))
+  
+  #make unique identifier for regions
+  ctwas_res$region_tag <- paste(ctwas_res$region_tag1, ctwas_res$region_tag2, sep="_")
+  
+  #load z scores for SNPs and collect sample size
+  load(paste0(results_dir,  "/", analysis_id, "/", 
+              analysis_id, "_expr_z_snp.Rd"))
+  
+  
+  sample_size <- z_snp$ss
+  sample_size <- as.numeric(names(which.max(table(sample_size))))
+  
+  ctwas_res$sample_size = sample_size
+  #compute PVE for each gene/SNP
+  ## mu2 is the second moment of the posterior effect sizes(beta)
+  ctwas_res$PVE = ctwas_res$susie_pip*ctwas_res$mu2/sample_size #review this step
+  
+  #shorten id info
+  ctwas_res$id <-basename(ctwas_res$id)
+  
+  
+  #separate gene and SNP results
+  ctwas_gene_res <- ctwas_res[ctwas_res$type != "SNP", ]
+  ctwas_gene_res <- data.frame(ctwas_gene_res)
+  ctwas_snp_res <- ctwas_res[ctwas_res$type == "SNP", ]
+  ctwas_snp_res <- data.frame(ctwas_snp_res)
+  
+
+  return(list(df_genes =ctwas_gene_res, 
+              df_snps = ctwas_snp_res))
+}
+
+#expr_outs<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_e_top1"))
+
+# outs<-list()
+# for(model in c("top1")){
+#   outs[[model]]<-load_ctwas_outputs(analysis_id = paste0(trait_id, "_m6a_", model))
+# }
+
+joint_outs<-list()
+for(model in c("lasso")){
+  joint_outs[[model]]<-load_ctwas_outputs(
+    analysis_id = paste0(trait_id, "_E_S_m6a_", model))
+}
+```
+
+## Check convergence of parameters
+
+```{r echo=F, out.width="70%"}
+library(ggplot2)
+library(cowplot)
+
+check_convergence<-function(ctwas_gene_res, analysis_id){
+  #get number of SNPs from s1 results; adjust for thin argument
+  ctwas_res_s1 <- data.table::fread(paste0(results_dir, "/", 
+                                           analysis_id, "/", 
+                                           analysis_id, "_ctwas.s1.susieIrss.txt"))
+  n_snps <- sum(ctwas_res_s1$type=="SNP")/thin
+  rm(ctwas_res_s1)
+  
+  load(paste0(results_dir, "/", analysis_id,
+              "/", analysis_id, "_ctwas.s2.susieIrssres.Rd"))
+  
+  #estimated group prior (all iterations)
+  estimated_group_prior_all <- group_prior_rec
+  estimated_group_prior_all["SNP",] <- estimated_group_prior_all["SNP",]*thin #adjust parameter to account for thin argument
+  
+  #estimated group prior variance (all iterations)
+  estimated_group_prior_var_all <- group_prior_var_rec
+  
+  #head(estimated_group_prior_all)
+  #set group size
+  group_size <- c(table(ctwas_gene_res$type), structure(n_snps, names="SNP"))
+  group_size <- group_size[rownames(estimated_group_prior_all)]
+
+  
+  if(length(group_size) > 3){
+    print("Table of group size before/after matching with UKBB SNPs:")
+    prior_group_size<-c(9324048, 2005, 2191, 918)
+    names(prior_group_size)<-names(group_size)
+    percent_of_overlaps<-group_size/prior_group_size
+    size_tbl <- rbind(prior_group_size,
+                      group_size,
+                      percent_of_overlaps)
+    print(size_tbl)
+  }else{
+    print("Table of group size:")
+    print(group_size)
+  }
+
+  
+  #get sample size
+  sample_size <- unique(ctwas_gene_res$sample_size)
+  
+  #estimated group PVE (all iterations)
+  estimated_group_pve_all <- estimated_group_prior_var_all*estimated_group_prior_all*group_size/sample_size #check PVE calculation
+  
+  #estimated enrichment of genes (all iterations)
+  estimated_enrichment_all <- t(sapply(rownames(estimated_group_prior_all)[rownames(estimated_group_prior_all)!="SNP"], function(x){estimated_group_prior_all[rownames(estimated_group_prior_all)==x,]/estimated_group_prior_all[rownames(estimated_group_prior_all)=="SNP"]}))
+  
+  title_size <- 6
+  
+  df <- data.frame(niter = rep(1:ncol(estimated_group_prior_all), nrow(estimated_group_prior_all)),
+                   value = unlist(lapply(1:nrow(estimated_group_prior_all), function(x){estimated_group_prior_all[x,]})),
+                   group = rep(rownames(estimated_group_prior_all), each=ncol(estimated_group_prior_all)))
+  
+  #df$group[df$group=="Whole_Blood"] <- "Expression"
+  #df$group[df$group=="Whole_Blood_Splicing"] <- "Splicing"
+  #df$group[df$group=="Whole_Blood_Methylation"] <- "Methylation"
+  df$group <- as.factor(df$group)
+  
+  p_pi <- ggplot(df, aes(x=niter, y=value, group=group)) +
+    geom_line(aes(color=group)) +
+    geom_point(aes(color=group)) +
+    xlab("Iteration") + ylab(bquote(pi)) +
+    ggtitle("Proportion Causal") +
+    theme_cowplot()
+  
+  p_pi <- p_pi + theme(plot.title=element_text(size=title_size)) + 
+    expand_limits(y=0) + 
+    guides(color = guide_legend(title = "Group")) + theme (legend.title = element_text(size=6, face="bold"))
+  
+  df <- data.frame(niter = rep(1:ncol(estimated_group_prior_var_all), nrow(estimated_group_prior_var_all)),
+                   value = unlist(lapply(1:nrow(estimated_group_prior_var_all), function(x){estimated_group_prior_var_all[x,]})),
+                   group = rep(rownames(estimated_group_prior_var_all), each=ncol(estimated_group_prior_var_all)))
+  
+  #df$group[df$group=="Whole_Blood"] <- "Expression"
+  #df$group[df$group=="Whole_Blood_Splicing"] <- "Splicing"
+  #df$group[df$group=="Whole_Blood_Methylation"] <- "Methylation"
+  df$group <- as.factor(df$group)
+  
+  p_sigma2 <- ggplot(df, aes(x=niter, y=value, group=group)) +
+    geom_line(aes(color=group)) +
+    geom_point(aes(color=group)) +
+    xlab("Iteration") + ylab(bquote(sigma^2)) +
+    ggtitle("Effect Size") +
+    theme_cowplot()
+  
+  p_sigma2 <- p_sigma2 + theme(plot.title=element_text(size=title_size)) + 
+    expand_limits(y=0) + 
+    guides(color = guide_legend(title = "Group")) + theme (legend.title = element_text(size=6, face="bold"))
+  
+  df <- data.frame(niter = rep(1:ncol(estimated_group_pve_all), nrow(estimated_group_pve_all)),
+                   value = unlist(lapply(1:nrow(estimated_group_pve_all), function(x){estimated_group_pve_all[x,]})),
+                   group = rep(rownames(estimated_group_pve_all), each=ncol(estimated_group_pve_all)))
+  
+  #df$group[df$group=="Whole_Blood"] <- "Expression"
+  #df$group[df$group=="Whole_Blood_Splicing"] <- "Splicing"
+  #df$group[df$group=="Whole_Blood_Methylation"] <- "Methylation"
+  df$group <- as.factor(df$group)
+  
+  p_pve <- ggplot(df, aes(x=niter, y=value, group=group)) +
+    geom_line(aes(color=group)) +
+    geom_point(aes(color=group)) +
+    xlab("Iteration") + ylab(bquote(h[G]^2)) +
+    ggtitle("PVE") +
+    theme_cowplot()
+  
+  p_pve <- p_pve + theme(plot.title=element_text(size=title_size)) + 
+    expand_limits(y=0) + 
+    guides(color = guide_legend(title = "Group")) + theme (legend.title = element_text(size=6, face="bold"))
+  
+  df <- data.frame(niter = rep(1:ncol(estimated_enrichment_all), nrow(estimated_enrichment_all)),
+                   value = unlist(lapply(1:nrow(estimated_enrichment_all), function(x){estimated_enrichment_all[x,]})),
+                   group = rep(rownames(estimated_enrichment_all), each=ncol(estimated_enrichment_all)))
+  
+  #df$group[df$group=="Whole_Blood"] <- "Expression"
+  #df$group[df$group=="Whole_Blood_Splicing"] <- "Splicing"
+  #df$group[df$group=="Whole_Blood_Methylation"] <- "Methylation"
+  df$group <- as.factor(df$group)
+  
+  p_enrich <- ggplot(df, aes(x=niter, y=value, group=group)) +
+    geom_line(aes(color=group)) +
+    geom_point(aes(color=group)) +
+    xlab("Iteration") + ylab(bquote(pi[G]/pi[S])) +
+    ggtitle("Enrichment") +
+    theme_cowplot()
+  
+  p_enrich <- p_enrich + theme(plot.title=element_text(size=title_size)) + 
+    expand_limits(y=0) + 
+    guides(color = guide_legend(title = "Group")) + theme (legend.title = element_text(size=6, face="bold"))
+  
+  
+  #estimated group prior
+  estimated_group_prior <- estimated_group_prior_all[,ncol(group_prior_rec)]
+
+  #estimated group prior variance
+  estimated_group_prior_var <- estimated_group_prior_var_all[,ncol(group_prior_var_rec)]
+  
+  #estimated group PVE
+  estimated_group_pve <- estimated_group_pve_all[,ncol(group_prior_rec)]
+
+  #attributable PVE
+  attributable_group_pve<-estimated_group_pve/sum(estimated_group_pve)
+  
+  tbl<-rbind(estimated_group_prior, 
+             estimated_group_prior_var,
+             estimated_group_pve,
+             attributable_group_pve
+             )
+  print(tbl)
+  return(plot_grid(p_pi, p_sigma2, p_enrich, p_pve))
+}
+```
+
+**cTWAS analysis on m6A alone**
+
+```{r eval=FALSE}
+cplots<-list()
+ for(model in c("top1")){
+  print(sprintf("Check convergence for the %s model:", model))
+  cplots[[model]]<-check_convergence(
+    ctwas_gene_res = outs[[model]][[1]],
+    analysis_id = paste0(trait_id, "_m6a_", model) 
+    )
+  cplots[[model]]
+}
+
+cplots
+```
+
+**Joint analysis of expression, splicing and m6A**
+
+```{r}
+cplots_joint<-list()
+for(model in c("lasso")){
+  print(sprintf("Check convergence for the %s model when jointly analyzing expression, splicing and m6A:", model))
+  cplots_joint[[model]]<-check_convergence(
+    ctwas_gene_res = joint_outs[[model]][[1]],
+    analysis_id = paste0(trait_id, "_E_S_m6a_", model) 
+    )
+}
+
+cplots_joint
+```
+
+
+## cTWAS results for individual analysis with m6A 
+
+**top1 model**
+```{r eval=FALSE}
+ctwas_gene_res<-outs$top1$df_genes
+ctwas_snp_res<-outs$top1$df_snps
+
+ctwas_gene_res[,c("peak_id", "genename")]<-
+  t(sapply(ctwas_gene_res$id, function(i){
+    strsplit(i, "_")[[1]][1:2]
+  }))
+
+
+#add z scores to results
+analysis_id<-paste0(trait_id, "_m6a_top1")
+load(paste0(results_dir, "/", analysis_id,"/", analysis_id, "_expr_z_gene.Rd"))
+load(paste0(results_dir, "/", analysis_id,"/", analysis_id, "_expr_z_snp.Rd"))
+
+ctwas_gene_res$z <- z_gene$z[match(ctwas_gene_res$id, basename(z_gene$id))]
+z_snp <- z_snp[z_snp$id %in% ctwas_snp_res$id,]
+ctwas_snp_res$z <- z_snp$z[match(ctwas_snp_res$id, z_snp$id)]
+
+#merge gene and snp results with added information
+ctwas_snp_res$peak_id=NA
+ctwas_snp_res$type="SNP"
+#ctwas_snp_res$alt_name=NA
+ctwas_snp_res$genename=NA
+cols<-intersect(colnames(ctwas_gene_res), colnames(ctwas_snp_res))
+ctwas_res <- rbind(ctwas_gene_res[, cols],
+                   ctwas_snp_res[, cols])
+saveRDS(ctwas_res, paste0(results_dir, "/", analysis_id, "/", analysis_id, "_ctwas_res.RDS"))
+```
+
+```{r eval=FALSE}
+ctwas_gene_res %>% 
+  dplyr::select(c(genename, region_tag, susie_pip, z)) %>% 
+  filter(susie_pip > 0.6) %>% arrange(desc(susie_pip)) %>% slice_head(n=20)
+```
+
+**Summing up PIPs for m6A peaks located in the same gene**
+
+Top m6A PIPs by genes
+```{r eval=FALSE}
+# sum up PIPs for m6A peaks located in the same gene
+ctwas_gene_res %>% 
+  group_by(genename) %>% summarise(total_susie_pip=sum(susie_pip)) %>% 
+  filter(total_susie_pip >  0.6) %>%
+  arrange(desc(total_susie_pip))
+```
+
+
+## cTWAS results for joint analysis using a lasso model
+
+### Top m6A modification pip
+```{r}
+ctwas_gene_res<-joint_outs$lasso$df_genes
+ctwas_snp_res<-joint_outs$lasso$df_snps
+
+ctwas_gene_res$group <- ctwas_gene_res$type
+
+#add gene information to results
+ctwas_gene_res$gene_id <- sapply(ctwas_gene_res$id, function(x){basename(strsplit(x, split="[|]")[[1]][1])})
+genomic.gr<-readRDS("~/github/gene-finemapping-pipeline/data/hg19_gtf_genomic_annots_ver2.gr.rds")
+ctwas_gene_E_res <- ctwas_gene_res %>% filter(group =="eQTL")
+ctwas_gene_E_res[,"peak_id"]<-
+  unlist(lapply(ctwas_gene_E_res$gene_id, function(i){strsplit(i, "[.]")[[1]][1]}))
+df_gene<-data.frame(cbind(unlist(lapply(genomic.gr$genes$gene_id,
+                                        function(i){strsplit(i,"[.]")[[1]][1]}
+                                        )),
+                          genomic.gr$genes$gene_name)
+                    )
+colnames(df_gene)<-c("peak_id", "genename")
+ctwas_gene_E_res <- left_join(ctwas_gene_E_res, df_gene, by="peak_id")
+ctwas_gene_E_res$genename[which(is.na(ctwas_gene_E_res$genename) == TRUE)]<-ctwas_gene_E_res$peak_id[which(is.na(ctwas_gene_E_res$genename) == TRUE)]
+
+ctwas_gene_S_res <- ctwas_gene_res %>% filter(group =="sQTL")
+ctwas_gene_S_res[,"peak_id"]<-
+  unlist(lapply(ctwas_gene_S_res$gene_id, function(i){
+    paste0(strsplit(i, "[:]")[[1]][1], ":",
+          strsplit(i, "[:]")[[1]][2], "-",
+          strsplit(i, "[:]")[[1]][3])}))
+
+splicing_gr<-GRanges(ctwas_gene_S_res$peak_id,
+                     peak_id = ctwas_gene_S_res$peak_id)
+
+# G_list_genes <- unique(G_list %>% select(genename, chromosome_name,
+#                                          ensembl_gene_id,
+#                                          start_position, end_position))
+
+# gene_gr<-GRanges(seqnames = paste0("chr", G_list_genes$chromosome_name),
+#                  ranges=IRanges(start=G_list_genes$start_position,
+#                                 end=G_list_genes$end_position),
+#                  genename=G_list_genes$genename
+#                  )
+df<-mergeByOverlaps(splicing_gr, genomic.gr$introns)
+nearest<-distanceToNearest(splicing_gr, genomic.gr$introns)
+ctwas_gene_S_res$genename <- genomic.gr$introns[nearest@to, ]$gene_name
+
+
+ctwas_gene_m6A_res <- ctwas_gene_res %>% filter(group =="m6AQTL")
+ctwas_gene_m6A_res[,c("peak_id", "genename")]<-
+  t(sapply(ctwas_gene_m6A_res$gene_id, function(i){
+    strsplit(i, "_")[[1]][1:2]
+  }))
+
+
+colnames(ctwas_gene_E_res)[colnames(ctwas_gene_E_res)=="ensembl_gene_id"]<-"peak_id"
+ctwas_gene_res <- rbind(ctwas_gene_E_res,
+                        ctwas_gene_S_res, 
+                        ctwas_gene_m6A_res)
+ctwas_gene_res$type = "gene"
+#add z scores to results
+analysis_id<-paste0(trait_id, "_E_S_m6a_lasso")
+load(paste0(results_dir, "/", analysis_id,"/", analysis_id, "_expr_z_gene.Rd"))
+load(paste0(results_dir, "/", analysis_id,"/", analysis_id, "_expr_z_snp.Rd"))
+
+
+ctwas_gene_res$z <- z_gene$z[match(ctwas_gene_res$id, basename(z_gene$id))]
+
+z_snp <- z_snp[z_snp$id %in% ctwas_snp_res$id,]
+ctwas_snp_res$z <- z_snp$z[match(ctwas_snp_res$id, z_snp$id)]
+
+#merge gene and snp results with added information
+ctwas_snp_res$peak_id=NA
+ctwas_snp_res$group="SNP"
+#ctwas_snp_res$alt_name=NA
+ctwas_snp_res$genename=NA
+cols<-intersect(colnames(ctwas_gene_res), colnames(ctwas_snp_res))
+ctwas_res <- rbind(ctwas_gene_res[, cols],
+                   ctwas_snp_res[, cols])
+saveRDS(ctwas_res, paste0(results_dir, "/", analysis_id, "/", analysis_id, "_ctwas_res.RDS"))
+```
+
+## Top expression/splicing/m6A units
+
+For m6A or splicing QTLs, they are assigned to the nearest genes (m6A needs to be confirmed with Kevin). 
+
+**Top SNPs or genes with PIP > 0.6**
+
+```{r echo=F}
+#ctwas_res <- readRDS(paste0(results_dir, "/", analysis_id, "/", analysis_id,
+                            #"_ctwas_res.RDS"))
+ctwas_gene_res<-ctwas_res %>% filter(type != "SNP")
+top_ctwas_gene_res <- lapply(split(ctwas_gene_res, ctwas_gene_res$group), function(i){
+  head(i[order(-i$susie_pip),c("genename","susie_pip","group","region_tag")], max(sum(i$susie_pip >0.6)), 20)
+})
+#genes with PIP>0.8 or 20 highest PIPs
+#head(ctwas_gene_res[order(-ctwas_gene_res$susie_pip),c("genename","susie_pip","type","region_tag")], max(sum(ctwas_gene_res$susie_pip>0.8), 20))
+#head(ctwas_gene_res[order(-ctwas_gene_res$susie_pip),], max(sum(ctwas_gene_res$susie_pip>0.8), 20))
+top_ctwas_gene_res
+```
+
+### Top m6A modification pip
+
+```{r echo=FALSE}
+ctwas_gene_res %>% filter(group=="m6AQTL") %>% 
+  dplyr::select(c(genename, region_tag, susie_pip, z)) %>% arrange(desc(susie_pip)) %>% slice_head(n=10)
+```
+
+**Summing up PIPs for m6A peaks located in the same gene**
+
+Top 10 m6A PIPs by genes
+```{r}
+# sum up PIPs for m6A peaks located in the same gene
+ctwas_gene_res %>% filter(group=="m6AQTL") %>% 
+  group_by(genename) %>% summarise(total_susie_pip=sum(susie_pip)) %>% 
+  arrange(desc(total_susie_pip))
+```
+
+### Top splicing PIPs
+
+```{r echo=FALSE}
+ctwas_gene_res %>% filter(group =="sQTL") %>% 
+  dplyr::select(c(peak_id, genename, pos, region_tag, susie_pip, z)) %>% 
+  #filter(susie_pip > 0.6) %>%
+  arrange(desc(susie_pip)) %>% slice_head(n=10)
+```
+
+**Summing up PIPs for spliced introns located in the same gene**
+
+Top 10 splicing PIPs by genes
+
+```{r}
+ctwas_gene_res %>% filter(group=="sQTL" & !is.na(genename)) %>% 
+  group_by(genename) %>% summarise(total_susie_pip=sum(susie_pip)) %>% arrange(desc(total_susie_pip)) %>% slice_head(n=10)
+
+```
+
+### Top genes by combined PIP
+
+```{r echo=F}
+#aggregate by gene name
+df_gene <- aggregate(ctwas_gene_res$susie_pip, by=list(ctwas_gene_res$genename), FUN=sum)
+colnames(df_gene) <- c("genename", "combined_pip")
+df_gene$expression_pip <-0
+df_gene$splicing_pip <-0
+df_gene$m6A_pip <-0
+
+#drop duplicated gene names
+df_gene$expression_pip<- ctwas_gene_E_res[sapply(df_gene$genename, match, ctwas_gene_E_res$genename), "susie_pip"]
+df_gene$expression_pip[is.na(df_gene$expression_pip)]<-0
+
+df_gene$splicing_pip[is.na(df_gene$splicing_pip)]<-0
+#df_gene$m6A_pip<- ctwas_gene_m6A_res[sapply(df_gene$genename, match, ctwas_gene_m6A_res$genename), "susie_pip"]
+df_gene$splicing_pip<- unlist(lapply(df_gene$genename, function(i){ctwas_gene_res %>% filter(group=="sQTL" & genename==i) %>% summarise(susie_pip=sum(susie_pip))}))
+
+df_gene$m6A_pip[is.na(df_gene$m6A_pip)]<-0
+df_gene$m6A_pip<- unlist(lapply(df_gene$genename, function(i){ctwas_gene_res %>% filter(group=="m6AQTL" & genename==i) %>% summarise(susie_pip=sum(susie_pip))}))
+
+df_gene$region_tag <- ctwas_gene_res[sapply(df_gene$genename, match, ctwas_gene_res$genename), "region_tag"]
+df_gene$combined_pip <- round(df_gene$combined_pip,3)
+#sort by combined PIP
+df_gene <- df_gene[order(-df_gene$combined_pip),]
+#genes with PIP>0.8 or 20 highest PIPs
+head(df_gene, max(sum(df_gene$combined_pip>0.8), 20))
+```
+
+<!-- ## GO enrichment analysis for genes with PIP>0.5 -->
+
+<!-- ```{r echo=FALSE, message=FALSE, eval=FALSE} -->
+<!-- #GO enrichment analysis -->
+<!-- library(enrichR) -->
+
+<!-- dbs <- c("GO_Biological_Process_2021", "GO_Cellular_Component_2021", "GO_Molecular_Function_2021") -->
+<!-- genes <- df_gene$gene_id[df_gene$combined_pip>0.8] -->
+<!-- ``` -->
+
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   GO_enrichment <- enrichr(genes, dbs) -->
+
+<!--   for (db in dbs){ -->
+<!--     print(db) -->
+<!--     df <- GO_enrichment[[db]] -->
+<!--     print(plotEnrich(GO_enrichment[[db]])) -->
+<!--     df <- df[df$Adjusted.P.value<0.05,c("Term", "Overlap", "Adjusted.P.value", "Genes")] -->
+<!--     print(df) -->
+<!--   } -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ## DisGeNET enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #library(disgenet2r) -->
+
+<!--   disgenet_api_key <- get_disgenet_api_key( -->
+<!--                     email = "wesleycrouse@gmail.com",  -->
+<!--                     password = "uchicago1" ) -->
+
+<!--   Sys.setenv(DISGENET_API_KEY= disgenet_api_key) -->
+
+<!--   res_enrich <-disease_enrichment(entities=genes, vocabulary = "HGNC", -->
+<!--                                database = "CURATED" ) -->
+
+<!--   df <- res_enrich@qresult[1:10, c("Description", "FDR", "Ratio",  "BgRatio")] -->
+<!--   print(df) -->
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ## WebGestalt enrichment analysis for genes with PIP>0.5 -->
+<!-- ```{r echo=F, message=FALSE, eval=FALSE} -->
+<!-- if (length(genes)>0){ -->
+<!--   #WebGestalt enrichment -->
+<!--   library(WebGestaltR) -->
+
+<!--   background <- ctwas_gene_res$genename -->
+
+<!--   #listGeneSet() -->
+<!--   databases <- c("pathway_KEGG", "disease_GLAD4U", "disease_OMIM") -->
+
+<!--   enrichResult <- WebGestaltR(enrichMethod="ORA", organism="hsapiens", -->
+<!--                               interestGene=genes, referenceGene=background, -->
+<!--                               enrichDatabase=databases, interestGeneType="genesymbol", -->
+<!--                               referenceGeneType="genesymbol", isOutput=F) -->
+<!--   print(enrichResult[,c("description", "size", "overlap", "FDR", "database", "userId")]) -->
+<!-- } -->
+
+<!-- ``` -->
+
+
+```{r echo=FALSE}
+alpha=0.5
+source("~/projects/m6A_in_disease_genetics/code/ctwas/qiansheng/locus_plot.R")
+```
+
+## Locus plots for specific examples
+
