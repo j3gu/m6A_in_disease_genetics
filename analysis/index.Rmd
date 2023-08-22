@@ -22,21 +22,22 @@ Test the enrichment for dsRNAs formed by m6A-switch with GWAS variants
 ### Genetic variants contribute to trait through PTR mechanisms
 
 * [running cTWAS with multiple QTLs from Geuvadis LCLs](learn_ctwas.html)
-* cTWAS results - blood related traits
-  - [white blood count](wbc_m6A_output_hg19.html)
-  - [red blood count](rbc_m6A_output_hg19.html)
-  - [lymphocyte count](lymph_m6A_output_hg19.html)
-  - [granulocyte count](granulo_m6A_output_hg19.html)
-  - [neutrophil count](neutroph_m6A_output_hg19.html)
-  - [eosinophil count](eosinoph_m6A_output_hg19.html)
-  - [platelet count](platelet_m6A_output_hg19.html)
- * cTWAS results - immune related traits
-  - [IBD](IBD_m6A_output_hg19.html)
-  - [asthma](asthma_m6A_output_hg19.html)
-  - [Crohn's Disease](CD_m6A_output_hg19.html)
-  - [lupus](lupus_m6A_output_hg19.html)
-  - [RA](RA_m6A_output_hg19.html)
-  - [LDL](LDL_m6A_output_hg19.html)
+* cTWAS results - blood related traits 
+    - [white blood count](wbc_m6A_output_hg19.html)
+    - [red blood count](rbc_m6A_output_hg19.html)
+    - [lymphocyte count](lymph_m6A_output_hg19.html)
+    - [granulocyte count](granulo_m6A_output_hg19.html)
+    - [neutrophil count](neutroph_m6A_output_hg19.html)
+    - [eosinophil count](eosinoph_m6A_output_hg19.html)
+    - [platelet count](platelet_m6A_output_hg19.html)
+    
+ * cTWAS results - immune related traits   
+    - [IBD](IBD_m6A_output_hg19.html)
+    - [asthma](asthma_m6A_output_hg19.html)
+    - [Crohn's Disease](CD_m6A_output_hg19.html)
+    - [lupus](lupus_m6A_output_hg19.html)
+    - [RA](RA_m6A_output_hg19.html)
+    - [LDL](LDL_m6A_output_hg19.html)
   
 ### m6A informed fine-mapping
 [Are predicted m6A QTLs enriched for GWAS signals?](predicted_m6A_QTLs_enrichment_GWAS.html)
