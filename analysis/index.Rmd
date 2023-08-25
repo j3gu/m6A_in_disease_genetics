@@ -33,12 +33,16 @@ Test the enrichment for dsRNAs formed by m6A-switch with GWAS variants
     
  * cTWAS results - immune related traits   
     - [IBD](IBD_m6A_output_hg19.html)
-    - [asthma](asthma_m6A_output_hg19.html)
     - [Crohn's Disease](CD_m6A_output_hg19.html)
+    - [ulcerative colitis](UC_m6A_output_hg19.html)
+    - [asthma](asthma_m6A_output_hg19.html)
     - [lupus](lupus_m6A_output_hg19.html)
     - [RA](RA_m6A_output_hg19.html)
-    - [LDL](LDL_m6A_output_hg19.html)
   
+  * cTWAS results - other traits
+    - [LDL](LDL_m6A_output_hg19.html)
+    - [BMI](BMI_m6A_output_hg19.html)
+    
 ### m6A informed fine-mapping
 [Are predicted m6A QTLs enriched for GWAS signals?](predicted_m6A_QTLs_enrichment_GWAS.html)
 
