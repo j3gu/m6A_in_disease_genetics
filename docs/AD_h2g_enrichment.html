@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Jing Gu" />
 
+<meta name="date" content="2024-10-01" />
 
-<title>Home</title>
+<title>AD Enrichment Analysis</title>
 
 <script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,9 +31,21 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
@@ -231,6 +245,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -238,6 +315,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -281,7 +368,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">AD Enrichment Analysis</h1>
+<h4 class="author">Jing Gu</h4>
+<h4 class="date">2024-10-01</h4>
 
 </div>
 
@@ -314,7 +403,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span> 0
 </p>
@@ -351,6 +440,90 @@ class="panel-collapse collapse">
 <p>Great! Since the R Markdown file has been committed to the Git
 repository, you know the exact version of the code that produced these
 results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20230331code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20230331)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20230331code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20230331)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -619,10 +792,11 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
-(<code>docs/index.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+made to the R Markdown (<code>analysis/AD_h2g_enrichment.Rmd</code>) and
+HTML (<code>docs/AD_h2g_enrichment.html</code>) files. If you’ve
+configured a remote Git repository (see <code>?wflow_git_remote</code>),
+click on the hyperlinks in the table below to view the files as they
+were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -651,7 +825,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/01e21145c509d80ab286dd610cc9df14ee401a99/analysis/index.Rmd" target="_blank">01e2114</a>
+<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/01e21145c509d80ab286dd610cc9df14ee401a99/analysis/AD_h2g_enrichment.Rmd" target="_blank">01e2114</a>
 </td>
 <td>
 Jing Gu
@@ -663,398 +837,6 @@ Jing Gu
 m6A enrichment for AD risk variants
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/67a33879507bbd2cb5036d8216cb0a5dd010aa04/docs/index.html" target="_blank">67a3387</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/d0f5634e7e01ea5b0672679c407a0156ba06e2e4/analysis/index.Rmd" target="_blank">d0f5634</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-25
-</td>
-<td>
-other traits
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/571007e0dc2b48f426a702e81d90987c668e084c/docs/index.html" target="_blank">571007e</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/132a6113726b65500266d7ba4bdb4d17937996d4/analysis/index.Rmd" target="_blank">132a611</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/866865b043df7a9dbbdd763f3d2b69a63fab6cfb/docs/index.html" target="_blank">866865b</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/f4e6d9303cc132c8a9d25cb008ddfa087ad7cb9f/docs/index.html" target="_blank">f4e6d93</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/fb910fa5c0638c7e78a44e0ff9faf9e6b066c64f/analysis/index.Rmd" target="_blank">fb910fa</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-22
-</td>
-<td>
-blood traits
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/bef698cec0024720793b0bf9b1362e95f880afc5/docs/index.html" target="_blank">bef698c</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/06e24278602cc65842c125d82951c5da12f4f186/analysis/index.Rmd" target="_blank">06e2427</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-17
-</td>
-<td>
-added lupus
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/f11f68acb073ef4e72f54d9a33a802c4d36d338a/docs/index.html" target="_blank">f11f68a</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-16
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/a1e244316cf4946096003d82a8e030e2317ca5eb/analysis/index.Rmd" target="_blank">a1e2443</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-16
-</td>
-<td>
-added rbc
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/992e835570afcfb6f64d38914143323b1feb0194/docs/index.html" target="_blank">992e835</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-16
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/22983a7e6d98bfd90423f93d0fae10a9f748899f/analysis/index.Rmd" target="_blank">22983a7</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-16
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/3a4bab96eff5d6283a5c05f5a2400750408a5980/docs/index.html" target="_blank">3a4bab9</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-11
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c94ee10dd04ad7af2c26821e45fa70fd1d133517/analysis/index.Rmd" target="_blank">c94ee10</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-11
-</td>
-<td>
-wflow_publish(c("analysis/wbc_m6A_output_hg19.Rmd",
-"analysis/index.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/170a3106ef5ffa14fc1bb7d602feaa5da8b63e30/docs/index.html" target="_blank">170a310</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-08-10
-</td>
-<td>
-gene-association with ctwas
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/499f0709c13048257b61fedfa2604d7775099f6b/docs/index.html" target="_blank">499f070</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-06-19
-</td>
-<td>
-visualize target sites
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/b7a7aa39e4da22a523a8a4762c6ffbad38e95025/analysis/index.Rmd" target="_blank">b7a7aa3</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-05-09
-</td>
-<td>
-update
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/bc330a2a4d892000e5e3b4af5cadf92698d795ae/docs/index.html" target="_blank">bc330a2</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-update index page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/98540ac5d0ea7fb469d5490c397d82a316ab9738/docs/index.html" target="_blank">98540ac</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-update index page
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/j3gu/m6A_in_disease_genetics/86b31eccc2f921052d9a59cec69c4cbe144a9d89/docs/index.html" target="_blank">86b31ec</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/0e3b2a91af749526b4e49447f4f84550a6963d42/analysis/index.Rmd" target="_blank">0e3b2a9</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-04-12
-</td>
-<td>
-publish the initial files
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/j3gu/m6A_in_disease_genetics/blob/c558a6b5b6f89928df0aa359b19c34ace7baed11/analysis/index.Rmd" target="_blank">c558a6b</a>
-</td>
-<td>
-Jing Gu
-</td>
-<td>
-2023-03-31
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1062,66 +844,116 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<div id="backgrounds" class="section level3">
-<h3>Backgrounds</h3>
+<div id="inputs-preparation" class="section level2">
+<h2>Inputs preparation</h2>
+<p>GWAS: Bellenguez et al.(2022) harmonized summary statistics.</p>
+<p>LDSC parameters:</p>
 <ul>
-<li><a href="m6A_characteristics.html">what is m6A
-modification?</a></li>
-<li>[m6A-switch mechanisms]</li>
-<li>[m6A variation contributes to heritability of immune diseases]</li>
+<li>GWAS variants filtered by hapmap3 SNPs</li>
+<li>LD based on Europeans from 1000 genome project</li>
 </ul>
+<pre class="bash"><code>workdir=/project/xinhe/shared/GWAS_sumstat/AD
+ldsc_base=/home/jinggu/cluster/data/gwas/gwas_ldsc/sldsc
+zcat 35379992-GCST90027158-MONDO_0004975.h.tsv.gz | cut -f 2,6,5,8,11,14,25,26 - &gt; $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt
+python /home/jinggu/cluster/github/ldsc/munge_sumstats.py \
+  --sumstats $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt \
+  --snp hm_rsid \
+  --a1 hm_effect_allele \
+  --a2 hm_other_allele \
+  --frq hm_effect_allele_frequency \
+  --p p_value \
+  --N-cas-col n_cas \
+  --N-con-col n_con \
+  --signed-sumstats hm_odds_ratio,1 \
+  --chunksize 500000 \
+  --merge-alleles $ldsc_base/w_hm3.snplist \
+  --out /home/jinggu/cluster/data/gwas/gwas_ldsc/AD</code></pre>
 </div>
-<div id="genetic-variants-may-act-through-m6a-switch-to-cause-disease"
-class="section level3">
-<h3>Genetic variants may act through m6A-switch to cause disease</h3>
-<p>Test the enrichment for dsRNAs formed by m6A-switch with GWAS
-variants</p>
+<div id="enrichment-results-in-barplots" class="section level2">
+<h2>Enrichment results in barplots</h2>
 <ul>
-<li><a href="check_double_strand.html">identify transcripts that can
-form dsRNAs</a></li>
-<li><a href="learn_gviz.html">visualize m6A sites and nearby
-double-strand RNAs</a></li>
+<li>Labels on top of the bars: enrichment p-values</li>
+<li>Legend for y-axis: m6A fetal tissue (percent of genome wide variants
+that fall in the corresponding peaks)</li>
 </ul>
+<p>Compared with other traits, m6A peaks across all fetal tissues do not
+show enrichment with AD risk variants.
+<img src="figure/AD_h2g_enrichment.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/AD_h2g_enrichment.Rmd/unnamed-chunk-2-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/AD_h2g_enrichment.Rmd/unnamed-chunk-2-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e89685ee235ec01b7f0d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e89685ee235ec01b7f0d">{"x":{"filter":"none","vertical":false,"data":[["9836","9837","9838","9839","9840","9841","9842","9843","9844","9845","9846","9847","9848","9849","9850","9851","9852","9853"],["scz","scz","scz","scz","scz","scz","scz","scz","scz","AD","AD","AD","AD","AD","AD","AD","AD","AD"],["m6A_fetal_brain","m6A_fetal_heart","m6A_fetal_kidney","m6A_fetal_liver","m6A_fetal_lung","m6A_fetal_merged","m6A_fetal_muscle","m6A_fetal_placenta","m6A_fetal_stomach","m6A_fetal_brain","m6A_fetal_heart","m6A_fetal_kidney","m6A_fetal_liver","m6A_fetal_lung","m6A_fetal_merged","m6A_fetal_muscle","m6A_fetal_placenta","m6A_fetal_stomach"],["0.6209%","0.3103%","0.6849%","0.2760%","0.2911%","1.1796%","0.4198%","0.4944%","0.2852%","0.6209%","0.3103%","0.6849%","0.2760%","0.2911%","1.1796%","0.4198%","0.4944%","0.2852%"],["5.422% ","1.680% ","1.190% ","1.423% ","0.856% ","4.078% ","1.073% ","1.850% ","1.434% ","2.586% ","0.721% ","2.847% ","-0.760%","-3.705%","2.404% ","-0.003%","3.916% ","-0.585%"],["  8.7323","  5.4163","  1.7369","  5.1548","  2.9410","  3.4569","  2.5553","  3.7425","  5.0284","  4.1654","  2.3239","  4.1574"," -2.7520","-12.7271","  2.0377"," -0.0081","  7.9216"," -2.0506"],["2.6e-05","2.1e-01","5.9e-01","1.5e-01","4.7e-01","6.5e-02","4.3e-01","1.9e-01","2.4e-01","5.5e-01","8.8e-01","6.6e-01","6.7e-01","6.5e-02","8.0e-01","9.0e-01","4.2e-01","7.4e-01"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>trait<\/th>\n      <th>Category<\/th>\n      <th>Prop_SNPs<\/th>\n      <th>Prop_h2<\/th>\n      <th>Enrichment<\/th>\n      <th>Enrichment_p<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"trait","targets":1},{"name":"Category","targets":2},{"name":"Prop_SNPs","targets":3},{"name":"Prop_h2","targets":4},{"name":"Enrichment","targets":5},{"name":"Enrichment_p","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: CentOS Linux 7 (Core)
+
+Matrix products: default
+BLAS/LAPACK: /software/openblas-0.3.13-el7-x86_64/lib/libopenblas_haswellp-r0.3.13.so
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8 LC_NUMERIC=C         LC_TIME=C           
+ [4] LC_COLLATE=C         LC_MONETARY=C        LC_MESSAGES=C       
+ [7] LC_PAPER=C           LC_NAME=C            LC_ADDRESS=C        
+[10] LC_TELEPHONE=C       LC_MEASUREMENT=C     LC_IDENTIFICATION=C 
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] ggplot2_3.4.0        rtracklayer_1.58.0   GenomicRanges_1.50.2
+ [4] GenomeInfoDb_1.34.9  IRanges_2.32.0       S4Vectors_0.36.2    
+ [7] BiocGenerics_0.44.0  dplyr_1.1.4          data.table_1.15.4   
+[10] workflowr_1.7.1     
+
+loaded via a namespace (and not attached):
+ [1] MatrixGenerics_1.10.0       Biobase_2.58.0             
+ [3] httr_1.4.7                  sass_0.4.9                 
+ [5] jsonlite_1.8.8              bslib_0.7.0                
+ [7] getPass_0.2-2               highr_0.10                 
+ [9] GenomeInfoDbData_1.2.9      Rsamtools_2.14.0           
+[11] yaml_2.3.8                  pillar_1.9.0               
+[13] lattice_0.22-5              glue_1.7.0                 
+[15] digest_0.6.35               promises_1.3.0             
+[17] XVector_0.38.0              colorspace_2.1-0           
+[19] htmltools_0.5.8.1           httpuv_1.6.14              
+[21] Matrix_1.6-5                XML_3.99-0.16.1            
+[23] pkgconfig_2.0.3             zlibbioc_1.44.0            
+[25] scales_1.3.0                processx_3.8.3             
+[27] whisker_0.4.1               later_1.3.2                
+[29] BiocParallel_1.32.6         git2r_0.33.0               
+[31] tibble_3.2.1                generics_0.1.3             
+[33] farver_2.1.1                DT_0.33                    
+[35] cachem_1.0.8                withr_3.0.0                
+[37] SummarizedExperiment_1.28.0 cli_3.6.2                  
+[39] magrittr_2.0.3              crayon_1.5.2               
+[41] evaluate_0.23               ps_1.7.6                   
+[43] fs_1.6.4                    fansi_1.0.6                
+[45] tools_4.2.0                 BiocIO_1.8.0               
+[47] lifecycle_1.0.4             matrixStats_1.2.0          
+[49] stringr_1.5.1               munsell_0.5.1              
+[51] DelayedArray_0.24.0         callr_3.7.3                
+[53] Biostrings_2.66.0           compiler_4.2.0             
+[55] jquerylib_0.1.4             rlang_1.1.3                
+[57] grid_4.2.0                  RCurl_1.98-1.14            
+[59] rstudioapi_0.15.0           rjson_0.2.21               
+[61] htmlwidgets_1.6.4           crosstalk_1.2.1            
+[63] bitops_1.0-7                labeling_0.4.3             
+[65] rmarkdown_2.26              restfulr_0.0.15            
+[67] gtable_0.3.5                codetools_0.2-19           
+[69] R6_2.5.1                    GenomicAlignments_1.34.1   
+[71] knitr_1.46                  fastmap_1.1.1              
+[73] utf8_1.2.4                  rprojroot_2.0.4            
+[75] stringi_1.7.6               parallel_4.2.0             
+[77] Rcpp_1.0.12                 vctrs_0.6.5                
+[79] tidyselect_1.2.1            xfun_0.43                  </code></pre>
 </div>
-<div id="genetic-variants-contribute-to-trait-through-ptr-mechanisms"
-class="section level3">
-<h3>Genetic variants contribute to trait through PTR mechanisms</h3>
-<ul>
-<li><a href="AD_h2g_enrichment.html">m6A h2g enrichment results</a></li>
-<li><a href="learn_ctwas.html">running cTWAS with multiple QTLs from
-Geuvadis LCLs</a></li>
-<li>cTWAS results - blood related traits
-<ul>
-<li><a href="wbc_m6A_output_hg19.html">white blood count</a></li>
-<li><a href="rbc_m6A_output_hg19.html">red blood count</a></li>
-<li><a href="lymph_m6A_output_hg19.html">lymphocyte count</a></li>
-<li><a href="granulo_m6A_output_hg19.html">granulocyte count</a></li>
-<li><a href="neutroph_m6A_output_hg19.html">neutrophil count</a></li>
-<li><a href="eosinoph_m6A_output_hg19.html">eosinophil count</a></li>
-<li><a href="platelet_m6A_output_hg19.html">platelet count</a></li>
-</ul></li>
-<li>cTWAS results - immune related traits
-<ul>
-<li><a href="IBD_m6A_output_hg19.html">IBD</a></li>
-<li><a href="CD_m6A_output_hg19.html">Crohn’s Disease</a></li>
-<li><a href="UC_m6A_output_hg19.html">ulcerative colitis</a></li>
-<li><a href="asthma_m6A_output_hg19.html">asthma</a></li>
-<li><a href="lupus_m6A_output_hg19.html">lupus</a></li>
-<li><a href="RA_m6A_output_hg19.html">RA</a></li>
-</ul></li>
-<li>cTWAS results - other traits
-<ul>
-<li><a href="LDL_m6A_output_hg19.html">LDL</a></li>
-<li><a href="BMI_m6A_output_hg19.html">BMI</a></li>
-</ul></li>
-</ul>
-</div>
-<div id="m6a-informed-fine-mapping" class="section level3">
-<h3>m6A informed fine-mapping</h3>
-<p><a href="predicted_m6A_QTLs_enrichment_GWAS.html">Are predicted m6A
-QTLs enriched for GWAS signals?</a></p>
-<p><a href="predicted_m6A_QTLs_enrichment_ClinVars.html">Are predicted
-m6A QTLs enriched for ClinVar variants?</a></p>
 </div>
 
 
@@ -1140,6 +972,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1172,6 +1006,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
