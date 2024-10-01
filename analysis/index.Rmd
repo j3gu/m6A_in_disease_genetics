@@ -20,7 +20,7 @@ Test the enrichment for dsRNAs formed by m6A-switch with GWAS variants
 * [visualize m6A sites and nearby double-strand RNAs](learn_gviz.html)
 
 ### Genetic variants contribute to trait through PTR mechanisms
-
+* [m6A h2g enrichment results](AD_h2g_enrichment.html)
 * [running cTWAS with multiple QTLs from Geuvadis LCLs](learn_ctwas.html)
 * cTWAS results - blood related traits 
     - [white blood count](wbc_m6A_output_hg19.html)

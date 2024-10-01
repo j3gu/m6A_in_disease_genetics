@@ -1,0 +1,85 @@
+---
+title: "AD Enrichment Analysis"
+output: html_document
+date: '`r Sys.Date()`'
+author: 'Jing Gu'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(data.table)
+library(dplyr)
+library(rtracklayer)
+source("~/scripts/R/utility_func.R")
+source("~/projects/funcFinemapping/code/make_plots.R")
+workdir <- "/project/xinhe/shared/GWAS_sumstat/AD"
+```
+
+## Inputs preparation
+
+GWAS: Bellenguez et al.(2022) harmonized summary statistics. 
+
+LDSC parameters: 
+
+* GWAS variants filtered by hapmap3 SNPs
+* LD based on Europeans from 1000 genome project
+
+```{bash eval = FALSE, echo =TRUE}
+workdir=/project/xinhe/shared/GWAS_sumstat/AD
+ldsc_base=/home/jinggu/cluster/data/gwas/gwas_ldsc/sldsc
+zcat 35379992-GCST90027158-MONDO_0004975.h.tsv.gz | cut -f 2,6,5,8,11,14,25,26 - > $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt
+python /home/jinggu/cluster/github/ldsc/munge_sumstats.py \
+  --sumstats $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt \
+  --snp hm_rsid \
+  --a1 hm_effect_allele \
+  --a2 hm_other_allele \
+  --frq hm_effect_allele_frequency \
+  --p p_value \
+  --N-cas-col n_cas \
+  --N-con-col n_con \
+  --signed-sumstats hm_odds_ratio,1 \
+  --chunksize 500000 \
+  --merge-alleles $ldsc_base/w_hm3.snplist \
+  --out /home/jinggu/cluster/data/gwas/gwas_ldsc/AD
+```
+
+## Enrichment results in barplots
+
+* Labels on top of the bars: enrichment p-values 
+* Legend for y-axis: m6A fetal tissue (percent of genome wide variants that fall in the corresponding peaks)
+
+Compared with other traits, m6A peaks across all fetal tissues do not show enrichment with AD risk variants. 
+```{r}
+trait_list<-c("LDL", "HDL", "bmi", "height", "scz", "AD", "allergy", "aoa_ukb" )
+annotations <- 
+  read.table("~/cluster/data/features/formatted/m6A/Xiao2019/fetal_m6A_list.txt",
+             header=FALSE)
+annot <- 
+  unlist(lapply(annotations$V1, function(i){
+          i = tolower(i)
+          i = gsub("_hg19.bed", "", i)
+          i = gsub("gse114150_", "m6A_fetal_", i)}))
+annotations <- data.frame(annot, annot)
+colnames(annotations)<-c("annot", "annotID")
+ldsc_tbl<-summarize_LDSC_outputs(traits = trait_list, 
+                             referenceTab = annotations,
+                             baseline="baselineLD_v2.2")
+
+
+snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[1:3]), log.based = F, 
+                    label.size = 3, tolabel = "pval") + facet_grid(. ~ trait) 
+snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[4:6]), log.based = F, 
+                    label.size = 3, tolabel = "pval") + facet_grid(. ~ trait) 
+snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[7:8]), log.based = F, 
+                    label.size = 3, tolabel = "pval") + facet_grid(. ~ trait) 
+
+DT::datatable(ldsc_tbl %>% filter(trait %in% trait_list[5:6]) %>% 
+                mutate(Prop_SNPs = format(scales::percent(Prop._SNPs)),
+                       Prop_h2 = format(scales::percent(Prop._h2), digits=2),
+                       Enrichment = format(Enrichment, digits=2),
+                       Enrichment_p = format(Enrichment_p, digits=2)) %>%
+                select(trait, Category, Prop_SNPs, Prop_h2, Enrichment, Enrichment_p))
+```
+
+
+
