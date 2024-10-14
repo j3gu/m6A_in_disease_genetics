@@ -10,24 +10,43 @@ knitr::opts_chunk$set(echo = FALSE)
 library(data.table)
 library(dplyr)
 library(rtracklayer)
+library(GenomicRanges)
 source("~/scripts/R/utility_func.R")
 source("~/projects/funcFinemapping/code/make_plots.R")
 workdir <- "/project/xinhe/shared/GWAS_sumstat/AD"
 ```
 
-## Inputs preparation
+## Estimating h2g enrichment with LDSC
 
 GWAS: Bellenguez et al.(2022) harmonized summary statistics. 
 
 LDSC parameters: 
 
-* GWAS variants filtered by hapmap3 SNPs
-* LD based on Europeans from 1000 genome project
+* GWAS variants filtered by Hapmap3 SNPs
+* LD computed based on Europeans from 1000 genome project
+* Baseline annotations from BaselineLD_v2.2
+* m6A annotations one at a time
+```{r}
+output <- fread("~/cluster/projects/ldsc_enrichment/AD/baselineLD_v2.2/m6A_hNPC.results")
+baselines <- output$Category[grep("flanking", output$Category, invert = TRUE)]
+gsub("L2_0", "", baselines)
+DT::datatable(
+output %>% 
+  filter(!grepl("flanking", Category)) %>%
+  mutate(Category = gsub("L2_0", "", Category)) %>%
+  select(Category, Enrichment, Enrichment_p, `Coefficient_z-score`) %>%
+  arrange(Enrichment_p) %>%
+  mutate(
+    across(c(2,4), ~round(.x, 2)),
+    Enrichment_p = format(Enrichment_p, scientific = TRUE, digits = 2)))
+```
 
-```{bash eval = FALSE, echo =TRUE}
+```{bash eval = FALSE, echo =FALSE}
+# zcat 35379992-GCST90027158-MONDO_0004975.h.tsv.gz | cut -f 2,6,5,8,11,14,25,26 - > $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt
+
 workdir=/project/xinhe/shared/GWAS_sumstat/AD
 ldsc_base=/home/jinggu/cluster/data/gwas/gwas_ldsc/sldsc
-zcat 35379992-GCST90027158-MONDO_0004975.h.tsv.gz | cut -f 2,6,5,8,11,14,25,26 - > $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt
+
 python /home/jinggu/cluster/github/ldsc/munge_sumstats.py \
   --sumstats $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt \
   --snp hm_rsid \
@@ -39,39 +58,101 @@ python /home/jinggu/cluster/github/ldsc/munge_sumstats.py \
   --N-con-col n_con \
   --signed-sumstats hm_odds_ratio,1 \
   --chunksize 500000 \
-  --merge-alleles $ldsc_base/w_hm3.snplist \
-  --out /home/jinggu/cluster/data/gwas/gwas_ldsc/AD
+  --merge-alleles $ldsc_base/1000G_EUR_QC.snplist \
+  --out /home/jinggu/cluster/data/gwas/gwas_ldsc/AD_nohm
 ```
+
+## Collecting m6A peaks
+```{r}
+f_peaks <- 
+  list.files("~/cluster/data/features/raw/m6A_RELIC/",
+             pattern="txt.gz")
+for(i in f_peaks){
+  f <- fread(paste0("~/cluster/data/features/raw/m6A_RELIC/", i))
+  quantile(f$fdr)
+  f <- 
+    f %>% mutate(pos = gsub("\\[", ":", pos),
+                 pos = gsub("\\]", "", pos),
+                 pos = gsub("\\.", "\\*", pos))
+  
+  gr <- GRanges(f$pos)
+  fname <- gsub(".txt.gz", ".bed", rev(strsplit(i, "=")[[1]])[1])
+  write.table(data.frame(gr), 
+              paste0("~/cluster/data/features/raw/m6A_RELIC/", fname),
+              quote = F, sep = "\t",
+              col.names = FALSE, row.names = FALSE)
+}
+
+dataDIR = "~/cluster/data/features/formatted/m6A"
+fetal_m6a <- do.call(rbind, lapply(
+  list.files(paste0(dataDIR, "/Xiao2019"), pattern="GSE114150"), function(i) {
+  f <- fread(paste0(dataDIR, "/Xiao2019/", i))
+  return(c(strsplit(i, "_")[[1]][2], quantile(f$V3-f$V2)))
+}))
+print("Fetal m6A peaks quantiles:")
+data.frame(fetal_m6a)
+
+adult_RELIC <- do.call(rbind, lapply(
+  list.files(paste0(dataDIR, "/RELIC"), pattern=".bed")[-2:-1], function(i) {
+  f <- fread(paste0(dataDIR, "/RELIC/", i))
+  return(c(gsub(".bed", "", i), quantile(f$V3-f$V2)))
+}))
+
+adult_atlas <- do.call(rbind, lapply(
+  list.files(paste0(dataDIR, "/m6A_atlas"), pattern=".bed")[-1], function(i) {
+  f <- fread(paste0(dataDIR, "/m6A_atlas/", i))
+  return(c(gsub(".bed", "", i), quantile(f$V3-f$V2)))
+}))
+
+print("Adult m6A peaks quantiles:")
+DT::datatable(
+  data.frame(rbind(adult_RELIC, adult_atlas))
+)
+```
+
 
 ## Enrichment results in barplots
 
 * Labels on top of the bars: enrichment p-values 
-* Legend for y-axis: m6A fetal tissue (percent of genome wide variants that fall in the corresponding peaks)
+* Legend for y-axis: annotation (percent of genome-wide variants that fall in the annotation peaks)
 
-Compared with other traits, m6A peaks across all fetal tissues do not show enrichment with AD risk variants. 
 ```{r}
-trait_list<-c("LDL", "HDL", "bmi", "height", "scz", "AD", "allergy", "aoa_ukb" )
+trait_list <-
+  c("LDL", "HDL", "bmi", "height", 
+    "scz", "AD", "allergy", "aoa_ukb")
 annotations <- 
-  read.table("~/cluster/data/features/formatted/m6A/Xiao2019/fetal_m6A_list.txt",
+  read.table("/home/jinggu/cluster/projects/ldsc_enrichment/ldscore/annot_m6A_list.txt",
              header=FALSE)
-annot <- 
-  unlist(lapply(annotations$V1, function(i){
-          i = tolower(i)
-          i = gsub("_hg19.bed", "", i)
-          i = gsub("gse114150_", "m6A_fetal_", i)}))
-annotations <- data.frame(annot, annot)
+# annot <- 
+#   unlist(lapply(annotations$V1, function(i){
+#           i = tolower(i)
+#           i = gsub("_hg19.bed", "", i)
+#           i = gsub("gse114150_", "m6A_fetal_", i)}))
+
+
+annotations <- data.frame(annotations$V1,
+                          gsub("m6A_", "", annotations$V1))
 colnames(annotations)<-c("annot", "annotID")
+annotations$annotID[c(12,13,15)] <- paste0("adult_", annotations$annotID[c(12,13,15)])
+annotations <- 
+  rbind(annotations, 
+        data.frame(
+         "annot" = gsub("_adult", "_atlas2", adult_atlas[,1]), 
+        "annotID" = adult_atlas[,1])
+  )
+annotations_toplot <- annotations[-c(1,8, 14,15, 18),]
 ldsc_tbl<-summarize_LDSC_outputs(traits = trait_list, 
-                             referenceTab = annotations,
+                             referenceTab = annotations_toplot,
                              baseline="baselineLD_v2.2")
+# order of annotations
+annot_order<-annotations_toplot$annotID[
+c(grep("adult", annotations_toplot$annotID),
+  grep("fetal", annotations_toplot$annotID))]
 
-
-snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[1:3]), log.based = F, 
-                    label.size = 3, tolabel = "pval") + facet_grid(. ~ trait) 
-snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[4:6]), log.based = F, 
-                    label.size = 3, tolabel = "pval") + facet_grid(. ~ trait) 
-snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[7:8]), log.based = F, 
-                    label.size = 3, tolabel = "pval") + facet_grid(. ~ trait) 
+lapply(seq(1, 8, 2), function(i){
+  snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[i:(i+1)]), log.based = F, 
+                    label.size = 3, tolabel = "pval",y.order = annot_order) + facet_grid(. ~ trait) 
+})
 
 DT::datatable(ldsc_tbl %>% filter(trait %in% trait_list[5:6]) %>% 
                 mutate(Prop_SNPs = format(scales::percent(Prop._SNPs)),
@@ -80,6 +161,7 @@ DT::datatable(ldsc_tbl %>% filter(trait %in% trait_list[5:6]) %>%
                        Enrichment_p = format(Enrichment_p, digits=2)) %>%
                 select(trait, Category, Prop_SNPs, Prop_h2, Enrichment, Enrichment_p))
 ```
+
 
 
 
