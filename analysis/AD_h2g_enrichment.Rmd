@@ -29,7 +29,8 @@ LDSC parameters:
 ```{r}
 output <- fread("~/cluster/projects/ldsc_enrichment/AD/baselineLD_v2.2/m6A_hNPC.results")
 baselines <- output$Category[grep("flanking", output$Category, invert = TRUE)]
-gsub("L2_0", "", baselines)
+DT::datatable(data.frame(annotations = gsub("L2_0", "", baselines)),
+              caption="A list of baseline annotations:")
 DT::datatable(
 output %>% 
   filter(!grepl("flanking", Category)) %>%
@@ -48,18 +49,19 @@ workdir=/project/xinhe/shared/GWAS_sumstat/AD
 ldsc_base=/home/jinggu/cluster/data/gwas/gwas_ldsc/sldsc
 
 python /home/jinggu/cluster/github/ldsc/munge_sumstats.py \
-  --sumstats $workdir/Bellenguez2022/GCST90027158_AD_sumstats.txt \
-  --snp hm_rsid \
-  --a1 hm_effect_allele \
-  --a2 hm_other_allele \
-  --frq hm_effect_allele_frequency \
-  --p p_value \
-  --N-cas-col n_cas \
-  --N-con-col n_con \
-  --signed-sumstats hm_odds_ratio,1 \
+  --sumstats $workdir/schwartz/Kunkle_GWAS.txt.gz\
+  --snp variant_id \
+  --a1 effect_allele \
+  --a2 other_allele \
+  --frq effect_allele_frequency \
+  --p GWAS_P \
+  --N 64000 \
+  --N-cas-col 22000 \
+  --N-con-col 42000 \
+  --signed-sumstats GWAS_BETA,0 \
   --chunksize 500000 \
   --merge-alleles $ldsc_base/1000G_EUR_QC.snplist \
-  --out /home/jinggu/cluster/data/gwas/gwas_ldsc/AD_nohm
+  --out /home/jinggu/cluster/data/gwas/gwas_ldsc/AD_Kunkle
 ```
 
 ## Collecting m6A peaks
@@ -119,7 +121,7 @@ DT::datatable(
 ```{r}
 trait_list <-
   c("LDL", "HDL", "bmi", "height", 
-    "scz", "AD", "allergy", "aoa_ukb")
+    "scz", "AD", "allergy", "coa_ukb")
 annotations <- 
   read.table("/home/jinggu/cluster/projects/ldsc_enrichment/ldscore/annot_m6A_list.txt",
              header=FALSE)
@@ -151,7 +153,7 @@ c(grep("adult", annotations_toplot$annotID),
 
 lapply(seq(1, 8, 2), function(i){
   snp_enrichment_plot(ldsc_tbl %>% filter(trait %in% trait_list[i:(i+1)]), log.based = F, 
-                    label.size = 3, tolabel = "pval",y.order = annot_order) + facet_grid(. ~ trait) 
+                    label.size = 3, tolabel = "pval",y.order = annot_order) + xlim(-40, 40) + facet_grid(. ~ trait) 
 })
 
 DT::datatable(ldsc_tbl %>% filter(trait %in% trait_list[5:6]) %>% 
